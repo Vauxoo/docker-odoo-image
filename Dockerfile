@@ -51,7 +51,6 @@ RUN apt-get update && apt-get upgrade -y \
     xmlstarlet \
     xsltproc \
     wget \
-    openssh-server \
     supervisor
 RUN cd /tmp && wget https://raw.githubusercontent.com/pypa/pip/master/contrib/get-pip.py && python get-pip.py
 ADD requirements.txt /tmp/
@@ -61,3 +60,4 @@ RUN cd /tmp && wget http://ufpr.dl.sourceforge.net/project/wkhtmltopdf/0.12.1/wk
     && dpkg -i wkhtmltox-0.12.1_linux-trusty-amd64.deb
 RUN cd /tmp && git clone https://github.com/thewtex/sphinx-contrib.git \
     && cd sphinx-contrib/youtube && python setup.py install
+RUN cd /tmp && rm * -rf
