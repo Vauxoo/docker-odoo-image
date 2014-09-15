@@ -53,7 +53,7 @@ RUN apt-get update && apt-get upgrade -y \
     wget \
     supervisor
 RUN cd /tmp && wget https://raw.githubusercontent.com/pypa/pip/master/contrib/get-pip.py && python get-pip.py
-ADD requirements.txt /tmp/
+ADD files/requirements.txt /tmp/
 RUN cd /tmp && pip install -r requirements.txt
 RUN cd /tmp && git clone https://github.com/kanzure/pyphantomjs && cd pyphantomjs python setup.py install
 RUN cd /tmp && wget http://ufpr.dl.sourceforge.net/project/wkhtmltopdf/0.12.1/wkhtmltox-0.12.1_linux-trusty-amd64.deb  \
