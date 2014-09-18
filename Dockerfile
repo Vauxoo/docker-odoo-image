@@ -63,3 +63,4 @@ RUN cd /tmp \
 RUN cd /tmp && git clone https://github.com/thewtex/sphinx-contrib.git \
     && cd sphinx-contrib/youtube && python setup.py install
 RUN cd /tmp && rm * -rf
+RUN rm -rf /var/lib/apt/lists/*
