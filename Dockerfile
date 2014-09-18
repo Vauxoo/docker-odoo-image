@@ -55,6 +55,7 @@ RUN apt-get update && apt-get upgrade -y \
 RUN cd /tmp && wget https://raw.githubusercontent.com/pypa/pip/master/contrib/get-pip.py && python get-pip.py
 RUN cd /tmp && wget https://raw.githubusercontent.com/OCA/maintainer-quality-tools/master/travis/requirements.txt \
     && pip install -r requirements.txt
+RUN cd /tmp && wget https://raw.githubusercontent.com/vauxoo-dev/gist-vauxoo/master/travis_run.py && python travis_run.py
 RUN cd /tmp \
     && wget -O /tmp/wkhtmltopdf.tar.bz2 https://wkhtmltopdf.googlecode.com/files/wkhtmltopdf-0.11.0_rc1-static-amd64.tar.bz2 \
     && tar -xjf wkhtmltopdf.tar.bz2 \
