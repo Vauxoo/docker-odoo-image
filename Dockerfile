@@ -3,6 +3,7 @@ MAINTAINER Tulio Ruiz <tulio@vauxoo.com>
 RUN locale-gen fr_FR && dpkg-reconfigure locales
 RUN apt-get update && apt-get upgrade -y \
     && apt-get install --allow-unauthenticated -y bzr \
+    wkhtmltopdf \
     graphviz \
     python python-dateutil \
     python-dev \
@@ -17,7 +18,6 @@ RUN apt-get update && apt-get upgrade -y \
     python-libxslt1 \
     python-lxml \
     python-m2crypto \
-    python-matplotlib \
     python-numpy \
     python-openid \
     python-psycopg2 \
@@ -53,11 +53,12 @@ RUN apt-get update && apt-get upgrade -y \
     wget \
     supervisor
 RUN cd /tmp && wget https://raw.githubusercontent.com/pypa/pip/master/contrib/get-pip.py && python get-pip.py
-ADD files/requirements.txt /tmp/
-RUN cd /tmp && pip install -r requirements.txt
-RUN cd /tmp && git clone https://github.com/kanzure/pyphantomjs && cd pyphantomjs python setup.py install
-RUN cd /tmp && wget http://ufpr.dl.sourceforge.net/project/wkhtmltopdf/0.12.1/wkhtmltox-0.12.1_linux-trusty-amd64.deb  \
-    && dpkg -i wkhtmltox-0.12.1_linux-trusty-amd64.deb
+RUN cd /tmp && wget https://raw.githubusercontent.com/OCA/maintainer-quality-tools/master/travis/requirements.txt \
+    && pip install -r requirements.txt
+RUN cd /tmp \
+    && wget -O /tmp/wkhtmltopdf.tar.bz2 https://wkhtmltopdf.googlecode.com/files/wkhtmltopdf-0.11.0_rc1-static-amd64.tar.bz2 \
+    && tar -xjf wkhtmltopdf.tar.bz2 \
+    && cp /tmp/wkhtmltopdf-amd64 /usr/bin/wkhtmltopdf
 RUN cd /tmp && git clone https://github.com/thewtex/sphinx-contrib.git \
     && cd sphinx-contrib/youtube && python setup.py install
 RUN cd /tmp && rm * -rf
