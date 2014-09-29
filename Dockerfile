@@ -17,14 +17,18 @@ RUN apt-get update -q && apt-get upgrade -y -q \
     libgeoip-dev \
     libqrencode-dev \
     wget \
-    supervisor
+    supervisor \
+    openssh-client
 RUN ln -s /usr/include/freetype2 /usr/local/include/freetype \
     && ln -s /usr/lib/x86_64-linux-gnu/libjpeg.so /usr/lib/ \
     && ln -s /usr/lib/x86_64-linux-gnu/libfreetype.so /usr/lib/ \
     && ln -s /usr/lib/x86_64-linux-gnu/libz.so /usr/lib/
 RUN cd /tmp && wget https://raw.githubusercontent.com/pypa/pip/master/contrib/get-pip.py && python get-pip.py
-RUN pip install pyyaml && cd /tmp && wget https://raw.githubusercontent.com/vauxoo-dev/gist-vauxoo/master/travis_run.py && python travis_run.py
 RUN cd /tmp && git clone https://github.com/thewtex/sphinx-contrib.git \
     && cd sphinx-contrib/youtube && python setup.py install
-RUN cd /tmp && rm * -rf
-RUN rm -rf /var/lib/apt/lists/*
+RUN pip install pyyaml && cd /tmp \
+    && wget https://raw.githubusercontent.com/vauxoo-dev/gist-vauxoo/master/travis_run.py \
+    && sed -i "s/git@github\.com:OCA\/OCB\.git/https:\/\/github.com\/OCA\/OCB\.git/g" travis_run.py \
+    && sed -i "s/git@github\.com:hbrunn\/OCB\.git/https:\/\/github.com\/hbrunn\/OCB\.git/g" travis_run.py \
+    && python travis_run.py
+RUN apt-get clean && rm -rf /var/lib/apt/lists/* && rm -rf /tmp/*
