@@ -11,7 +11,7 @@ RUN apt-get update -q && apt-get upgrade -q \
     libqrencode-dev \
     libfreetype6-dev \
     zlib1g-dev \
-    python-lxml \
+    python-lxml
 RUN ln -s /usr/include/freetype2 /usr/local/include/freetype \
     && ln -s /usr/lib/x86_64-linux-gnu/libjpeg.so /usr/lib/ \
     && ln -s /usr/lib/x86_64-linux-gnu/libfreetype.so /usr/lib/ \
