@@ -20,6 +20,7 @@ RUN apt-get update -q && apt-get upgrade -q \
     libyaml-dev \
     libjpeg-dev \
     libgeoip-dev \
+    libffi-dev \
     libqrencode-dev \
     libfreetype6-dev \
     zlib1g-dev \
@@ -34,6 +35,7 @@ RUN ln -s /usr/include/freetype2 /usr/local/include/freetype \
     && ln -s /usr/lib/x86_64-linux-gnu/libfreetype.so /usr/lib/ \
     && ln -s /usr/lib/x86_64-linux-gnu/libz.so /usr/lib/
 RUN cd /tmp && wget https://raw.githubusercontent.com/pypa/pip/master/contrib/get-pip.py && python get-pip.py
+RUN pip install pyopenssl
 RUN cd /tmp && git clone --depth=1 https://github.com/thewtex/sphinx-contrib.git \
     && cd sphinx-contrib/youtube && python setup.py install
 RUN pip install pyyaml && pip install xmltodict && cd /tmp \
