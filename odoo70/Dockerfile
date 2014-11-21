@@ -1,4 +1,4 @@
-FROM quay.io/ruiztulio/vauxoo_ubuntu
+FROM vauxoo/docker-ubuntu-base
 MAINTAINER Tulio Ruiz <tulio@vauxoo.com>
 RUN apt-get update -q && apt-get upgrade -q \
     && apt-get install --allow-unauthenticated -q libssl-dev \

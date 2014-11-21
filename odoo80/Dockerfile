@@ -1,4 +1,4 @@
-FROM quay.io/ruiztulio/vauxoo_ubuntu
+FROM vauxoo/docker-ubuntu-base
 MAINTAINER Tulio Ruiz <tulio@vauxoo.com>
 RUN echo 'APT::Get::Assume-Yes "true";' >> /etc/apt/apt.conf \
     && echo 'APT::Get::force-yes "true";' >> /etc/apt/apt.conf
