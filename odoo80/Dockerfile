@@ -20,9 +20,9 @@ RUN pip install pyopenssl
 RUN cd /tmp && git clone --depth=1 https://github.com/thewtex/sphinx-contrib.git \
     && cd sphinx-contrib/youtube && python setup.py install
 RUN pip install pyyaml && pip install xmltodict && cd /tmp \
-    && wget https://raw.githubusercontent.com/ruiztulio/gist-vauxoo/master/travis_run.py \
+    && wget -q https://raw.githubusercontent.com/ruiztulio/gist-vauxoo/master/travis_run.py \
     && python travis_run.py
 RUN cd /tmp \
-    && wget https://raw.githubusercontent.com/Vauxoo/odoo-network/8.0/addons/network/scripts/odoo-server/05-install-dependencies-python-v80.sh \
+    && wget -q https://raw.githubusercontent.com/Vauxoo/odoo-network/8.0/addons/network/scripts/odoo-server/05-install-dependencies-python-v80.sh \
     && sh 05-install-dependencies-python-v80.sh
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* && rm -rf /tmp/*
