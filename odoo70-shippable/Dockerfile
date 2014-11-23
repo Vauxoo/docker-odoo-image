@@ -14,9 +14,6 @@ RUN apt-get update && apt-get upgrade -y \
     && apt-get install -y supervisor python-software-properties \
         software-properties-common postgresql-common python-psycopg2
 
-# Do not create main cluster
-##RUN sed -ri 's/#(create_main_cluster) .*$/\1 = false/' /etc/postgresql-common/createcluster.conf
-
 # Install postgres and clean
 RUN apt-get install -y postgresql-9.3 \
         postgresql-client-9.3 postgresql-contrib-9.3 \
@@ -45,26 +42,15 @@ EXPOSE 5432
 # Change to user shippable
 USER shippable
 
-# Add git config data to shippable user
-#RUN git config --global user.name Shippable \
-#    && git config --global user.email hello@shippable.com
-
-#RUN echo ""
-#su postgres -c '/usr/lib/postgresql/9.3/bin/postgres -D /var/lib/postgresql/9.3/main -c config_file=/etc/postgresql/9.3/main/postgresql.conf' ", "&"
-
 RUN echo "/usr/lib/postgresql/9.3/bin/postgres -D /var/lib/postgresql/9.3/main -c config_file=/etc/postgresql/9.3/main/postgresql.conf" > /home/shippable/postgresql-start.sh \
     && chmod +x /home/shippable/postgresql-start.sh
 
 #RUN echo "/usr/lib/postgresql/9.3/bin/postgres -D /var/lib/postgresql/9.3/main -c config_file=/etc/postgresql/9.3/main/postgresql.conf"
 
 # Set the default command to run when starting the container
-#ENTRYPOINT ["/bin/sh", "-c", "sudo su postgres -c '/usr/lib/postgresql/9.3/bin/postgres -D /var/lib/postgresql/9.3/main -c config_file=/etc/postgresql/9.3/main/postgresql.conf' ", "&"]
+#ENTRYPOINT ["/usr/bin/python", "-c", 'import subprocess;subprocess.call(["/usr/bin/supervisord"])']
 
-#ENTRYPOINT ["sudo", "su", "postgres", "-c", "/home/shippable/postgresql-start.sh"]
+#CMD ["bash"]
+#CMD ["sudo", "/usr/bin/supervisord"]
 
-#CMD ["/bin/sh"]
-#CMD ["sudo", "su", "postgres", "-c", "/home/shippable/postgresql-start.sh"]
-#CMD [""]
-
-#ENTRYPOINT ["sudo", "/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
-ENTRYPOINT ["sudo", "supervisord", "-n"]
+ENTRYPOINT sudo /usr/bin/supervisord & (sleep 15s && bash)
