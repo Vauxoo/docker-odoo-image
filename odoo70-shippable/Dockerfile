@@ -34,9 +34,16 @@ USER postgres
 RUN /etc/init.d/postgresql start \
     && psql -c  "CREATE ROLE shippable LOGIN SUPERUSER INHERIT CREATEDB CREATEROLE;"
 
+# Expose the PostgreSQL port
+EXPOSE 5432
+
 # Change to user shippable
 USER shippable
 
 # Add git config data
 RUN git config --global user.name Shippable \
     && git config --global user.email hello@shippable.com
+
+
+# Set the default command to run when starting the container
+CMD ["sudo", "su", "postgres", "--command", "/usr/lib/postgresql/9.3/bin/postgres -D /var/lib/postgresql/9.3/main -c config_file=/etc/postgresql/9.3/main/postgresql.conf"]
