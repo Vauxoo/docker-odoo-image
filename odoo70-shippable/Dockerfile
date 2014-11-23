@@ -9,9 +9,10 @@ RUN echo 'LANG="en_US.UTF-8"' > /etc/default/locale
 RUN apt-key adv --keyserver pgp.mit.edu --recv-keys B97B0AFCAA1A47F044F244A07FCC7D46ACCC4CF8
 RUN echo 'deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main' > /etc/apt/sources.list.d/pgdg.list
 
-RUN apt-get update && apt-get upgrade -y
-#    && apt-get install -y supervisor python-software-properties \
-#        software-properties-common postgresql-common python-psycopg2
+# Installing supervisor
+RUN apt-get update && apt-get upgrade -y \
+    && apt-get install -y supervisor python-software-properties \
+        software-properties-common postgresql-common python-psycopg2
 
 # Do not create main cluster
 ##RUN sed -ri 's/#(create_main_cluster) .*$/\1 = false/' /etc/postgresql-common/createcluster.conf
@@ -21,7 +22,7 @@ RUN apt-get install -y postgresql-9.3 \
         postgresql-client-9.3 postgresql-contrib-9.3 \
     && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-#RUN mkdir -p /var/log/supervisor
+COPY files/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 # Create shippable user
 RUN sudo useradd -d /home/shippable -m -s /bin/bash -p shippablepwd shippable \
@@ -59,6 +60,11 @@ RUN echo "/usr/lib/postgresql/9.3/bin/postgres -D /var/lib/postgresql/9.3/main -
 # Set the default command to run when starting the container
 #ENTRYPOINT ["/bin/sh", "-c", "sudo su postgres -c '/usr/lib/postgresql/9.3/bin/postgres -D /var/lib/postgresql/9.3/main -c config_file=/etc/postgresql/9.3/main/postgresql.conf' ", "&"]
 
-ENTRYPOINT ["sudo", "su", "postgres", "-c", "/home/shippable/postgresql-start.sh"]
+#ENTRYPOINT ["sudo", "su", "postgres", "-c", "/home/shippable/postgresql-start.sh"]
 
-CMD ["/bin/sh"]
+#CMD ["/bin/sh"]
+#CMD ["sudo", "su", "postgres", "-c", "/home/shippable/postgresql-start.sh"]
+#CMD [""]
+
+#ENTRYPOINT ["sudo", "/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
+ENTRYPOINT ["sudo", "supervisord", "-n"]
