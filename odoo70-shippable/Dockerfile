@@ -27,6 +27,10 @@ RUN mkdir -p /var/log/supervisor
 RUN sudo useradd -d /home/shippable -m -s /bin/bash -p shippablepwd shippable \
     && sudo echo 'shippable ALL=(ALL) NOPASSWD:ALL' | sudo tee -a /etc/sudoers; sudo mkdir -p /home/shippable/.ssh/; sudo chown -R $USER:$USER /home/shippable/; sudo chown -R shippable:shippable /home/shippable/
 
+# Add git config data to root user
+RUN git config --global user.name Shippable \
+    && git config --global user.email hello@shippable.com
+
 # Change to user postgres
 USER postgres
 
@@ -40,9 +44,9 @@ EXPOSE 5432
 # Change to user shippable
 USER shippable
 
-# Add git config data
-RUN git config --global user.name Shippable \
-    && git config --global user.email hello@shippable.com
+# Add git config data to shippable user
+#RUN git config --global user.name Shippable \
+#    && git config --global user.email hello@shippable.com
 
 
 # Set the default command to run when starting the container
