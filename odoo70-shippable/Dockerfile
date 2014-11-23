@@ -45,4 +45,4 @@ USER shippable
 RUN echo -e "\nsudo /usr/bin/supervisord &" >> ~/.bashrc
 
 # Set the default command to run when starting the container
-ENTRYPOINT sleep 15s && bash
+# ENTRYPOINT bash
