@@ -42,7 +42,7 @@ EXPOSE 5432
 # Change to user shippable
 USER shippable
 
-RUN echo -e "\nsudo /usr/bin/supervisord &" >> ~/.bashrc
+# RUN echo -e "\nsudo /usr/bin/supervisord &" >> ~/.bashrc
 
 # Set the default command to run when starting the container
 # ENTRYPOINT bash
