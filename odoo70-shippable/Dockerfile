@@ -14,7 +14,7 @@ RUN apt-get update && apt-get upgrade -y \
     && apt-get install -y supervisor python-software-properties \
         software-properties-common postgresql-common python-psycopg2
 COPY files/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-RUN echo -e "\nsudo /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf & sleep 15s" >> /etc/bash.bashrc
+#RUN echo -e "\nsudo /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf & sleep 15s" >> /etc/bash.bashrc
 
 # Install postgres and clean
 RUN apt-get install -y postgresql-9.3 \
@@ -45,4 +45,4 @@ USER shippable
 #RUN echo -e "\nsudo /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf &" >> ~/.bashrc
 
 # Set the default command to run when starting the container
-# ENTRYPOINT bash
+ENTRYPOINT "sudo /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf"
