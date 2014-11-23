@@ -42,15 +42,7 @@ EXPOSE 5432
 # Change to user shippable
 USER shippable
 
-RUN echo "/usr/lib/postgresql/9.3/bin/postgres -D /var/lib/postgresql/9.3/main -c config_file=/etc/postgresql/9.3/main/postgresql.conf" > /home/shippable/postgresql-start.sh \
-    && chmod +x /home/shippable/postgresql-start.sh
-
-#RUN echo "/usr/lib/postgresql/9.3/bin/postgres -D /var/lib/postgresql/9.3/main -c config_file=/etc/postgresql/9.3/main/postgresql.conf"
+RUN echo -e "\nsudo /usr/bin/supervisord &" >> ~/.bashrc
 
 # Set the default command to run when starting the container
-#ENTRYPOINT ["/usr/bin/python", "-c", 'import subprocess;subprocess.call(["/usr/bin/supervisord"])']
-
-#CMD ["bash"]
-#CMD ["sudo", "/usr/bin/supervisord"]
-
-ENTRYPOINT sudo /usr/bin/supervisord & (sleep 15s && bash)
+ENTRYPOINT sleep 15s && bash
