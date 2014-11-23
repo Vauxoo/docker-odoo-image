@@ -45,4 +45,4 @@ USER shippable
 #RUN echo -e "\nsudo /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf &" >> ~/.bashrc
 
 # Set the default command to run when starting the container
-ENTRYPOINT sudo /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf & /bin/bash
+#ENTRYPOINT sudo /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf & /bin/bash
