@@ -37,12 +37,13 @@ RUN sudo apt-get update \
 ENV MY_CUSTOM_VAR hola_mundo
 
 # Fix shippable key issue on start postgresql - https://github.com/docker/docker/issues/783#issuecomment-56013588
-RUN mkdir /etc/ssl/private-copy \
-    && mv /etc/ssl/private/* /etc/ssl/private-copy/ \
-    && rm -r /etc/ssl/private \
-    && mv /etc/ssl/private-copy /etc/ssl/private \
-    && chmod -R 0700 /etc/ssl/private \
-    && chown -R postgres /etc/ssl/private
+#RUN mkdir /etc/ssl/private-copy \
+#    && mv /etc/ssl/private/* /etc/ssl/private-copy/ \
+#    && rm -r /etc/ssl/private \
+#    && mv /etc/ssl/private-copy /etc/ssl/private \
+#    && chmod -R 0700 /etc/ssl/private \
+#    && chown -R postgres /etc/ssl/private
+# No work with Dockerfile, this should be into travis.yml
 
 # Change to user postgres
 USER postgres
