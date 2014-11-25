@@ -18,7 +18,7 @@ RUN git config --global user.name Shippable \
 RUN sudo apt-get update \
     && sudo apt-get install -y postgresql-9.3 postgresql-contrib-9.3
 
-ENV CMD_STRS_STARTS SHIPPABLE_CMD
+ENV CMD_STRS_STARTS SHIPPABLE_CMD_
 
 ENV SHIPPABLE_CMD_POSTGRESQL_START sudo su -c "sudo -u postgres /usr/lib/postgresql/9.3/bin/postgres -c "config_file=/etc/postgresql/9.3/main/postgresql.conf" > /tmp/pg.log 2>&1 & sleep 5s"
 
@@ -48,5 +48,7 @@ RUN /etc/init.d/postgresql start \
 EXPOSE 5432
 
 # Change to user shippable
-USER shippable
-WORKDIR /home/shippable
+#USER shippable #  Not use this user because enviroment variable is set with last user used.
+#WORKDIR /home/shippable
+USER root
+WORKDIR /root
