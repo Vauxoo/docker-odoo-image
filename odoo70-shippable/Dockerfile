@@ -18,19 +18,32 @@ RUN git config --global user.name Shippable \
 RUN sudo apt-get update \
     && sudo apt-get install -y postgresql-9.3 postgresql-contrib-9.3
 
+# Install some depends
+##MX PACKAGES
+RUN sudo apt-get install xsltproc xmlstarlet m2crypto openssl
+RUN sudo pip install SOAPpy pyopenssl suds \
+                     pillow qrcode xmltodict
+##ADDONS-VAUXOO PACKAGES#FIXME: This modules make error use or not use it
+RUN sudo pip install recaptcha-client egenix-mx-base
+##ODOO PACKAGES#FIXME: This package should be within the main script. # pdftotext is proppler-utils
+RUN sudo pip install PyWebDAV mygengo
+RUN sudo apt-get install poppler-utils antiword
+# Install webkit
+RUN sudo apt-get install wkhtmltopdf
+
+
 ENV CMD_STRS_STARTS SHIPPABLE_CMD_
 
 ENV SHIPPABLE_CMD_POSTGRESQL_START sudo su -c "sudo -u postgres /usr/lib/postgresql/9.3/bin/postgres -c "config_file=/etc/postgresql/9.3/main/postgresql.conf" > /tmp/pg.log 2>&1 & sleep 5s"
 
 # Fix shippable key issue on start postgresql - https://github.com/docker/docker/issues/783#issuecomment-56013588
-ENV SHIPPABLE_CMD_FIX_POSTGRES_SSL sudo mkdir -p /etc/ssl/private-copy \
+RUN sudo mkdir -p /etc/ssl/private-copy \
         && sudo mkdir -p /etc/ssl/private \
-        && sudo mv /etc/ssl/private/ /etc/ssl/private-copy/ \
+        && sudo mv /etc/ssl/private/* /etc/ssl/private-copy/ \
         && sudo rm -rf /etc/ssl/private \
         && sudo mv /etc/ssl/private-copy /etc/ssl/private \
         && sudo chmod -R 0700 /etc/ssl/private \
         && sudo chown -R postgres /etc/ssl/private
-
 ENV SHIPPABLE_CMD_FIX_ROOT_ODOO find ${HOME} -name server.py -exec sed -i "s/== 'root'/== 'force_root'/g" {} \;
 
 # Change to user postgres
