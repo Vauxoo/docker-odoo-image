@@ -20,9 +20,9 @@ RUN sudo apt-get update \
 
 # Install some depends
 ##MX PACKAGES
-RUN sudo apt-get install xsltproc xmlstarlet m2crypto openssl
+RUN sudo apt-get install xsltproc xmlstarlet openssl
 RUN sudo pip install SOAPpy pyopenssl suds \
-                     pillow qrcode xmltodict
+                     pillow qrcode xmltodict M2Crypto
 ##ADDONS-VAUXOO PACKAGES#FIXME: This modules make error use or not use it
 RUN sudo pip install recaptcha-client egenix-mx-base
 ##ODOO PACKAGES#FIXME: This package should be within the main script. # pdftotext is proppler-utils
@@ -38,8 +38,12 @@ RUN git clone https://github.com/Vauxoo/addons-vauxoo.git ${HOME}/addons-vauxoo-
     && ln -sf ${HOME}/odoo ${HOME}/odoo-7.0 \
     && ln -sf ${HOME}/odoo ${HOME}/Vauxoo-8.0 \
     && ln -sf ${HOME}/odoo ${HOME}/Vauxoo-7.0 \
+    && ln -sf ${HOME}/odoo ${HOME}/vauxoo-8.0 \
+    && ln -sf ${HOME}/odoo ${HOME}/vauxoo-7.0 \
     && ln -sf ${HOME}/odoo ${HOME}/OCA-8.0 \
-    && ln -sf ${HOME}/odoo ${HOME}/OCA-7.0
+    && ln -sf ${HOME}/odoo ${HOME}/OCA-7.0 \
+    && ln -sf ${HOME}/odoo ${HOME}/oca-8.0 \
+    && ln -sf ${HOME}/odoo ${HOME}/oca-7.0
 
 
 ENV CMD_STRS_STARTS SHIPPABLE_CMD_
