@@ -33,7 +33,7 @@ RUN sudo apt-get install wkhtmltopdf
 
 
 RUN git clone https://github.com/Vauxoo/addons-vauxoo.git ${HOME}/addons-vauxoo-upd \
-    git clone https://github.com/odoo/odoo.git ${HOME}/odoo \
+    && git clone https://github.com/odoo/odoo.git ${HOME}/odoo \
     && ln -sf ${HOME}/odoo ${HOME}/odoo-8.0 \
     && ln -sf ${HOME}/odoo ${HOME}/odoo-7.0 \
     && ln -sf ${HOME}/odoo ${HOME}/Vauxoo-8.0 \
