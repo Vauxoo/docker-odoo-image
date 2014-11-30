@@ -32,6 +32,16 @@ RUN sudo apt-get install poppler-utils antiword
 RUN sudo apt-get install wkhtmltopdf
 
 
+RUN git clone https://github.com/Vauxoo/addons-vauxoo.git ${HOME}/addons-vauxoo-upd \
+    git clone https://github.com/odoo/odoo.git ${HOME}/odoo \
+    && ln -sf ${HOME}/odoo ${HOME}/odoo-8.0 \
+    && ln -sf ${HOME}/odoo ${HOME}/odoo-7.0 \
+    && ln -sf ${HOME}/odoo ${HOME}/Vauxoo-8.0 \
+    && ln -sf ${HOME}/odoo ${HOME}/Vauxoo-7.0 \
+    && ln -sf ${HOME}/odoo ${HOME}/OCA-8.0 \
+    && ln -sf ${HOME}/odoo ${HOME}/OCA-7.0
+
+
 ENV CMD_STRS_STARTS SHIPPABLE_CMD_
 
 ENV SHIPPABLE_CMD_POSTGRESQL_START sudo su -c "sudo -u postgres /usr/lib/postgresql/9.3/bin/postgres -c "config_file=/etc/postgresql/9.3/main/postgresql.conf" > /tmp/pg.log 2>&1 & sleep 5s"
