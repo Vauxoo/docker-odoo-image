@@ -32,9 +32,10 @@ RUN sudo apt-get install poppler-utils antiword
 RUN sudo apt-get install wkhtmltopdf
 
 RUN git clone https://github.com/odoo/odoo.git ${HOME}/odoo \
-    && git remote add odoo https://github.com/odoo/odoo.git \
-    && git remote add vauxoo https://github.com/vauxoo/odoo.git \
-    && git remote add oca https://github.com/oca/ocb.git \
+    && git --git-dir=${HOME}/odoo/.git remote add odoo https://github.com/odoo/odoo.git \
+    && git --git-dir=${HOME}/odoo/.git remote add vauxoo https://github.com/vauxoo/odoo.git \
+    && git --git-dir=${HOME}/odoo/.git remote add oca https://github.com/oca/ocb.git \
+    && git fetch --all \
     && ln -sf ${HOME}/odoo ${HOME}/odoo-8.0 \
     && ln -sf ${HOME}/odoo ${HOME}/odoo-7.0 \
     && ln -sf ${HOME}/odoo ${HOME}/Vauxoo-8.0 \
