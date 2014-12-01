@@ -31,9 +31,10 @@ RUN sudo apt-get install poppler-utils antiword
 # Install webkit
 RUN sudo apt-get install wkhtmltopdf
 
-
-RUN git clone https://github.com/Vauxoo/addons-vauxoo.git ${HOME}/addons-vauxoo-upd \
-    && git clone https://github.com/odoo/odoo.git ${HOME}/odoo \
+RUN git clone https://github.com/odoo/odoo.git ${HOME}/odoo \
+    && git remote add odoo https://github.com/odoo/odoo.git \
+    && git remote add vauxoo https://github.com/vauxoo/odoo.git \
+    && git remote add oca https://github.com/oca/ocb.git \
     && ln -sf ${HOME}/odoo ${HOME}/odoo-8.0 \
     && ln -sf ${HOME}/odoo ${HOME}/odoo-7.0 \
     && ln -sf ${HOME}/odoo ${HOME}/Vauxoo-8.0 \
@@ -44,7 +45,7 @@ RUN git clone https://github.com/Vauxoo/addons-vauxoo.git ${HOME}/addons-vauxoo-
     && ln -sf ${HOME}/odoo ${HOME}/OCA-7.0 \
     && ln -sf ${HOME}/odoo ${HOME}/oca-8.0 \
     && ln -sf ${HOME}/odoo ${HOME}/oca-7.0
-
+RUN git clone https://github.com/Vauxoo/addons-vauxoo.git ${HOME}/addons-vauxoo-upd
 
 ENV CMD_STRS_STARTS SHIPPABLE_CMD_
 
