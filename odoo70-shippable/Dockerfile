@@ -85,3 +85,19 @@ EXPOSE 5432
 #WORKDIR /home/shippable
 USER root
 WORKDIR /root
+
+ENV REPO_REQUIREMENTS ${HOME}/.repo_requirements
+
+#  Download repositories requirements
+RUN mkdir -p ${REPO_REQUIREMENTS}/odoo/ \
+ && git init ${REPO_REQUIREMENTS}/odoo/ \
+ && git --git-dir=${REPO_REQUIREMENTS}/odoo/.git remote add odoo https://github.com/odoo/odoo.git \
+ && git --git-dir=${REPO_REQUIREMENTS}/odoo/.git remote add oca https://github.com/oca/ocb.git \
+ && git --git-dir=${REPO_REQUIREMENTS}/odoo/.git remote add vauxoo https://github.com/vauxoo/odoo.git \
+ && git --git-dir=${REPO_REQUIREMENTS}/odoo/.git fetch --all \
+
+ && mkdir -p ${REPO_REQUIREMENTS}/addons-vauxoo/ \
+ && git init ${REPO_REQUIREMENTS}/addons-vauxoo/ \
+ && git --git-dir=${REPO_REQUIREMENTS}/addons-vauxoo/.git remote add vauxoo https://github.com/vauxoo/addons-vauxoo.git \
+ && git --git-dir=${REPO_REQUIREMENTS}/addons-vauxoo/.git fetch --all
+
