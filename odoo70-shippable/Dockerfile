@@ -86,7 +86,7 @@ EXPOSE 5432
 USER root
 WORKDIR /root
 
-ENV REPO_REQUIREMENTS ${HOME}/.repo_requirements
+ENV REPO_REQUIREMENTS /root/.repo_requirements
 
 #  Download repositories requirements
 RUN mkdir -p ${REPO_REQUIREMENTS}/odoo/ \
