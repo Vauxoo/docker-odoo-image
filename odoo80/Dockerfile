@@ -1,7 +1,5 @@
 FROM vauxoo/docker-ubuntu-base
 MAINTAINER Tulio Ruiz <tulio@vauxoo.com>
-RUN echo 'APT::Get::Assume-Yes "true";' >> /etc/apt/apt.conf \
-    && echo 'APT::Get::force-yes "true";' >> /etc/apt/apt.conf
 RUN apt-get update -q && apt-get upgrade -q \
     && apt-get install --allow-unauthenticated -q libssl-dev \
     libyaml-dev \
@@ -11,7 +9,8 @@ RUN apt-get update -q && apt-get upgrade -q \
     libqrencode-dev \
     libfreetype6-dev \
     zlib1g-dev \
-    python-lxml
+    python-lxml \
+    ttf-dejavu
 RUN ln -s /usr/include/freetype2 /usr/local/include/freetype \
     && ln -s /usr/lib/x86_64-linux-gnu/libjpeg.so /usr/lib/ \
     && ln -s /usr/lib/x86_64-linux-gnu/libfreetype.so /usr/lib/ \
@@ -19,6 +18,7 @@ RUN ln -s /usr/include/freetype2 /usr/local/include/freetype \
 RUN pip install pyopenssl
 RUN cd /tmp && git clone --depth=1 https://github.com/thewtex/sphinx-contrib.git \
     && cd sphinx-contrib/youtube && python setup.py install
+
 RUN pip install pyyaml && pip install xmltodict && cd /tmp \
     && wget -q https://raw.githubusercontent.com/ruiztulio/gist-vauxoo/master/travis_run.py \
     && python travis_run.py
