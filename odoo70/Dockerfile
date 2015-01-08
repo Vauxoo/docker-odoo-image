@@ -17,7 +17,7 @@ RUN ln -s /usr/include/freetype2 /usr/local/include/freetype \
 RUN pip install pyopenssl
 RUN cd /tmp && git clone --depth=1 https://github.com/thewtex/sphinx-contrib.git \
     && cd sphinx-contrib/youtube && python setup.py install
-RUN pip install pyyaml && pip install xmltodict && pip install googlemaps cd /tmp \
-    && wget -q https://raw.githubusercontent.com/ruiztulio/gist-vauxoo/master/travis_run.py \
+RUN pip install pyyaml && pip install xmltodict && pip install googlemaps \
+    && cd /tmp && wget -q https://raw.githubusercontent.com/ruiztulio/gist-vauxoo/master/travis_run.py \
     && python travis_run.py
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* && rm -rf /tmp/*
