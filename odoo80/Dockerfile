@@ -22,6 +22,8 @@ RUN ln -s /usr/include/freetype2 /usr/local/include/freetype \
     && ln -s /usr/lib/x86_64-linux-gnu/libjpeg.so /usr/lib/ \
     && ln -s /usr/lib/x86_64-linux-gnu/libfreetype.so /usr/lib/ \
     && ln -s /usr/lib/x86_64-linux-gnu/libz.so /usr/lib/
+RUN cd /tmp && wget -q -N http://geolite.maxmind.com/download/geoip/database/GeoLiteCountry/GeoIP.dat.gz \
+    && gunzip GeoIP.dat.gz &&  mv GeoIP.dat /usr/local/share/GeoIP/
 RUN pip install pyopenssl
 RUN cd /tmp && git clone --depth=1 https://github.com/thewtex/sphinx-contrib.git \
     && cd sphinx-contrib/youtube && python setup.py install
