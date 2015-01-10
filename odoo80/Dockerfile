@@ -14,7 +14,7 @@ RUN apt-get update -q && apt-get upgrade -q \
     pillow \
     qrcode \
     xmltodict \
-    M2Crypto
+    M2Crypto \
     python-lxml \
     ttf-dejavu \
     poppler-utils
