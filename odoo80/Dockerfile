@@ -29,6 +29,6 @@ RUN pip install pyyaml && pip install xmltodict && pip install suds && cd /tmp \
 RUN cd /tmp \
     && wget -q https://raw.githubusercontent.com/Vauxoo/odoo-network/8.0/addons/network/scripts/odoo-server/05-install-dependencies-python-v80.sh \
     && sh 05-install-dependencies-python-v80.sh
-RUN cd /tmp && wget -q -N http://geolite.maxmind.com/download/geoip/database/GeoLiteCountry/GeoIP.dat.gz \
-    && gunzip GeoIP.dat.gz && mkdir -p /usr/local/share/GeoIP/ &&  mv GeoIP.dat /usr/local/share/GeoIP/
+RUN wget -q http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz \
+    && gunzip GeoLiteCity.dat.gz && mkdir -p /usr/share/GeoIP && mv GeoLiteCity.dat /usr/share/GeoIP/GeoLiteCity.dat
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* && rm -rf /tmp/*
