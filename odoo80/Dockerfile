@@ -20,9 +20,10 @@ RUN ln -s /usr/include/freetype2 /usr/local/include/freetype \
     && ln -s /usr/lib/x86_64-linux-gnu/libfreetype.so /usr/lib/ \
     && ln -s /usr/lib/x86_64-linux-gnu/libz.so /usr/lib/
 RUN pip install pillow && pip install GeoIP
+RUN cd /tmp && wget -q https://raw.githubusercontent.com/odoo/odoo/8.0/requirements.txt \
+    && pip install -r requirements.txt
 RUN cd /tmp && git clone --depth=1 https://github.com/thewtex/sphinx-contrib.git \
     && cd sphinx-contrib/youtube && python setup.py install
-
 RUN pip install pyyaml && pip install xmltodict && pip install suds && cd /tmp \
     && wget -q https://raw.githubusercontent.com/ruiztulio/gist-vauxoo/master/travis_run.py \
     && python travis_run.py
