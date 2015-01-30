@@ -13,7 +13,8 @@ RUN apt-get update -q && apt-get upgrade -q \
     zlib1g-dev \
     python-lxml \
     postgresql-common \
-    postgresql-client-9.3    
+    postgresql-client-9.3 \
+    libpq-dev   
 RUN ln -s /usr/include/freetype2 /usr/local/include/freetype \
     && ln -s /usr/lib/x86_64-linux-gnu/libjpeg.so /usr/lib/ \
     && ln -s /usr/lib/x86_64-linux-gnu/libfreetype.so /usr/lib/ \

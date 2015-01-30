@@ -21,7 +21,8 @@ RUN apt-get update -q && apt-get upgrade -q \
     python-pandas \
     poppler-utils \
     postgresql-client-9.3 \
-    postgresql-common
+    postgresql-common \
+    libpq-dev
 RUN ln -s /usr/include/freetype2 /usr/local/include/freetype \
     && ln -s /usr/lib/x86_64-linux-gnu/libjpeg.so /usr/lib/ \
     && ln -s /usr/lib/x86_64-linux-gnu/libfreetype.so /usr/lib/ \
