@@ -10,9 +10,9 @@ RUN apt-get update -q && apt-get upgrade -q \
     libfreetype6-dev \
     zlib1g-dev \
     pyopenssl \
-    suds \
-    pillow \
-    qrcode \
+    python-suds \
+    python-imaging \
+    python-qrcode \
     xmltodict \
     M2Crypto \
     python-lxml \
