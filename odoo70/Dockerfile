@@ -16,8 +16,10 @@ RUN apt-get update -q && apt-get upgrade -q \
     postgresql-client-9.3 \
     libpq-dev \
     libldap2-dev \
-    libsasl2-dev  
-RUN ln -s /usr/include/freetype2 /usr/local/include/freetype \
+    libsasl2-dev \ 
+    libxml2-dev \
+    libxslt1-dev
+RURUN ln -s /usr/include/freetype2 /usr/local/include/freetype \
     && ln -s /usr/lib/x86_64-linux-gnu/libjpeg.so /usr/lib/ \
     && ln -s /usr/lib/x86_64-linux-gnu/libfreetype.so /usr/lib/ \
     && ln -s /usr/lib/x86_64-linux-gnu/libz.so /usr/lib/
