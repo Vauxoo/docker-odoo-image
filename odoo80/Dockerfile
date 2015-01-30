@@ -13,7 +13,6 @@ RUN apt-get update -q && apt-get upgrade -q \
     python-suds \
     python-imaging \
     python-qrcode \
-    xmltodict \
     M2Crypto \
     python-lxml \
     ttf-dejavu \
