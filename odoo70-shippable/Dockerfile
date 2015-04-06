@@ -31,6 +31,17 @@ RUN sudo apt-get install poppler-utils antiword
 # Install webkit
 RUN sudo apt-get install wkhtmltopdf
 
+# Fix https://urllib3.readthedocs.org/en/latest/security.html#insecureplatformwarning
+RUN sudo pip install --upgrade pyopenssl ndg-httpsclient pyasn1
+
+# New depends of 8.0 web
+#  Install new dependence: npm package
+RUN sudo apt-get -q -y install nodejs \
+   #  Odoo use npm command but really is nodejs app. There is a node app too, but this one don't work fine.
+    && sudo ln -sf /usr/bin/nodejs /usr/bin/npm \
+    && npm install -g less \
+    && npm install -g less-plugin-clean-css
+
 #RUN mkdir ${HOME}/odoo \
 #    && git init ${HOME}/odoo \
 #    && git --git-dir=${HOME}/odoo/.git remote add odoo https://github.com/odoo/odoo.git \
