@@ -36,8 +36,10 @@ RUN sudo pip install --upgrade pyopenssl ndg-httpsclient pyasn1
 
 # New depends of 8.0 web
 #  Install new dependence: npm package
-RUN sudo apt-get -q -y install nodejs \
-   #  Odoo use npm command but really is nodejs app. There is a node app too, but this one don't work fine.
+RUN curl -sL https://deb.nodesource.com/setup | sudo bash - \ 
+    && sudo apt-get -q -y install nodejs \
+    #  Odoo use npm command but really is nodejs app.
+    #  There is a node app too, but this one don't work fine.
     && sudo ln -sf /usr/bin/nodejs /usr/bin/npm \
     && npm install -g less \
     && npm install -g less-plugin-clean-css
