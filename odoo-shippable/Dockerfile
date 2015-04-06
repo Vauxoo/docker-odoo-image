@@ -42,27 +42,6 @@ RUN sudo apt-get -q -y install nodejs \
     && npm install -g less \
     && npm install -g less-plugin-clean-css
 
-#RUN mkdir ${HOME}/odoo \
-#    && git init ${HOME}/odoo \
-#    && git --git-dir=${HOME}/odoo/.git remote add odoo https://github.com/odoo/odoo.git \
-#    && git --git-dir=${HOME}/odoo/.git remote add vauxoo https://github.com/vauxoo/odoo.git \
-#    && git --git-dir=${HOME}/odoo/.git remote add Vauxoo https://github.com/vauxoo/odoo.git \
-#    && git --git-dir=${HOME}/odoo/.git remote add oca https://github.com/oca/ocb.git \
-#    && git --git-dir=${HOME}/odoo/.git remote add OCA https://github.com/oca/ocb.git \
-#    && git --git-dir=${HOME}/odoo/.git remote add -t 8.0 odoo-8.0 git@github.com:odoo/odoo.git
-#    && git --git-dir=${HOME}/odoo/.git fetch --all \
-#    && ln -sf ${HOME}/odoo ${HOME}/odoo-8.0 \
-#    && ln -sf ${HOME}/odoo ${HOME}/odoo-7.0 \
-#    && ln -sf ${HOME}/odoo ${HOME}/Vauxoo-8.0 \
-#    && ln -sf ${HOME}/odoo ${HOME}/Vauxoo-7.0 \
-#    && ln -sf ${HOME}/odoo ${HOME}/vauxoo-8.0 \
-#    && ln -sf ${HOME}/odoo ${HOME}/vauxoo-7.0 \
-#    && ln -sf ${HOME}/odoo ${HOME}/OCA-8.0 \
-#    && ln -sf ${HOME}/odoo ${HOME}/OCA-7.0 \
-#    && ln -sf ${HOME}/odoo ${HOME}/oca-8.0 \
-#    && ln -sf ${HOME}/odoo ${HOME}/oca-7.0
-#RUN git clone https://github.com/Vauxoo/addons-vauxoo.git ${HOME}/addons-vauxoo-upd
-
 ENV CMD_STRS_STARTS SHIPPABLE_CMD_
 
 ENV SHIPPABLE_CMD_POSTGRESQL_START sudo su -c "sudo -u postgres /usr/lib/postgresql/9.3/bin/postgres -c "config_file=/etc/postgresql/9.3/main/postgresql.conf" > /tmp/pg.log 2>&1 & sleep 5s"
