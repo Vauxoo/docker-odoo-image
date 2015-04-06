@@ -1,7 +1,7 @@
 docker-base-image
 =================
 
-Base docker image for Odoo 7.0 instances
+Base docker image for Odoo 6.1, 7.0 and 8.0 instances
 
 This image has all de Odoo dependencies installed so you just have to configure
 the instance as you please
