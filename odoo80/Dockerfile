@@ -32,6 +32,11 @@ RUN apt-get update -q && apt-get upgrade -q \
     openssl \
     python-libxml2 \
     phantomjs
+
+# install nodejs to use npm commands
+RUN wget -qO- https://deb.nodesource.com/setup | sudo bash - \
+    && apt-get install nodejs
+
 RUN ln -s /usr/include/freetype2 /usr/local/include/freetype \
     && ln -s /usr/lib/x86_64-linux-gnu/libjpeg.so /usr/lib/ \
     && ln -s /usr/lib/x86_64-linux-gnu/libfreetype.so /usr/lib/ \
