@@ -51,4 +51,8 @@ RUN wget -q http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.g
     && gunzip GeoLiteCity.dat.gz && mkdir -p /usr/share/GeoIP && mv GeoLiteCity.dat /usr/share/GeoIP/GeoLiteCity.dat
 RUN cd /tmp && wget -O wkhtmltox-0.12.1_linux-trusty-amd64.deb http://iweb.dl.sourceforge.net/project/wkhtmltopdf/archive/0.12.1/wkhtmltox-0.12.1_linux-trusty-amd64.deb \
     && dpkg -i wkhtmltox-0.12.1_linux-trusty-amd64.deb
+RUN wget -qO- https://deb.nodesource.com/setup | sudo bash - \
+    && apt-get install nodejs \
+    && npm install -g less \
+    && npm install -g less-plugin-clean-css
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* && rm -rf /tmp/*
