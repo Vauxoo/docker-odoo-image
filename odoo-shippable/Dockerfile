@@ -31,6 +31,10 @@ RUN sudo apt-get install poppler-utils antiword
 # Install webkit
 RUN sudo apt-get install wkhtmltopdf
 
+# Install nodejs
+RUN wget -qO- https://deb.nodesource.com/setup | sudo bash - \
+    && sudo apt-get install nodejs
+
 # Fix https://urllib3.readthedocs.org/en/latest/security.html#insecureplatformwarning
 RUN sudo pip install --upgrade pyopenssl ndg-httpsclient pyasn1
 
