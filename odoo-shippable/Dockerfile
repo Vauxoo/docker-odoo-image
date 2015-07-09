@@ -31,10 +31,6 @@ RUN sudo apt-get install poppler-utils antiword
 # Install webkit
 RUN sudo apt-get install wkhtmltopdf
 
-# Install nodejs
-RUN wget -qO- https://deb.nodesource.com/setup | sudo bash - \
-    && sudo apt-get install nodejs
-
 # Fix https://urllib3.readthedocs.org/en/latest/security.html#insecureplatformwarning
 RUN sudo pip install --upgrade pyopenssl ndg-httpsclient pyasn1
 
@@ -87,6 +83,10 @@ RUN mkdir -p ${REPO_REQUIREMENTS}/odoo/ \
  && git --git-dir=${REPO_REQUIREMENTS}/addons-vauxoo/.git remote add vauxoo https://github.com/vauxoo/addons-vauxoo.git \
  && git --git-dir=${REPO_REQUIREMENTS}/addons-vauxoo/.git fetch --all
 
-
 #  Setting global env for next shippable build
 ENV WITHOUT_DEPENDENCIES 1
+
+# Install ngrok to run fowardporting in developer environment
+RUN  curl https://dl.ngrok.com/ngrok_2.0.19_linux_amd64.zip -o /tmp/ngrok.zip \
+    && unzip -o /tmp/ngrok.zip -d /usr/local/bin/ \
+    && rm -rf /tmp/ngrok.zip
