@@ -86,6 +86,9 @@ RUN mkdir -p ${REPO_REQUIREMENTS}/odoo/ \
 #  Setting global env for next shippable build
 ENV WITHOUT_DEPENDENCIES 1
 
+# Install curl standard package to download files
+RUN apt-get install curl
+
 # Install ngrok to run fowardporting in developer environment
 RUN  curl https://dl.ngrok.com/ngrok_2.0.19_linux_amd64.zip -o /tmp/ngrok.zip \
     && unzip -o /tmp/ngrok.zip -d /usr/local/bin/ \
