@@ -93,3 +93,19 @@ RUN apt-get install curl
 RUN  curl https://dl.ngrok.com/ngrok_2.0.19_linux_amd64.zip -o /tmp/ngrok.zip \
     && unzip -o /tmp/ngrok.zip -d /usr/local/bin/ \
     && rm -rf /tmp/ngrok.zip
+
+# Add compatibility with "travis_wait" command.
+RUN touch /usr/bin/travis_wait \
+  && echo "#!/bin/bash\n\$@" > /usr/bin/travis_wait \
+  && chmod +x /usr/bin/travis_wait
+
+# Add expose basic ports
+  # Postgres database
+EXPOSE 5432
+  # odoo ports
+EXPOSE 8069
+EXPOSE 8070
+EXPOSE 8071
+EXPOSE 8072
+  # ssh port
+EXPOSE 22
