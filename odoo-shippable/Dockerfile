@@ -99,13 +99,13 @@ RUN touch /usr/bin/travis_wait \
   && echo "#!/bin/bash\n\$@" > /usr/bin/travis_wait \
   && chmod +x /usr/bin/travis_wait
 
-# Add expose basic ports
+# Install "unbuffer" command used in MQT
+RUN apt-get install -y expect-dev
+
+# Expose basic ports
   # Postgres database
 EXPOSE 5432
   # odoo ports
-EXPOSE 8069
-EXPOSE 8070
-EXPOSE 8071
-EXPOSE 8072
+EXPOSE 8069 8070 8071 8072
   # ssh port
 EXPOSE 22
