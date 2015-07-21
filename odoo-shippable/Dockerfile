@@ -102,6 +102,9 @@ RUN touch /usr/bin/travis_wait \
 # Install "unbuffer" command used in MQT
 RUN apt-get install -y expect-dev
 
+# Install spf13 for vim
+RUN curl http://j.mp/spf13-vim3 -L -o - | sh
+
 # Expose basic ports
   # Postgres database
 EXPOSE 5432
