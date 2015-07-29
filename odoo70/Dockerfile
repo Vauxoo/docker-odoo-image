@@ -19,7 +19,9 @@ RUN apt-get update -q && apt-get upgrade -q \
     libsasl2-dev \ 
     libxml2-dev \
     libxslt1-dev \
-    python-libxml2
+    python-libxml2 \
+    bash-completion
+
 RUN ln -s /usr/include/freetype2 /usr/local/include/freetype \
     && ln -s /usr/lib/x86_64-linux-gnu/libjpeg.so /usr/lib/ \
     && ln -s /usr/lib/x86_64-linux-gnu/libfreetype.so /usr/lib/ \
