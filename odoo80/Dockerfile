@@ -31,7 +31,8 @@ RUN apt-get update -q && apt-get upgrade -q \
     xmlstarlet \
     openssl \
     python-libxml2 \
-    phantomjs
+    phantomjs \
+    bash-completion
 RUN ln -s /usr/include/freetype2 /usr/local/include/freetype \
     && ln -s /usr/lib/x86_64-linux-gnu/libjpeg.so /usr/lib/ \
     && ln -s /usr/lib/x86_64-linux-gnu/libfreetype.so /usr/lib/ \
