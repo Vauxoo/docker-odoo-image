@@ -105,6 +105,9 @@ RUN apt-get install -y expect-dev
 # Install spf13 for vim
 RUN curl http://j.mp/spf13-vim3 -L -o - | sh
 
+# Install extra-developer-packages
+RUN apt-get install -y bpython
+
 # Expose basic ports
   # Postgres database
 EXPOSE 5432
