@@ -108,10 +108,6 @@ RUN curl http://j.mp/spf13-vim3 -L -o - | sh
 # Install extra-developer-packages
 RUN apt-get install -y bpython
 
-# Install docker
-RUN curl -sSL https://get.docker.com/ | sh \
-  && pip install --upgrade --pre travis2docker
-
 # Expose basic ports
   # Postgres database
 EXPOSE 5432
