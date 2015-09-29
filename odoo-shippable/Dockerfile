@@ -31,6 +31,9 @@ RUN sudo apt-get install poppler-utils antiword
 # Install webkit
 RUN sudo apt-get install wkhtmltopdf
 
+# Forecast depends
+RUN pip install --upgrade pandas numexpr
+
 # Fix https://urllib3.readthedocs.org/en/latest/security.html#insecureplatformwarning
 RUN sudo pip install --upgrade pyopenssl ndg-httpsclient pyasn1
 
