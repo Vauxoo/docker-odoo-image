@@ -37,7 +37,7 @@ RUN ln -s /usr/include/freetype2 /usr/local/include/freetype \
     && ln -s /usr/lib/x86_64-linux-gnu/libjpeg.so /usr/lib/ \
     && ln -s /usr/lib/x86_64-linux-gnu/libfreetype.so /usr/lib/ \
     && ln -s /usr/lib/x86_64-linux-gnu/libz.so /usr/lib/
-RUN pip install pillow GeoIP SOAPpy pyopenssl suds xmltodict recaptcha-client egenix-mx-base 
+RUN pip install pillow GeoIP SOAPpy pyopenssl suds xmltodict recaptcha-client egenix-mx-base git+https://github.com/Vauxoo/panama-dv.git
 RUN cd /tmp && wget -q https://raw.githubusercontent.com/odoo/odoo/8.0/requirements.txt \
     && pip install -r requirements.txt
 RUN cd /tmp && git clone --depth=1 https://github.com/thewtex/sphinx-contrib.git \
