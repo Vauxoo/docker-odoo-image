@@ -28,8 +28,6 @@ RUN sudo pip install recaptcha-client egenix-mx-base
 ##ODOO PACKAGES#FIXME: This package should be within the main script. # pdftotext is proppler-utils
 RUN sudo pip install PyWebDAV mygengo
 RUN sudo apt-get install poppler-utils antiword
-# Install webkit
-RUN sudo apt-get install wkhtmltopdf
 
 # Forecast depends
 RUN pip install --upgrade pandas numexpr
