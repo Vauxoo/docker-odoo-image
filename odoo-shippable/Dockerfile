@@ -2,6 +2,8 @@ FROM vauxoo/odoo-80-image
 
 MAINTAINER Tulio Ruiz <tulio@vauxoo.com>
 
+ENV INSTANCE_ALIVE 1
+
 # Configure locale
 RUN locale-gen en_US.UTF-8 && update-locale
 RUN echo 'LANG="en_US.UTF-8"' > /etc/default/locale
