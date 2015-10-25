@@ -111,6 +111,8 @@ RUN curl http://j.mp/spf13-vim3 -L -o - | sh
 # Install extra-developer-packages
 RUN apt-get install -y bpython
 
+ENV OCA_RUNBOT 1
+
 # Expose basic ports
   # Postgres database
 EXPOSE 5432
