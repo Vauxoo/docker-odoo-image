@@ -87,7 +87,7 @@ RUN mkdir -p ${REPO_REQUIREMENTS}/odoo/ \
  && git --git-dir=${REPO_REQUIREMENTS}/addons-vauxoo/.git fetch --all
 
 RUN mkdir -p ${REPO_REQUIREMENTS}/linit_hook/ \
- && git clone https://github.com/OCA/maintainer-quality-tools.git \
+ && git clone https://github.com/OCA/maintainer-quality-tools.git ${REPO_REQUIREMENTS}/linit_hook/ \
  && ln -sf ${REPO_REQUIREMENTS}/linit_hook/git/* /usr/share/git-core/templates/hooks/
 
 RUN pip install pylint_odoo
