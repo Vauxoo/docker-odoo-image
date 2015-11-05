@@ -86,6 +86,7 @@ RUN mkdir -p ${REPO_REQUIREMENTS}/odoo/ \
  && git --git-dir=${REPO_REQUIREMENTS}/addons-vauxoo/.git remote add vauxoo https://github.com/vauxoo/addons-vauxoo.git \
  && git --git-dir=${REPO_REQUIREMENTS}/addons-vauxoo/.git fetch --all
 
+# Install git hook with pylint-odoo
 RUN mkdir -p ${REPO_REQUIREMENTS}/linit_hook/ \
  && git clone https://github.com/OCA/maintainer-quality-tools.git ${REPO_REQUIREMENTS}/linit_hook/ \
  && ln -sf ${REPO_REQUIREMENTS}/linit_hook/git/* /usr/share/git-core/templates/hooks/
@@ -120,6 +121,14 @@ RUN apt-get install -y bpython
 # Install ssh in developer images and allow root access
 RUN apt-get install openssh-server
 RUN echo "    PermitRootLogin yes" >> /etc/ssh/ssh_config
+
+# Install git prompt (Show current branch in prompt)
+RUN curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh -o /usr/local/bin/git-prompt.sh && \
+    echo 'source /usr/local/bin/git-prompt.sh\nexport PS1="\033[1;35m[ \u@\e[0;35m\h ]\e[0;37m-\[[ \w ]\\n\$(__git_ps1) $: "' >> ${HOME}/.profile
+
+# Install git commands auto-completion
+RUN curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash -o /usr/local/bin/git-completion.bash \
+    && echo 'source /usr/local/bin/git-completion.bash' >> ${HOME}/.profile
 
 ENV OCA_RUNBOT 1
 
