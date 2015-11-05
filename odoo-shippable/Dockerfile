@@ -117,6 +117,10 @@ RUN curl http://j.mp/spf13-vim3 -L -o - | sh
 # Install extra-developer-packages
 RUN apt-get install -y bpython
 
+# Install ssh in developer images and allow root access
+RUN apt-get install openssh-server
+RUN echo "    PermitRootLogin yes" >> /etc/ssh/ssh_config
+
 ENV OCA_RUNBOT 1
 
 # Expose basic ports
