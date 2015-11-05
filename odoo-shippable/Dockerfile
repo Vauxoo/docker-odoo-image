@@ -86,9 +86,11 @@ RUN mkdir -p ${REPO_REQUIREMENTS}/odoo/ \
  && git --git-dir=${REPO_REQUIREMENTS}/addons-vauxoo/.git remote add vauxoo https://github.com/vauxoo/addons-vauxoo.git \
  && git --git-dir=${REPO_REQUIREMENTS}/addons-vauxoo/.git fetch --all
 
- && mkdir -p ${REPO_REQUIREMENTS}/linit_hook/ \
+RUN mkdir -p ${REPO_REQUIREMENTS}/linit_hook/ \
  && git clone https://github.com/OCA/maintainer-quality-tools.git \
  && ln -sf ${REPO_REQUIREMENTS}/linit_hook/git/* /usr/share/git-core/templates/hooks/
+
+RUN pip install pylint_odoo
 
 #  Setting global env for next shippable build
 ENV WITHOUT_DEPENDENCIES 1
