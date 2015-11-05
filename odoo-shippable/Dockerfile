@@ -86,6 +86,12 @@ RUN mkdir -p ${REPO_REQUIREMENTS}/odoo/ \
  && git --git-dir=${REPO_REQUIREMENTS}/addons-vauxoo/.git remote add vauxoo https://github.com/vauxoo/addons-vauxoo.git \
  && git --git-dir=${REPO_REQUIREMENTS}/addons-vauxoo/.git fetch --all
 
+RUN mkdir -p ${REPO_REQUIREMENTS}/linit_hook/ \
+ && git clone https://github.com/OCA/maintainer-quality-tools.git ${REPO_REQUIREMENTS}/linit_hook/ \
+ && ln -sf ${REPO_REQUIREMENTS}/linit_hook/git/* /usr/share/git-core/templates/hooks/
+
+RUN pip install pylint_odoo
+
 #  Setting global env for next shippable build
 ENV WITHOUT_DEPENDENCIES 1
 
@@ -110,6 +116,10 @@ RUN curl http://j.mp/spf13-vim3 -L -o - | sh
 
 # Install extra-developer-packages
 RUN apt-get install -y bpython
+
+# Install ssh in developer images and allow root access
+RUN apt-get install openssh-server
+RUN echo "    PermitRootLogin yes" >> /etc/ssh/ssh_config
 
 ENV OCA_RUNBOT 1
 
