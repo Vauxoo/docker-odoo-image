@@ -120,7 +120,7 @@ RUN apt-get install -y bpython
 
 # Install ssh in developer images and allow root access
 RUN apt-get install openssh-server
-RUN echo "    PermitRootLogin yes" >> /etc/ssh/ssh_config
+RUN echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
 
 # Install git prompt (Show current branch in prompt)
 RUN curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh -o /usr/local/bin/git-prompt.sh && \
