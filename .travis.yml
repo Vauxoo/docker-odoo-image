@@ -1,0 +1,23 @@
+language: python
+
+sudo: false
+cache:
+  apt: true
+  directories:
+    - $HOME/.cache/pip
+
+node_js:
+  - "4.1"
+
+env:
+  global:
+    WORKINGDIR="${HOME}/build/vauxoo/docker-odoo-image"
+
+virtualenv:
+  system_site_packages: true
+
+install:
+  - npm install -g validate-dockerfile
+
+script:
+  - for dfile in `find ${WORKINGDIR} -name 'Dockerfile' -not -path "./.git/*"`; do echo "[ CHECKING $dfile ]"; docklint $dfile; if [ $? -ne 0 ]; then return 1; fi; echo ""; done
