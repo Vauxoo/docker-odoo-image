@@ -1,0 +1,12 @@
+language: bash
+
+sudo: false
+
+node_js:
+  - "4.1"
+
+install:
+  - npm install -g validate-dockerfile
+
+script:
+  - for dfile in `find $TRAVIS_BUILD_DIR -name 'Dockerfile' -not -path "./.git/*"`; do echo " ===== [ CHECKING $dfile ] ===== "; docklint $dfile; if [ $? -ne 0 ]; then return 1; fi; echo ""; done
