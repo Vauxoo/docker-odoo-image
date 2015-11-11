@@ -23,7 +23,7 @@ RUN cd /tmp \
     && wget http://wkhtmltopdf.googlecode.com/files/wkhtmltopdf-0.11.0_rc1-static-amd64.tar.bz2 \
     && tar -xjf wkhtmltopdf-0.11.0_rc1-static-amd64.tar.bz2 \
     && mv wkhtmltopdf-amd64 /usr/bin/wkhtmltopdf
-ADD files/requirements61.txt /tmp/requirements61.txt
+COPY files/requirements61.txt /tmp/requirements61.txt
 RUN pip install -r /tmp/requirements61.txt
 RUN pip install egenix-mx-base
 
