@@ -38,8 +38,6 @@ RUN ln -s /usr/include/freetype2 /usr/local/include/freetype \
     && ln -s /usr/lib/x86_64-linux-gnu/libfreetype.so /usr/lib/ \
     && ln -s /usr/lib/x86_64-linux-gnu/libz.so /usr/lib/
 RUN pip install pillow GeoIP SOAPpy pyopenssl suds xmltodict recaptcha-client egenix-mx-base git+https://github.com/Vauxoo/panama-dv.git
-RUN cd /tmp && wget -q https://raw.githubusercontent.com/odoo/odoo/8.0/requirements.txt \
-    && pip install -r requirements.txt
 RUN cd /tmp && git clone --depth=1 https://github.com/thewtex/sphinx-contrib.git \
     && cd sphinx-contrib/youtube && python setup.py install
 RUN pip install pyyaml && cd /tmp \
@@ -48,6 +46,8 @@ RUN pip install pyyaml && cd /tmp \
 RUN cd /tmp \
     && wget -q https://raw.githubusercontent.com/Vauxoo/odoo-network/8.0/addons/network/scripts/odoo-server/05-install-dependencies-python-v80.sh \
     && sh 05-install-dependencies-python-v80.sh
+RUN cd /tmp && wget -q https://raw.githubusercontent.com/vauxoo/odoo/8.0/requirements.txt \
+    && pip install -r requirements.txt
 RUN wget -q http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz \
     && gunzip GeoLiteCity.dat.gz && mkdir -p /usr/share/GeoIP && mv GeoLiteCity.dat /usr/share/GeoIP/GeoLiteCity.dat
 RUN cd /tmp && wget -O wkhtmltox-0.12.1_linux-trusty-amd64.deb http://download.gna.org/wkhtmltopdf/0.12/0.12.1/wkhtmltox-0.12.1_linux-trusty-amd64.deb \
