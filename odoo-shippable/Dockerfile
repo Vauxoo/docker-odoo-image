@@ -56,11 +56,11 @@ USER postgres
 
 # Create shippable role to postgres
 RUN /etc/init.d/postgresql start \
-    && psql -c  "CREATE ROLE shippable LOGIN SUPERUSER INHERIT CREATEDB CREATEROLE;"
+    && psql -c  "CREATE ROLE shippable LOGIN PASSWORD 'aeK5NWNr2' SUPERUSER INHERIT CREATEDB CREATEROLE;"
 
 # Create root role to postgres
 RUN /etc/init.d/postgresql start \
-    && psql -c  "CREATE ROLE root LOGIN SUPERUSER INHERIT CREATEDB CREATEROLE;"
+    && psql -c  "CREATE ROLE root LOGIN PASSWORD 'aeK5NWNr' SUPERUSER INHERIT CREATEDB CREATEROLE;"
 
 # Expose the PostgreSQL port
 EXPOSE 5432
