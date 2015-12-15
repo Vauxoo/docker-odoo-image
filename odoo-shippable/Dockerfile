@@ -112,6 +112,14 @@ RUN echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
 RUN curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh -o /usr/local/bin/git-prompt.sh && \
     echo 'source /usr/local/bin/git-prompt.sh\nexport PS1="\033[1;35m[ \u@\e[0;35m\h ]\e[0;37m-\[[ \w ]\\n\$(__git_ps1) $: "' >> ${HOME}/.profile
 
+# Install zsh shell and Oh-my-Zsh!
+RUN apt-get install zsh \
+    && sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"; exit 0
+
+# Copy Theme a set to use
+RUN sed -i 's/robbyrussell/odoo-shippable/g' /root/.zshrc \
+    && curl https://gist.githubusercontent.com/schminitz/9931af23bbb59e772eec/raw/cb524246fc93df242696bc3f502cababb03472ec/schminitz.zsh-theme -o /root/.oh-my-zsh/themes/odoo-shippable.zsh-theme
+
 # Install git commands auto-completion
 RUN curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash -o /usr/local/bin/git-completion.bash \
     && echo 'source /usr/local/bin/git-completion.bash' >> ${HOME}/.profile
