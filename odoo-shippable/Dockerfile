@@ -105,7 +105,9 @@ RUN curl http://j.mp/spf13-vim3 -L -o - | sh \
 RUN apt-get install -y bpython \
   && wget https://github.com/github/hub/releases/download/v2.2.2/hub-linux-amd64-2.2.2.tgz -O /tmp/hub.tgz \
   && tar -xvzf /tmp/hub.tgz -C /tmp/ \
-  && cp /tmp/hub*/bin/hub /usr/bin/hub
+  && cp /tmp/hub*/bin/hub /usr/bin/hub \
+  && wget https://raw.githubusercontent.com/github/hub/master/etc/hub.bash_completion.sh -O /usr/local/bin/hub.bash_completion.sh \
+  && echo "if [ -f /usr/local/bin/hub.bash_completion.sh   ]; then . /usr/local/bin/hub.bash_completion.sh; fi" >> ${HOME}/.profile
 
 # Install ssh in developer images and allow root access
 RUN apt-get install openssh-server
