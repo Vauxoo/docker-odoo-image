@@ -22,6 +22,11 @@ RUN git config --global user.name Shippable \
 RUN sudo apt-get update \
     && sudo apt-get install -y postgresql-9.3 postgresql-contrib-9.3
 
+# Create shippable role to postgres and shippable
+RUN /entrypoint_image \
+    && su - postgres -c "psql -c  \"CREATE ROLE shippable LOGIN PASSWORD 'aeK5NWNr2' SUPERUSER INHERIT CREATEDB CREATEROLE;\"" \
+    && su - postgres -c "psql -c  \"CREATE ROLE root LOGIN PASSWORD 'aeK5NWNr' SUPERUSER INHERIT CREATEDB CREATEROLE;\""
+
 # Install some depends
 ##MX PACKAGES
 RUN sudo apt-get install xsltproc xmlstarlet openssl
@@ -38,17 +43,6 @@ RUN pip install --upgrade pandas numexpr
 
 # Fix https://urllib3.readthedocs.org/en/latest/security.html#insecureplatformwarning
 RUN sudo pip install --upgrade pyopenssl ndg-httpsclient pyasn1
-
-# Start postgresql with patch of ssl
-RUN /entrypoint_image
-
-# Change to user postgres
-# USER postgres
-
-# Create shippable role to postgres and shippable
-RUN /entrypoint_image \
-    && su - postgres -c "psql -c  \"CREATE ROLE shippable LOGIN PASSWORD 'aeK5NWNr2' SUPERUSER INHERIT CREATEDB CREATEROLE;\"" \
-    && su - postgres -c "psql -c  \"CREATE ROLE root LOGIN PASSWORD 'aeK5NWNr' SUPERUSER INHERIT CREATEDB CREATEROLE;\""
 
 
 # Expose the PostgreSQL port
