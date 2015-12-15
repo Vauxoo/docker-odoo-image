@@ -43,14 +43,13 @@ RUN sudo pip install --upgrade pyopenssl ndg-httpsclient pyasn1
 RUN /entrypoint_image
 
 # Change to user postgres
-USER postgres
+# USER postgres
 
-# Create shippable role to postgres
-RUN psql -c  "CREATE ROLE shippable LOGIN PASSWORD 'aeK5NWNr2' SUPERUSER INHERIT CREATEDB CREATEROLE;"
+# Create shippable role to postgres and shippable
+RUN /entrypoint_image \
+    && su - postgres -c "psql -c  \"CREATE ROLE shippable LOGIN PASSWORD 'aeK5NWNr2' SUPERUSER INHERIT CREATEDB CREATEROLE;\"" \
+    && su - postgres -c "psql -c  \"CREATE ROLE root LOGIN PASSWORD 'aeK5NWNr' SUPERUSER INHERIT CREATEDB CREATEROLE;\""
 
-# Create root role to postgres
-RUN /etc/init.d/postgresql start \
-    && psql -c  "CREATE ROLE root LOGIN PASSWORD 'aeK5NWNr' SUPERUSER INHERIT CREATEDB CREATEROLE;"
 
 # Expose the PostgreSQL port
 EXPOSE 5432
