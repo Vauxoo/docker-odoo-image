@@ -99,7 +99,9 @@ RUN apt-get install -y expect-dev
 RUN curl http://j.mp/spf13-vim3 -L -o - | sh \
   && echo colorscheme ir_black >> ${HOME}/.vimrc \
   && echo 'let &colorcolumn=join(range(80,999),",")' >> ${HOME}/.vimrc \
-  && sed -i 's/ set mouse\=a/\"set mouse\=a/g' ${HOME}/.vimrc
+  && sed -i 's/ set mouse\=a/\"set mouse\=a/g' ${HOME}/.vimrc \
+  && apt-get install -y vim-athena \
+  && echo "set clipboard=unnamedplus" >> ${HOME}/.vimrc
 
 # Install extra-developer-packages
 RUN apt-get install -y bpython
