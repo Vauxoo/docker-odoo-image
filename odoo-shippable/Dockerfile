@@ -39,12 +39,14 @@ RUN pip install --upgrade pandas numexpr
 # Fix https://urllib3.readthedocs.org/en/latest/security.html#insecureplatformwarning
 RUN sudo pip install --upgrade pyopenssl ndg-httpsclient pyasn1
 
+# Start postgresql with patch of ssl
+RUN /entrypoint_image
+
 # Change to user postgres
 USER postgres
 
 # Create shippable role to postgres
-RUN /entrypoint_image \
-    && psql -c  "CREATE ROLE shippable LOGIN PASSWORD 'aeK5NWNr2' SUPERUSER INHERIT CREATEDB CREATEROLE;"
+RUN psql -c  "CREATE ROLE shippable LOGIN PASSWORD 'aeK5NWNr2' SUPERUSER INHERIT CREATEDB CREATEROLE;"
 
 # Create root role to postgres
 RUN /etc/init.d/postgresql start \
