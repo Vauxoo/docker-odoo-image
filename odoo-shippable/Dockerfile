@@ -1,7 +1,9 @@
 FROM vauxoo/odoo-80-image
 
 MAINTAINER Tulio Ruiz <tulio@vauxoo.com>
+COPY files/entrypoint_image /entrypoint_image
 
+ENV RUN_COMMAND_MQT_10_ENTRYPOINT_IMAGE /entrypoint_image
 ENV INSTANCE_ALIVE 1
 
 # Configure locale
@@ -37,25 +39,11 @@ RUN pip install --upgrade pandas numexpr
 # Fix https://urllib3.readthedocs.org/en/latest/security.html#insecureplatformwarning
 RUN sudo pip install --upgrade pyopenssl ndg-httpsclient pyasn1
 
-ENV CMD_STRS_STARTS SHIPPABLE_CMD_
-
-ENV SHIPPABLE_CMD_POSTGRESQL_START sudo su -c "sudo -u postgres /usr/lib/postgresql/9.3/bin/postgres -c "config_file=/etc/postgresql/9.3/main/postgresql.conf" > /tmp/pg.log 2>&1 & sleep 5s"
-
-# Fix shippable key issue on start postgresql - https://github.com/docker/docker/issues/783#issuecomment-56013588
-RUN sudo mkdir -p /etc/ssl/private-copy \
-        && sudo mkdir -p /etc/ssl/private \
-        && sudo mv /etc/ssl/private/* /etc/ssl/private-copy/ \
-        && sudo rm -rf /etc/ssl/private \
-        && sudo mv /etc/ssl/private-copy /etc/ssl/private \
-        && sudo chmod -R 0700 /etc/ssl/private \
-        && sudo chown -R postgres /etc/ssl/private
-ENV SHIPPABLE_CMD_FIX_ROOT_ODOO find ${HOME} -name server.py -exec sed -i "s/== 'root'/== 'force_root'/g" {} \;
-
 # Change to user postgres
 USER postgres
 
 # Create shippable role to postgres
-RUN /etc/init.d/postgresql start \
+RUN /entrypoint_image \
     && psql -c  "CREATE ROLE shippable LOGIN PASSWORD 'aeK5NWNr2' SUPERUSER INHERIT CREATEDB CREATEROLE;"
 
 # Create root role to postgres
