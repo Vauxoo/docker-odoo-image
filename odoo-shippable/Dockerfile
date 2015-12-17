@@ -102,7 +102,7 @@ RUN curl http://j.mp/spf13-vim3 -L -o - | sh \
   && sed -i 's/ set mouse\=a/\"set mouse\=a/g' ${HOME}/.vimrc
 
 # Install extra-developer-packages
-RUN apt-get install -y bpython \
+RUN apt-get install -y mosh bpython \
   && wget https://github.com/github/hub/releases/download/v2.2.2/hub-linux-amd64-2.2.2.tgz -O /tmp/hub.tgz \
   && tar -xvzf /tmp/hub.tgz -C /tmp/ \
   && cp /tmp/hub*/bin/hub /usr/bin/hub \
