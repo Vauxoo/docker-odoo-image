@@ -2,6 +2,7 @@ FROM vauxoo/odoo-80-image
 
 MAINTAINER Tulio Ruiz <tulio@vauxoo.com>
 COPY files/entrypoint_image /entrypoint_image
+COPY files/bash_colors /root/.bash_colors
 
 ENV RUN_COMMAND_MQT_10_ENTRYPOINT_IMAGE /entrypoint_image
 ENV INSTANCE_ALIVE 1
@@ -115,7 +116,7 @@ RUN echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
 
 # Install git prompt (Show current branch in prompt)
 RUN curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh -o /usr/local/bin/git-prompt.sh && \
-    echo 'source /usr/local/bin/git-prompt.sh\nexport PS1="\033[1;35m[ \u@\e[0;35m\h ]\e[0;37m-\[[ \w ]\\n\$(__git_ps1) $: "' >> ${HOME}/.profile
+    echo 'source /usr/local/bin/git-prompt.sh\nsource ${HOME}/.bash_colors' >> ${HOME}/.profile
 
 # Install zsh shell and Oh-my-Zsh!
 RUN apt-get install zsh \
