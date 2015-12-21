@@ -130,6 +130,8 @@ RUN sed -i 's/robbyrussell/odoo-shippable/g' /root/.zshrc \
 RUN curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash -o /usr/local/bin/git-completion.bash \
     && echo 'source /usr/local/bin/git-completion.bash' >> ${HOME}/.profile
 
+RUN git clone https://github.com/vauxoo-dev/gist-vauxoo.git -b master ${HOME}/tools/gist-vauxoo
+
 ENV OCA_RUNBOT 1
 
 # Expose basic ports
