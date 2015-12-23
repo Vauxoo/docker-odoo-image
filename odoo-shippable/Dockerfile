@@ -132,6 +132,18 @@ RUN curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git
 
 RUN git clone https://github.com/vauxoo-dev/gist-vauxoo.git -b master ${HOME}/tools/gist-vauxoo
 
+# Upgrade tmux
+RUN apt-get install python-software-properties software-properties-common \
+    && apt-add-repository -y ppa:pi-rho/dev \
+    && apt-get update \
+    && apt-get install --upgrade tmux
+
+# Install tmuxinator
+RUN apt-get install ruby \
+    && gem install tmuxinator
+ENV EDITOR vim
+ENV SHELL /bin/bash
+
 ENV OCA_RUNBOT 1
 
 # Expose basic ports
