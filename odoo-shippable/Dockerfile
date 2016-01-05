@@ -110,6 +110,9 @@ RUN apt-get install -y mosh bpython \
   && wget https://raw.githubusercontent.com/github/hub/master/etc/hub.bash_completion.sh -O /usr/local/bin/hub.bash_completion.sh \
   && echo "if [ -f /usr/local/bin/hub.bash_completion.sh   ]; then . /usr/local/bin/hub.bash_completion.sh; fi" >> ${HOME}/.profile
 
+# Install ghostscript and graphviz to allow print pdf
+RUN apt-get install ghostscript graphviz
+
 # Install ssh in developer images and allow root access
 RUN apt-get install openssh-server
 RUN echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
