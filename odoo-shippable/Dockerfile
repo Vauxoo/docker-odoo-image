@@ -19,16 +19,40 @@ RUN sudo useradd -d /home/shippable -m -s /bin/bash -p shippablepwd shippable \
 RUN git config --global user.name Shippable \
     && git config --global user.email hello@shippable.com
 
-# Install basic postgres
-RUN sudo apt-get update \
-    && sudo apt-get install -y postgresql-9.3 postgresql-contrib-9.3
-RUN sed -i 's/#max_pred_locks_per_transaction = 64/max_pred_locks_per_transaction = 100/g' /etc/postgresql/*/main/postgresql.conf
-RUN sed -i 's/max_connections = 100/max_connections = 200/g' /etc/postgresql/*/main/postgresql.conf
+# Install postgres common files
+RUN sudo apt-get install postgresql-common
 
-# Create shippable role to postgres and shippable
+# Do not create postgres main clusters so we can name them mainVV where VV is postgres persion 93 or 95 do far
+RUN sed -ri 's/#(create_main_cluster) .*$/\1 = false/' /etc/postgresql-common/createcluster.conf
+
+# Install basic postgres 9.3 and 9.5
+RUN sudo apt-get update \
+    && sudo apt-get install -y postgresql-9.3 postgresql-contrib-9.3 \
+    postgresql-9.5 postgresql-contrib-9.5
+
+# Create the clusters with the proper naming
+RUN pg_createcluster 9.3 main93 -e=utf8
+
+RUN pg_createcluster 9.5 main95 -e=utf8
+
+RUN sed -i 's/#max_pred_locks_per_transaction = 64/max_pred_locks_per_transaction = 100/g' /etc/postgresql/*/main*/postgresql.conf
+RUN sed -i 's/max_connections = 100/max_connections = 200/g' /etc/postgresql/*/main*/postgresql.conf
+RUN sed -i 's/^port = .*/port = 5432/g' /etc/postgresql/*/main*/postgresql.conf
+
+ENV PSQL_VERSION 9.5
+# Create shippable role to postgres and shippable for postgres 9.5
 RUN /entrypoint_image \
     && su - postgres -c "psql -c  \"CREATE ROLE shippable LOGIN PASSWORD 'aeK5NWNr2' SUPERUSER INHERIT CREATEDB CREATEROLE;\"" \
     && su - postgres -c "psql -c  \"CREATE ROLE root LOGIN PASSWORD 'aeK5NWNr' SUPERUSER INHERIT CREATEDB CREATEROLE;\""
+RUN /etc/init.d/postgresql stop
+
+ENV PSQL_VERSION 9.3
+# Create shippable role to postgres and shippable for postgres 9.3, as the version is not changed from this point on
+# default will be 9.3 unless overriden
+RUN /entrypoint_image \
+    && su - postgres -c "psql -c  \"CREATE ROLE shippable LOGIN PASSWORD 'aeK5NWNr2' SUPERUSER INHERIT CREATEDB CREATEROLE;\"" \
+    && su - postgres -c "psql -c  \"CREATE ROLE root LOGIN PASSWORD 'aeK5NWNr' SUPERUSER INHERIT CREATEDB CREATEROLE;\""
+
 
 # Install some depends
 ##MX PACKAGES
