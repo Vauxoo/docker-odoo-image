@@ -106,8 +106,9 @@ RUN pip install pylint_odoo
 #  Setting global env for next shippable build
 ENV WITHOUT_DEPENDENCIES 1
 
-# Install curl standard package to download files
-RUN apt-get install curl
+# Install standard packages
+RUN apt-get install -y p7zip-full \
+  && pip install watchdog isort coveralls
 
 # Install ngrok to run fowardporting in developer environment
 RUN  curl https://dl.ngrok.com/ngrok_2.0.19_linux_amd64.zip -o /tmp/ngrok.zip \
