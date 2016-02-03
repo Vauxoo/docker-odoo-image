@@ -24,14 +24,8 @@ def docker_entrypoint():
         subprocess.call(' '.join(cmd), shell=True)
 
     # Patch to force start odoo as root
-    sub_cmd1 = [
-        'find', '-L', os.getenv("HOME"), '-name', 'server.py',
-    ]
-    subp1 = subprocess.Popen(sub_cmd1, stdout=subprocess.PIPE)
-    sub_cmd2 = [
-        'xargs', 'sed', '-i', "s/== 'root'/== 'force_root'/g"
-    ]
-    subprocess.Popen(sub_cmd2, stdin=subp1.stdout, stdout=subprocess.PIPE)
+    cmd = """sed -i "s/== 'root'/== 'force_root'/g" %s/*/openerp/cli/server.py""" % os.getenv("HOME")
+    subprocess.call(cmd, shell=True)
 
     # Start postgresql service
 
