@@ -35,6 +35,12 @@ RUN pg_createcluster 9.3 main93 -e=utf8
 
 RUN pg_createcluster 9.5 main95 -e=utf8
 
+# Install pgbadger
+RUN apt-get install perl-modules make
+RUN git clone https://github.com/dalibo/pgbadger.git
+RUN (cd pgbadger && perl Makefile.PL && make && make install)
+RUN mv pgbadger ${HOME}/tools/
+
 RUN sed -i 's/#max_pred_locks_per_transaction = 64/max_pred_locks_per_transaction = 100/g' /etc/postgresql/*/main*/postgresql.conf
 RUN sed -i 's/max_connections = 100/max_connections = 200/g' /etc/postgresql/*/main*/postgresql.conf
 RUN sed -i 's/^port = .*/port = 5432/g' /etc/postgresql/*/main*/postgresql.conf

@@ -1,0 +1,21 @@
+# UNCOMMENT THIS SECTION IN ODER TO USE PDBADGER AND COPY IT AT THE END OF
+# /etc/postgresql/*/main*/postgresql.conf file.
+# log_destination = 'stderr'
+#l ogging_collector = on
+# log_directory = 'pg_log'
+# log_filename = 'postgresql-%Y-%m-%d.log'
+# log_rotation_age = 0
+# client_min_messages = notice
+# log_min_messages = warning
+# log_min_error_statement = error
+# log_min_duration_statement = 0
+# log_checkpoints = on
+# log_connections = on
+# log_disconnections = on
+# log_duration = off
+# log_error_verbosity = verbose
+# log_hostname = on
+# log_line_prefix = '%t [%p]: [%l-1] db=%d,user=%u '
+# log_lock_waits = on
+# log_statement = 'none'
+# log_temp_files = 0
