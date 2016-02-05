@@ -10,6 +10,7 @@ ENV INSTANCE_ALIVE 1
 # Configure locale
 RUN locale-gen en_US.UTF-8 && update-locale
 RUN echo 'LANG="en_US.UTF-8"' > /etc/default/locale
+ENV LANG C.UTF-8
 
 # Create shippable user
 RUN sudo useradd -d /home/shippable -m -s /bin/bash -p shippablepwd shippable \
