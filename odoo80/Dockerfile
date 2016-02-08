@@ -1,6 +1,7 @@
 FROM vauxoo/docker-ubuntu-base
 MAINTAINER Tulio Ruiz <tulio@vauxoo.com>
-RUN apt-key adv --keyserver pgp.mit.edu --recv-keys B97B0AFCAA1A47F044F244A07FCC7D46ACCC4CF8
+RUN wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | \
+    sudo apt-key add -
 RUN echo 'deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main' > /etc/apt/sources.list.d/pgdg.list
 RUN apt-get update -q && apt-get upgrade -q \
     && apt-get install --allow-unauthenticated -q libssl-dev \
@@ -20,7 +21,7 @@ RUN apt-get update -q && apt-get upgrade -q \
     antiword \
     python-pandas \
     poppler-utils \
-    postgresql-client-9.3 \
+    postgresql-client-9.5 \
     postgresql-common \
     libpq-dev \
     libldap2-dev \
