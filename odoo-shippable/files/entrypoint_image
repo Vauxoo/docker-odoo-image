@@ -27,8 +27,12 @@ def docker_entrypoint():
     cmd = """sed -i "s/== 'root'/== 'force_root'/g" %s/*/openerp/cli/server.py""" % os.getenv("HOME")
     subprocess.call(cmd, shell=True)
 
-    # Start postgresql service
+    # Start ssh service
+    if os.environ.get('START_SSH', False):
+        cmd = "/etc/init.d/ssh start"
+        subprocess.call(cmd, shell=True)
 
+    # Start postgresql service
     psql_version = os.environ.get('PSQL_VERSION', '9.3')
     psql_vstr = psql_version.replace('.', '')
     cmd = '/etc/init.d/postgresql start {version} main{psql_version}'.format(version=psql_version, psql_version=psql_vstr)
