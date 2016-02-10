@@ -1,7 +1,8 @@
 FROM vauxoo/docker-ubuntu-base
+
 MAINTAINER Tulio Ruiz <tulio@vauxoo.com>
 
-RUN apt-get update -q \
+RUN wget -qO- https://deb.nodesource.com/setup | sudo bash - \
     && apt-get upgrade -q \
     && apt-get install --allow-unauthenticated -q \
     antiword \
@@ -15,6 +16,7 @@ RUN apt-get update -q \
     libxslt1-dev  \
     libyaml-dev \
     M2Crypto \
+    nodejs \
     phantomjs \
     poppler-utils \
     python-imaging \
@@ -26,7 +28,9 @@ RUN apt-get update -q \
     ttf-dejavu \
     xmlstarlet \
     xsltproc \
-    zlib1g-dev
+    zlib1g-dev \
+    && npm install -g less \
+    && npm install -g less-plugin-clean-css
 RUN ln -s /usr/include/freetype2 /usr/local/include/freetype \
     && ln -s /usr/lib/x86_64-linux-gnu/libjpeg.so /usr/lib/ \
     && ln -s /usr/lib/x86_64-linux-gnu/libfreetype.so /usr/lib/ \
@@ -44,8 +48,4 @@ RUN pip install --upgrade pyyaml pillow GeoIP SOAPpy pyopenssl suds xmltodict re
     && gunzip GeoLiteCity.dat.gz && mkdir -p /usr/share/GeoIP && mv GeoLiteCity.dat /usr/share/GeoIP/GeoLiteCity.dat \
     && wget -O wkhtmltox-0.12.1_linux-trusty-amd64.deb http://download.gna.org/wkhtmltopdf/0.12/0.12.1/wkhtmltox-0.12.1_linux-trusty-amd64.deb \
     && dpkg -i wkhtmltox-0.12.1_linux-trusty-amd64.deb \
-    && wget -qO- https://deb.nodesource.com/setup | sudo bash - \
-    && apt-get install nodejs \
-    && npm install -g less \
-    && npm install -g less-plugin-clean-css
-RUN apt-get clean && rm -rf /var/lib/apt/lists/* && rm -rf /tmp/*
+    && apt-get clean && rm -rf /var/lib/apt/lists/* && rm -rf /tmp/*
