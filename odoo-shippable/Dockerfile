@@ -5,16 +5,13 @@ COPY files/entrypoint_image /entrypoint_image
 COPY files/bash_colors /root/.bash_colors
 
 ENV RUN_COMMAND_MQT_10_ENTRYPOINT_IMAGE="/entrypoint_image" \
-    INSTANCE_ALIVE="1" LANG="C.UTF-8" PSQL_VERSION="9.3" \
+    INSTANCE_ALIVE="1" PSQL_VERSION="9.3" \
     REPO_REQUIREMENTS="/.repo_requirements" \
     WITHOUT_DEPENDENCIES="1" OCA_RUNBOT="1"
 
-# Configure locale
 # Create shippable user
 # Add git config data to root user
-RUN locale-gen en_US.UTF-8 && update-locale \
-    && echo 'LANG="en_US.UTF-8"' > /etc/default/locale \
-    && useradd -d /home/shippable -m -s /bin/bash -p shippablepwd shippable \
+RUN useradd -d /home/shippable -m -s /bin/bash -p shippablepwd shippable \
     && echo 'shippable ALL=(ALL) NOPASSWD:ALL' | tee -a /etc/sudoers; mkdir -p /home/shippable/.ssh/; chown -R $USER:$USER /home/shippable/; chown -R shippable:shippable /home/shippable/ \
     && git config --global user.name Shippable \
     && git config --global user.email hello@shippable.com
@@ -50,7 +47,7 @@ RUN PSQL_VERSION="9.5" /entrypoint_image \
     && su - postgres -c "psql -c  \"CREATE ROLE root LOGIN PASSWORD 'aeK5NWNr' SUPERUSER INHERIT CREATEDB CREATEROLE;\""
 
 # Install depends
-RUN apt-get update && apt-get install xsltproc xmlstarlet openssl \
+RUN apt-get update && apt-get install -y xsltproc xmlstarlet openssl \
         poppler-utils antiword p7zip-full expect-dev mosh bpython \
         ghostscript graphviz openssh-server zsh \
         lua50 liblua50-dev liblualib50-dev \
