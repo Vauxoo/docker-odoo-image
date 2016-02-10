@@ -70,7 +70,7 @@ RUN apt-get update && apt-get install -y xsltproc xmlstarlet openssl \
 RUN wget https://github.com/github/hub/releases/download/v2.2.2/hub-linux-amd64-2.2.2.tgz -O /tmp/hub.tgz \
   && tar -xvzf /tmp/hub.tgz -C /tmp/ \
   && cp /tmp/hub*/bin/hub /usr/bin/hub \
-  && rm -rf /tmp/hub* && rm /tmp/hub.tgz \
+  && rm -rf /tmp/hub*/ && rm /tmp/hub.tgz \
   && wget https://raw.githubusercontent.com/github/hub/master/etc/hub.bash_completion.sh -O /usr/local/bin/hub.bash_completion.sh \
   && echo "if [ -f /usr/local/bin/hub.bash_completion.sh   ]; then . /usr/local/bin/hub.bash_completion.sh; fi" >> ${HOME}/.profile \
   && curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh -o /usr/local/bin/git-prompt.sh && \
