@@ -1,5 +1,4 @@
 FROM vauxoo/docker-ubuntu-base
-
 MAINTAINER Tulio Ruiz <tulio@vauxoo.com>
 
 RUN wget -qO- https://deb.nodesource.com/setup | sudo bash - \
