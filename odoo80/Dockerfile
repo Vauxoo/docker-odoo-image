@@ -24,19 +24,14 @@ RUN wget -qO- https://deb.nodesource.com/setup | sudo bash - \
     python-lxml \
     python-pandas \
     python-qrcode \
-    python-suds \
     ttf-dejavu \
     xmlstarlet \
     xsltproc \
     zlib1g-dev \
     && npm -g install npm@latest \
     && npm install -g less \
-    && npm install -g less-plugin-clean-css
-RUN ln -s /usr/include/freetype2 /usr/local/include/freetype \
-    && ln -s /usr/lib/x86_64-linux-gnu/libjpeg.so /usr/lib/ \
-    && ln -s /usr/lib/x86_64-linux-gnu/libfreetype.so /usr/lib/ \
-    && ln -s /usr/lib/x86_64-linux-gnu/libz.so /usr/lib/
-RUN pip install --upgrade pyyaml pillow GeoIP SOAPpy pyopenssl suds xmltodict recaptcha-client egenix-mx-base git+https://github.com/Vauxoo/panama-dv.git \
+    && npm install -g less-plugin-clean-css \
+    && pip install --upgrade pyyaml pillow GeoIP SOAPpy pyopenssl suds xmltodict recaptcha-client egenix-mx-base git+https://github.com/Vauxoo/panama-dv.git \
     && cd /tmp && git clone --depth=1 https://github.com/thewtex/sphinx-contrib.git \
     && cd sphinx-contrib/youtube && python setup.py install \
     && wget -q https://raw.githubusercontent.com/ruiztulio/gist-vauxoo/master/travis_run.py \
@@ -50,3 +45,8 @@ RUN pip install --upgrade pyyaml pillow GeoIP SOAPpy pyopenssl suds xmltodict re
     && wget -O wkhtmltox-0.12.1_linux-trusty-amd64.deb http://download.gna.org/wkhtmltopdf/0.12/0.12.1/wkhtmltox-0.12.1_linux-trusty-amd64.deb \
     && dpkg -i wkhtmltox-0.12.1_linux-trusty-amd64.deb \
     && apt-get clean && rm -rf /var/lib/apt/lists/* && rm -rf /tmp/*
+
+RUN ln -s /usr/include/freetype2 /usr/local/include/freetype \
+    && ln -s /usr/lib/x86_64-linux-gnu/libjpeg.so /usr/lib/ \
+    && ln -s /usr/lib/x86_64-linux-gnu/libfreetype.so /usr/lib/ \
+    && ln -s /usr/lib/x86_64-linux-gnu/libz.so /usr/lib/
