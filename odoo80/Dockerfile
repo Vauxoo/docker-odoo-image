@@ -4,32 +4,29 @@ MAINTAINER Tulio Ruiz <tulio@vauxoo.com>
 RUN apt-get update -q \
     && apt-get upgrade -q \
     && apt-get install --allow-unauthenticated -q \
-    libyaml-dev \
-    libjpeg-dev \
-    libgeoip-dev \
-    libqrencode-dev \
-    libfreetype6-dev \
-    zlib1g-dev \
-    python-suds \
-    python-imaging \
-    python-qrcode \
-    M2Crypto \
-    python-lxml \
-    ttf-dejavu \
     antiword \
-    python-pandas \
-    poppler-utils \
-    postgresql-client-9.5 \
-    postgresql-common \
-    libpq-dev \
+    bash-completion \
+    libfreetype6-dev \
+    libgeoip-dev \
+    libjpeg-dev \
     libldap2-dev \
+    libqrencode-dev \
     libxml2-dev \
     libxslt1-dev  \
-    xsltproc \
-    xmlstarlet \
-    python-libxml2 \
+    libyaml-dev \
+    M2Crypto \
     phantomjs \
-    bash-completion
+    poppler-utils \
+    python-imaging \
+    python-libxml2 \
+    python-lxml \
+    python-pandas \
+    python-qrcode \
+    python-suds \
+    ttf-dejavu \
+    xmlstarlet \
+    xsltproc \
+    zlib1g-dev
 RUN ln -s /usr/include/freetype2 /usr/local/include/freetype \
     && ln -s /usr/lib/x86_64-linux-gnu/libjpeg.so /usr/lib/ \
     && ln -s /usr/lib/x86_64-linux-gnu/libfreetype.so /usr/lib/ \
