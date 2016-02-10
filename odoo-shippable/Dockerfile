@@ -91,7 +91,7 @@ RUN wget https://github.com/github/hub/releases/download/v2.2.2/hub-linux-amd64-
   && echo "Plugin 'vim-airline/vim-airline-themes'" >> ~/.vimrc.bundles \
   && vim +PluginInstall +qall \
   && sed -i "s/let g:neocomplete#enable_at_startup = 1/let g:neocomplete#enable_at_startup = 0/g" ${HOME}/.vimrc \
-  touch /usr/bin/travis_wait \
+  && touch /usr/bin/travis_wait \
   && echo "#!/bin/bash\n\$@" > /usr/bin/travis_wait \
   && chmod +x /usr/bin/travis_wait
 
