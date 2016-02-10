@@ -29,6 +29,7 @@ RUN wget -qO- https://deb.nodesource.com/setup | sudo bash - \
     xmlstarlet \
     xsltproc \
     zlib1g-dev \
+    && npm -g install npm@latest \
     && npm install -g less \
     && npm install -g less-plugin-clean-css
 RUN ln -s /usr/include/freetype2 /usr/local/include/freetype \
