@@ -1,9 +1,7 @@
 FROM vauxoo/docker-ubuntu-base
 MAINTAINER Tulio Ruiz <tulio@vauxoo.com>
-RUN wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | \
-    sudo apt-key add -
-RUN echo 'deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main' > /etc/apt/sources.list.d/pgdg.list \
-    && apt-get update -q \
+
+RUN apt-get update -q \
     && apt-get upgrade -q \
     && apt-get install --allow-unauthenticated -q \
     libyaml-dev \
