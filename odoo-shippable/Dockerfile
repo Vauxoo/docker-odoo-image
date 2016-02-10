@@ -134,7 +134,7 @@ RUN apt-get install -y expect-dev
 #  and install lua (required by vim-neocomplete)
 RUN curl http://j.mp/spf13-vim3 -L -o - | sh \
   && echo colorscheme ir_black >> ${HOME}/.vimrc \
-  && echo 'let &colorcolumn=join(range(80,999),",")' >> ${HOME}/.vimrc \
+  && echo 'echo "set colorcolumn=80"' >> ${HOME}/.vimrc \
   && sed -i 's/ set mouse\=a/\"set mouse\=a/g' ${HOME}/.vimrc \
   && apt-get install lua50 liblua50-dev liblualib50-dev \
   && echo "Plugin 'vim-airline/vim-airline-themes'" >> ~/.vimrc.bundles \
