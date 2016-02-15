@@ -73,8 +73,8 @@ RUN wget https://github.com/github/hub/releases/download/v2.2.2/hub-linux-amd64-
   && rm -rf /tmp/hub*/ && rm /tmp/hub.tgz \
   && wget https://raw.githubusercontent.com/github/hub/master/etc/hub.bash_completion.sh -O /usr/local/bin/hub.bash_completion.sh \
   && echo "if [ -f /usr/local/bin/hub.bash_completion.sh   ]; then . /usr/local/bin/hub.bash_completion.sh; fi" >> ${HOME}/.profile \
-  && curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh -o /usr/local/bin/git-prompt.sh && \
-    echo 'source /usr/local/bin/git-prompt.sh\nsource ${HOME}/.bash_colors' >> ${HOME}/.profile \
+  && curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh -o /usr/local/bin/git-prompt.sh \
+  && echo 'source /usr/local/bin/git-prompt.sh\nsource ${HOME}/.bash_colors' >> ${HOME}/.profile \
   && curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash -o /usr/local/bin/git-completion.bash \
   && echo 'source /usr/local/bin/git-completion.bash' >> ${HOME}/.profile \
   && git clone https://github.com/vauxoo-dev/gist-vauxoo.git -b master ${HOME}/tools/gist-vauxoo \
@@ -88,11 +88,9 @@ RUN wget https://github.com/github/hub/releases/download/v2.2.2/hub-linux-amd64-
   && echo "colorscheme ir_black" >> ${HOME}/.vimrc \
   && echo "set colorcolumn=80" >> ${HOME}/.vimrc \
   && sed -i 's/ set mouse\=a/\"set mouse\=a/g' ${HOME}/.vimrc \
-  && echo "Plugin 'vim-airline/vim-airline-themes'" >> ~/.vimrc.bundles \
-  && vim +PluginInstall +qall \
   && sed -i "s/let g:neocomplete#enable_at_startup = 1/let g:neocomplete#enable_at_startup = 0/g" ${HOME}/.vimrc \
   && touch /usr/bin/travis_wait \
-  && echo "#!/bin/bash\n\$@" > /usr/bin/travis_wait \
+  && echo "#\!/bin/bash\n\$@" > /usr/bin/travis_wait \
   && chmod +x /usr/bin/travis_wait
 
 #  Download repositories requirements
