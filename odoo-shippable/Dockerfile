@@ -92,7 +92,7 @@ RUN wget https://github.com/github/hub/releases/download/v2.2.2/hub-linux-amd64-
   && vim +PluginInstall +qall \
   && sed -i "s/let g:neocomplete#enable_at_startup = 1/let g:neocomplete#enable_at_startup = 0/g" ${HOME}/.vimrc \
   && touch /usr/bin/travis_wait \
-  && echo "#!/bin/bash\n\$@" > /usr/bin/travis_wait \
+  && echo "#\!/bin/bash\n\$@" > /usr/bin/travis_wait \
   && chmod +x /usr/bin/travis_wait
 
 #  Download repositories requirements
