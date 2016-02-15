@@ -76,17 +76,27 @@ PathShort="\w"
 PathFull="\W"
 NewLine="\n"
 Jobs="\j"
-UserMachine="$BIPurple[\u@$Purple\h:]"
+UserMachine="$BIPurple[\u@$Purple\h]"
 
-export PS1=$UserMachine$Color_Off$PathShort'\$ $(git branch &>/dev/null;\
-if [ $? -eq 0 ]; then \
-  echo "$(echo `git status` | grep "nothing to commit" > /dev/null 2>&1; \
-  if [ "$?" -eq "0" ]; then \
-    # @4 - Clean repository - nothing to commit
-    echo "\n'$Green'"$(__git_ps1 "(%s)"'$Color_Off'); \
-  else \
-    # @5 - Changes to working tree
-    echo "\n'$IRed'"$(__git_ps1 "(%s)"'$Color_Off'); \
-  fi)\$ "; \
-fi)'
+# Color scape to use in methods: http://stackoverflow.com/questions/22706538/getting-a-dynamic-bash-prompt-ps1-right
+GREEN_WOE="\001\033[0;32m\002"
+RED_WOE="\001\033[0;91m\002"
+
+git_ps1_style ()
+{
+    local git_branch="$(__git_ps1 2>/dev/null)";
+    local git_ps1_style="";
+    if [ -n "$git_branch" ]; then
+        (git diff --quiet --ignore-submodules HEAD 2>/dev/null)
+        local git_changed=$?
+        if [ "$git_changed" == 0 ]; then
+            git_ps1_style=$GREEN_WOE$git_branch;
+        else
+            git_ps1_style=$RED_WOE$git_branch;
+        fi
+    fi
+    echo -e "$git_ps1_style"
+}
+
+export PS1=$UserMachine$Color_Off$PathShort\$\\n"\$(git_ps1_style)"$Color_Off\$" "
 
