@@ -54,7 +54,7 @@ RUN apt-get update && apt-get install -y xsltproc xmlstarlet openssl \
     && pip install --upgrade SOAPpy pyopenssl suds \
         pillow qrcode xmltodict M2Crypto \
         recaptcha-client egenix-mx-base \
-        PyWebDAV mygengo pandas numexpr \
+        PyWebDAV mygengo pandas==0.16.2 numexpr==2.4.4 \
         ndg-httpsclient pyasn1 \
         pylint_odoo watchdog isort coveralls \
     && echo "PermitRootLogin yes" >> /etc/ssh/sshd_config \
