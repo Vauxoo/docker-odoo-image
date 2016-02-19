@@ -51,6 +51,7 @@ RUN apt-get update && apt-get install -y xsltproc xmlstarlet openssl \
         poppler-utils antiword p7zip-full expect-dev mosh bpython \
         ghostscript graphviz openssh-server zsh \
         lua50 liblua50-dev liblualib50-dev \
+        exuberant-ctags \
     && pip install --upgrade SOAPpy pyopenssl suds \
         pillow qrcode xmltodict M2Crypto \
         recaptcha-client egenix-mx-base \
@@ -85,6 +86,16 @@ RUN wget https://github.com/github/hub/releases/download/v2.2.2/hub-linux-amd64-
   && unzip -o /tmp/ngrok.zip -d /usr/local/bin/ \
   && rm -rf /tmp/ngrok.zip \
   && curl http://j.mp/spf13-vim3 -L -o - | sh \
+  && git clone --recursive --single-branch --depth=1 https://github.com/Vauxoo/vim-openerp.git /tmp/vim-openerp \
+  && cp -r /tmp/vim-openerp/vim/* ${HOME}/.vim/bundle/vim-openerp/.\
+  && echo "" >> ${HOME}/.vimrc.bundles \
+  && echo "\" Odoo snippets { " >> ${HOME}/.vimrc.bundles \
+  && echo "    if count(g:spf13_bundle_groups, 'odoovim')" >> ${HOME}/.vimrc.bundles \
+  && echo "        Bundle 'vim-openerp' " >> ${HOME}/.vimrc.bundles \
+  && echo "    endif " >> ${HOME}/.vimrc.bundles \
+  && echo "\" } " >> ${HOME}/.vimrc.bundles \
+  && echo "let g:spf13_bundle_groups=['general', 'writing', 'odoovim', 'programming', 'php', 'ruby', 'python', 'javascript', 'html', 'misc',]" >> ${HOME}/.vimrc.before \
+  && rm -rf /tmp/vim-openerp \
   && echo "colorscheme ir_black" >> ${HOME}/.vimrc \
   && echo "set colorcolumn=80" >> ${HOME}/.vimrc \
   && sed -i 's/ set mouse\=a/\"set mouse\=a/g' ${HOME}/.vimrc \
