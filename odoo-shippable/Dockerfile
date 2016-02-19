@@ -87,7 +87,8 @@ RUN wget https://github.com/github/hub/releases/download/v2.2.2/hub-linux-amd64-
   && rm -rf /tmp/ngrok.zip \
   && curl http://j.mp/spf13-vim3 -L -o - | sh \
   && git clone --recursive --single-branch --depth=1 https://github.com/Vauxoo/vim-openerp.git /tmp/vim-openerp \
-  && cp -r /tmp/vim-openerp/vim/* ${HOME}/.vim/bundle/vim-openerp/.\
+  && mkdir -p ${HOME}/.vim/bundle/vim-openerp \
+  && cp -r /tmp/vim-openerp/vim/* ${HOME}/.vim/bundle/vim-openerp/. \
   && echo "" >> ${HOME}/.vimrc.bundles \
   && echo "\" Odoo snippets { " >> ${HOME}/.vimrc.bundles \
   && echo "    if count(g:spf13_bundle_groups, 'odoovim')" >> ${HOME}/.vimrc.bundles \
