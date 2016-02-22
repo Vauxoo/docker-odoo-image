@@ -82,6 +82,7 @@ RUN wget https://github.com/github/hub/releases/download/v2.2.2/hub-linux-amd64-
   && mkdir -p ${REPO_REQUIREMENTS}/linit_hook/ \
   && git clone https://github.com/OCA/maintainer-quality-tools.git ${REPO_REQUIREMENTS}/linit_hook/ \
   && ln -sf ${REPO_REQUIREMENTS}/linit_hook/git/* /usr/share/git-core/templates/hooks/ \
+  && curl http://ftp.vim.org/pub/vim/runtime/spell/es.utf-8.spl -o /usr/share/vim/vim74/spell/es.utf-8.spl \
   && curl https://dl.ngrok.com/ngrok_2.0.19_linux_amd64.zip -o /tmp/ngrok.zip \
   && unzip -o /tmp/ngrok.zip -d /usr/local/bin/ \
   && rm -rf /tmp/ngrok.zip \
@@ -99,6 +100,7 @@ RUN wget https://github.com/github/hub/releases/download/v2.2.2/hub-linux-amd64-
   && rm -rf /tmp/vim-openerp \
   && echo "colorscheme ir_black" >> ${HOME}/.vimrc \
   && echo "set colorcolumn=80" >> ${HOME}/.vimrc \
+  && echo "set spelllang=en,es" >> ${HOME}/.vimrc \
   && sed -i 's/ set mouse\=a/\"set mouse\=a/g' ${HOME}/.vimrc \
   && sed -i "s/let g:neocomplete#enable_at_startup = 1/let g:neocomplete#enable_at_startup = 0/g" ${HOME}/.vimrc \
   && touch /usr/bin/travis_wait \
