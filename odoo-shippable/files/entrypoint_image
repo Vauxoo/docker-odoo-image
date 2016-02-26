@@ -6,6 +6,20 @@ import os
 import subprocess
 import time
 
+def docker_cache():
+    print("Drop database openerp_test to reuse template db")
+    cmd = ['dropdb', 'openerp_test']
+    subprocess.call(cmd)
+
+    print("Update main repo")
+    # TODO: Update build repo
+
+    print("Running oca_dependencies.")
+    # TODO: Check if is required use cd build_path
+    cmd = [os.path.expanduser(
+        '~/maintainer-quality-tools/travis/clone_oca_dependencies')]
+    subprocess.call(cmd)
+    return True
 
 def docker_entrypoint():
     # Fix postgresql
@@ -68,6 +82,9 @@ def docker_entrypoint():
         # TODO: Add git user.name to service_name
         coveralls_lines.append('service_name: vauxoo_container')
     open(fname_coveralls, 'w').writelines(coveralls_lines)
+
+    if os.environ.get('CACHE'):
+        docker_cache()
     return True
 
 
