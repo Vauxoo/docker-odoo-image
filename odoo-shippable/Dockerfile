@@ -81,6 +81,8 @@ RUN wget https://github.com/github/hub/releases/download/v2.2.2/hub-linux-amd64-
   && git clone https://github.com/vauxoo-dev/gist-vauxoo.git -b master ${HOME}/tools/gist-vauxoo \
   && mkdir -p ${REPO_REQUIREMENTS}/linit_hook/ \
   && git clone https://github.com/OCA/maintainer-quality-tools.git ${REPO_REQUIREMENTS}/linit_hook/ \
+  && wget https://raw.githubusercontent.com/Vauxoo/pylint-conf/master/conf/pylint_vauxoo_light.cfg -O ${REPO_REQUIREMENTS}/linit_hook/travis/cfg/travis_run_pylint.cfg \
+  && wget https://raw.githubusercontent.com/Vauxoo/pylint-conf/master/conf/pylint_vauxoo_light_pr.cfg -O ${REPO_REQUIREMENTS}/linit_hook/travis/cfg/travis_run_pylint_pr.cfg \
   && ln -sf ${REPO_REQUIREMENTS}/linit_hook/git/* /usr/share/git-core/templates/hooks/ \
   && curl http://ftp.vim.org/pub/vim/runtime/spell/es.utf-8.spl -o /usr/share/vim/vim74/spell/es.utf-8.spl \
   && curl https://dl.ngrok.com/ngrok_2.0.19_linux_amd64.zip -o /tmp/ngrok.zip \
