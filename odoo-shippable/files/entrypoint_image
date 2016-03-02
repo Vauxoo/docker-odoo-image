@@ -59,11 +59,15 @@ def docker_entrypoint():
             ["psql", '-l'], stdout=subprocess.PIPE,
             stderr=subprocess.PIPE)
         psql_subprocess.wait()
-        if not bool(psql_subprocess.stderr.read()) or count > max_count:
+        psql_error = bool(psql_subprocess.stderr.read())
+        if not psql_error or count > max_count:
             break
         time.sleep(2)
         count += 1
-    print("...psql service started.")
+    if not psql_error:
+        print("...psql service started.")
+    else:
+        raise BaseException("PSQL not started.")
 
     # Change travis pro info from coveralls
     travis_build_dir = os.environ.get('TRAVIS_BUILD_DIR', '')
