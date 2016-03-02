@@ -12,10 +12,17 @@ def docker_cache():
     subprocess.call(cmd)
 
     print("Update main repo")
-    # TODO: Update build repo
+    git_cmd = ['git', '--git-dir=' + os.path.join(
+        os.environ.get('TRAVIS_BUILD_DIR', '.'), '.git'),
+    ]
+    cmd = git_cmd + [
+        'fetch', 'origin',
+        '+refs/pull/%d/merge:' % int(os.environ.get('TRAVIS_PULL_REQUEST', 0))]
+    subprocess.call(cmd)
+    cmd = git_cmd + ['checkout', '-qf', os.environ.get('TRAVIS_COMMIT')]
+    subprocess.call(cmd)
 
     print("Running oca_dependencies.")
-    # TODO: Check if is required use cd build_path
     cmd = [os.path.expanduser(
         '~/maintainer-quality-tools/travis/clone_oca_dependencies')]
     subprocess.call(cmd)
@@ -53,7 +60,7 @@ def docker_entrypoint():
     subprocess.call(cmd, shell=True)
     print("Waiting to start psql service...")
     count = 0
-    max_count = 40
+    max_count = 120
     while True:
         psql_subprocess = subprocess.Popen(
             ["psql", '-l'], stdout=subprocess.PIPE,
