@@ -26,6 +26,12 @@ def docker_cache():
     cmd = [os.path.expanduser(
         '~/maintainer-quality-tools/travis/clone_oca_dependencies')]
     subprocess.call(cmd)
+
+    cmd = ['rm', '-rf', os.path.expanduser('~/.openerp_server.stats')]
+    subprocess.call(cmd)
+
+    cmd = ['coverage', 'erase']
+    subprocess.call(cmd)
     return True
 
 def docker_entrypoint():
