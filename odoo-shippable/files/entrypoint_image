@@ -6,6 +6,7 @@ import os
 import subprocess
 import time
 
+
 def docker_cache():
     print("Drop database openerp_test to reuse template db")
     cmd = ['dropdb', 'openerp_test']
@@ -26,7 +27,14 @@ def docker_cache():
     cmd = [os.path.expanduser(
         '~/maintainer-quality-tools/travis/clone_oca_dependencies')]
     subprocess.call(cmd)
+
+    cmd = ['rm', '-rf', os.path.expanduser('~/.openerp_server.stats')]
+    subprocess.call(cmd)
+
+    cmd = ['coverage', 'erase']
+    subprocess.call(cmd)
     return True
+
 
 def docker_entrypoint():
     # Fix postgresql
@@ -45,7 +53,7 @@ def docker_entrypoint():
         subprocess.call(' '.join(cmd), shell=True)
 
     # Patch to force start odoo as root
-    cmd = """sed -i "s/== 'root'/== 'force_root'/g" %s/*/openerp/cli/server.py""" % os.getenv("HOME")
+    cmd = """sed -i "s/== 'root'/== 'force_root'/g" %s/*/openerp/cli/server.py""" % os.getenv("HOME")  # noqa
     subprocess.call(cmd, shell=True)
 
     # Start ssh service
@@ -56,7 +64,8 @@ def docker_entrypoint():
     # Start postgresql service
     psql_version = os.environ.get('PSQL_VERSION', '9.3')
     psql_vstr = psql_version.replace('.', '')
-    cmd = '/etc/init.d/postgresql start {version} main{psql_version}'.format(version=psql_version, psql_version=psql_vstr)
+    cmd = '/etc/init.d/postgresql start {version} main{psql_version}'.format(
+        version=psql_version, psql_version=psql_vstr)
     subprocess.call(cmd, shell=True)
     print("Waiting to start psql service...")
     count = 0
@@ -80,7 +89,7 @@ def docker_entrypoint():
     if not psql_error:
         print("...psql service started.")
     else:
-        raise BaseException("PSQL not started.")
+        raise RuntimeError("PSQL not started.")
 
     # Change travis pro info from coveralls
     travis_build_dir = os.environ.get('TRAVIS_BUILD_DIR', '')
