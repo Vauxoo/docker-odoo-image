@@ -47,11 +47,17 @@ RUN PSQL_VERSION="9.5" /entrypoint_image \
     && su - postgres -c "psql -c  \"CREATE ROLE root LOGIN PASSWORD 'aeK5NWNr' SUPERUSER INHERIT CREATEDB CREATEROLE;\""
 
 # Install depends
-RUN apt-get update && apt-get install -y xsltproc xmlstarlet openssl \
+RUN apt-get remove -y git \
+    && apt-get update \
+    && apt-get install -y software-properties-common \
+    && add-apt-repository ppa:git-core/ppa -y \
+    && apt-get update \
+    && apt-get install -y xsltproc xmlstarlet openssl \
         poppler-utils antiword p7zip-full expect-dev mosh bpython \
         ghostscript graphviz openssh-server zsh \
         lua50 liblua50-dev liblualib50-dev \
         exuberant-ctags \
+        git \
     && pip install --upgrade SOAPpy pyopenssl suds \
         pillow qrcode xmltodict M2Crypto \
         recaptcha-client egenix-mx-base \
