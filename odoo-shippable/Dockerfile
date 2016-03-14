@@ -3,6 +3,7 @@ FROM vauxoo/odoo-80-image
 MAINTAINER Tulio Ruiz <tulio@vauxoo.com>
 COPY files/entrypoint_image /entrypoint_image
 COPY files/bash_colors /root/.bash_colors
+COPY files/etc_initd_postgresql /tmp/etc_initd_postgresql
 
 ENV RUN_COMMAND_MQT_10_ENTRYPOINT_IMAGE="/entrypoint_image" \
     INSTANCE_ALIVE="1" PSQL_VERSION="9.3" \
@@ -26,9 +27,11 @@ RUN apt-get update && apt-get install postgresql-common \
     && sed -ri 's/#(create_main_cluster) .*$/\1 = false/' /etc/postgresql-common/createcluster.conf \
     && apt-get install -y postgresql-9.3 postgresql-contrib-9.3 \
     postgresql-9.5 postgresql-contrib-9.5 perl-modules make \
+    && mv /tmp/etc_initd_postgresql /etc/init.d/postgresql \
+    && chmod +x /etc/init.d/postgresql \
     && rm -rf /var/lib/apt/lists/* \
-    && pg_createcluster 9.3 main93 -e=utf8 \
-    && pg_createcluster 9.5 main95 -e=utf8 \
+    && pg_createcluster 9.3 main -e=utf8 \
+    && pg_createcluster 9.5 main -e=utf8 \
     && sed -i 's/#max_pred_locks_per_transaction = 64/max_pred_locks_per_transaction = 100/g' /etc/postgresql/*/main*/postgresql.conf \
     && sed -i 's/max_connections = 100/max_connections = 200/g' /etc/postgresql/*/main*/postgresql.conf \
     && sed -i 's/^port = .*/port = 5432/g' /etc/postgresql/*/main*/postgresql.conf \

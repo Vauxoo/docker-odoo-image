@@ -62,11 +62,8 @@ def docker_entrypoint():
         subprocess.call(cmd, shell=True)
 
     # Start postgresql service
-    psql_version = os.environ.get('PSQL_VERSION', '9.3')
-    psql_vstr = psql_version.replace('.', '')
-    cmd = '/etc/init.d/postgresql start {version} main{psql_version}'.format(
-        version=psql_version, psql_version=psql_vstr)
-    subprocess.call(cmd, shell=True)
+    cmd = '/etc/init.d/postgresql start'
+    subprocess.call(cmd, shell=True, env=os.environ)
     print("Waiting to start psql service...")
     count = 0
     max_count = 120
