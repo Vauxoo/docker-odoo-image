@@ -88,6 +88,20 @@ def docker_entrypoint():
     else:
         raise RuntimeError("PSQL not started.")
 
+    # Fix flaky error when run instance to connect more info:
+    # https://www.odoo.com/es_ES/forum/ayuda-1/question/internal-error-index-10107 # noqa
+    cmd = [
+        'psql', 'openerp_test', '-c',
+        'REINDEX INDEX ir_translation_src_hash_idx',
+    ]
+    try:
+        popen = subprocess.Popen(
+            cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        if popen.wait() == 0:
+            print("Reindex created: ", cmd)
+    except BaseException:
+        pass
+
     # Change travis pro info from coveralls
     travis_build_dir = os.environ.get('TRAVIS_BUILD_DIR', '')
     fname_coveralls = os.path.join(travis_build_dir, '.coveralls.yml')
