@@ -8,9 +8,11 @@ import time
 
 
 def docker_cache():
-    print("Drop database openerp_test to reuse template db")
-    cmd = ['dropdb', 'openerp_test']
-    subprocess.call(cmd)
+    # We can't delete a database in entrypoint because
+    #     runbot could be errors to start a instance alive.
+    # print("Drop database openerp_test to reuse template db")
+    # cmd = ['dropdb', 'openerp_test']
+    # subprocess.call(cmd)
 
     print("Update main repo")
     git_cmd = ['git', '--git-dir=' + os.path.join(
@@ -22,6 +24,8 @@ def docker_cache():
     subprocess.call(cmd)
     cmd = git_cmd + ['checkout', '-qf', os.environ.get('TRAVIS_COMMIT')]
     subprocess.call(cmd)
+
+    # TODO: Update odoo/odoo
 
     print("Running oca_dependencies.")
     cmd = [os.path.expanduser(
