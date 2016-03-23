@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# coding: utf-8
 
 from __future__ import print_function
 
@@ -25,7 +26,7 @@ def docker_cache():
     cmd = git_cmd + ['checkout', '-qf', os.environ.get('TRAVIS_COMMIT')]
     subprocess.call(cmd)
 
-    # TODO: Update odoo/odoo
+    # TODO: Update odoo/odoo
 
     print("Running oca_dependencies.")
     cmd = [os.path.expanduser(
