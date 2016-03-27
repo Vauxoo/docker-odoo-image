@@ -125,10 +125,12 @@ RUN mkdir -p ${REPO_REQUIREMENTS}/odoo/ \
  && git --git-dir=${REPO_REQUIREMENTS}/odoo/.git remote add oca https://github.com/oca/ocb.git \
  && git --git-dir=${REPO_REQUIREMENTS}/odoo/.git remote add vauxoo https://github.com/vauxoo/odoo.git \
  && git --git-dir=${REPO_REQUIREMENTS}/odoo/.git fetch --all \
+ && git --git-dir=${REPO_REQUIREMENTS}/odoo/.git gc --aggressive \
  && mkdir -p ${REPO_REQUIREMENTS}/addons-vauxoo/ \
  && git init ${REPO_REQUIREMENTS}/addons-vauxoo/ \
  && git --git-dir=${REPO_REQUIREMENTS}/addons-vauxoo/.git remote add vauxoo https://github.com/vauxoo/addons-vauxoo.git \
- && git --git-dir=${REPO_REQUIREMENTS}/addons-vauxoo/.git fetch --all
+ && git --git-dir=${REPO_REQUIREMENTS}/addons-vauxoo/.git fetch --all \
+ && git --git-dir=${REPO_REQUIREMENTS}/addons-vauxoo/.git gc --aggressive
 
 # Expose postgresql, odoo, ssh and mosh ports
 EXPOSE 5432 8069 8070 8071 8072 22 60000-60005/udp
