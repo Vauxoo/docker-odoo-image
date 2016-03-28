@@ -119,18 +119,24 @@ RUN wget https://github.com/github/hub/releases/download/v2.2.2/hub-linux-amd64-
   && chmod +x /usr/bin/travis_wait
 
 #  Download repositories requirements
+#  NOTE: The "git gc" command is executed with "unbuffer" to get output status
+#        and avoid timeout build in CI and hub.docker.com
 RUN mkdir -p ${REPO_REQUIREMENTS}/odoo/ \
  && git init ${REPO_REQUIREMENTS}/odoo/ \
  && git --git-dir=${REPO_REQUIREMENTS}/odoo/.git remote add odoo https://github.com/odoo/odoo.git \
  && git --git-dir=${REPO_REQUIREMENTS}/odoo/.git remote add oca https://github.com/oca/ocb.git \
  && git --git-dir=${REPO_REQUIREMENTS}/odoo/.git remote add vauxoo https://github.com/vauxoo/odoo.git \
  && git --git-dir=${REPO_REQUIREMENTS}/odoo/.git fetch --all \
- && git --git-dir=${REPO_REQUIREMENTS}/odoo/.git gc --aggressive \
+ && du -sh ${REPO_REQUIREMENTS}/odoo/.git \
+ && unbuffer git --git-dir=${REPO_REQUIREMENTS}/odoo/.git gc --aggressive \
+ && du -sh ${REPO_REQUIREMENTS}/odoo/.git \
  && mkdir -p ${REPO_REQUIREMENTS}/addons-vauxoo/ \
  && git init ${REPO_REQUIREMENTS}/addons-vauxoo/ \
  && git --git-dir=${REPO_REQUIREMENTS}/addons-vauxoo/.git remote add vauxoo https://github.com/vauxoo/addons-vauxoo.git \
  && git --git-dir=${REPO_REQUIREMENTS}/addons-vauxoo/.git fetch --all \
- && git --git-dir=${REPO_REQUIREMENTS}/addons-vauxoo/.git gc --aggressive
+ && du -sh ${REPO_REQUIREMENTS}/addons-vauxoo/.git \
+ && unbuffer git --git-dir=${REPO_REQUIREMENTS}/addons-vauxoo/.git gc --aggressive \
+ && du -sh ${REPO_REQUIREMENTS}/addons-vauxoo/.git
 
 # Expose postgresql, odoo, ssh and mosh ports
 EXPOSE 5432 8069 8070 8071 8072 22 60000-60005/udp
