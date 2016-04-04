@@ -87,13 +87,17 @@ git_ps1_style ()
     local git_branch="$(__git_ps1 2>/dev/null)";
     local git_ps1_style="";
     if [ -n "$git_branch" ]; then
-        (git diff --quiet --ignore-submodules HEAD 2>/dev/null)
-        local git_changed=$?
-        if [ "$git_changed" == 0 ]; then
-            git_ps1_style=$GREEN_WOE$git_branch;
-        else
-            git_ps1_style=$RED_WOE$git_branch;
+        # Get git status on demand if var env is defined.
+        if [ -n "$GIT_STATUS" ]; then
+            (git diff --quiet --ignore-submodules HEAD 2>/dev/null)
+            local git_changed=$?
+            if [ "$git_changed" == 0 ]; then
+                git_ps1_style=$GREEN_WOE;
+            else
+                git_ps1_style=$RED_WOE;
+            fi
         fi
+        git_ps1_style=$git_ps1_style$git_branch
     fi
     echo -e "$git_ps1_style"
 }
