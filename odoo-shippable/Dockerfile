@@ -4,6 +4,7 @@ MAINTAINER Tulio Ruiz <tulio@vauxoo.com>
 COPY files/entrypoint_image /entrypoint_image
 COPY files/bash_colors /root/.bash_colors
 COPY files/etc_initd_postgresql /tmp/etc_initd_postgresql
+COPY files/get_odoo_git_compress.sh /get_odoo_git_compress.sh
 
 ENV RUN_COMMAND_MQT_10_ENTRYPOINT_IMAGE="/entrypoint_image" \
     INSTANCE_ALIVE="1" PSQL_VERSION="9.3" \
@@ -121,22 +122,12 @@ RUN wget https://github.com/github/hub/releases/download/v2.2.2/hub-linux-amd64-
 #  Download repositories requirements
 #  NOTE: The "git gc" command is executed with "unbuffer" to get output status
 #        and avoid timeout build in CI and hub.docker.com
-RUN mkdir -p ${REPO_REQUIREMENTS}/odoo/ \
- && git init ${REPO_REQUIREMENTS}/odoo/ \
- && git --git-dir=${REPO_REQUIREMENTS}/odoo/.git remote add odoo https://github.com/odoo/odoo.git \
- && git --git-dir=${REPO_REQUIREMENTS}/odoo/.git remote add oca https://github.com/oca/ocb.git \
- && git --git-dir=${REPO_REQUIREMENTS}/odoo/.git remote add vauxoo https://github.com/vauxoo/odoo.git \
- && git --git-dir=${REPO_REQUIREMENTS}/odoo/.git fetch --all \
- && du -sh ${REPO_REQUIREMENTS}/odoo/.git \
- && unbuffer git --git-dir=${REPO_REQUIREMENTS}/odoo/.git gc --aggressive \
- && du -sh ${REPO_REQUIREMENTS}/odoo/.git \
- && mkdir -p ${REPO_REQUIREMENTS}/addons-vauxoo/ \
- && git init ${REPO_REQUIREMENTS}/addons-vauxoo/ \
- && git --git-dir=${REPO_REQUIREMENTS}/addons-vauxoo/.git remote add vauxoo https://github.com/vauxoo/addons-vauxoo.git \
- && git --git-dir=${REPO_REQUIREMENTS}/addons-vauxoo/.git fetch --all \
- && du -sh ${REPO_REQUIREMENTS}/addons-vauxoo/.git \
- && unbuffer git --git-dir=${REPO_REQUIREMENTS}/addons-vauxoo/.git gc --aggressive \
- && du -sh ${REPO_REQUIREMENTS}/addons-vauxoo/.git
+RUN mkdir -p ${REPO_REQUIREMENTS}/odoo/.git \
+  && wget -O /tmp/odoo_git.tar.gz -nv https://www.dropbox.com/s/4e982wpsis63xf6/odoo_git.tar.gz?dl=0 \
+  && mkdir -p /tmp/odoo_git_uncompress \
+  && tar -xf /tmp/odoo_git.tar.gz -C /tmp/odoo_git_uncompress \
+  && cp -r /tmp/odoo_git_uncompress/*/* ${REPO_REQUIREMENTS}/odoo/.git/. \
+  && rm /tmp/odoo_git.tar.gz
 
 # Expose postgresql, odoo, ssh and mosh ports
 EXPOSE 5432 8069 8070 8071 8072 22 60000-60005/udp
