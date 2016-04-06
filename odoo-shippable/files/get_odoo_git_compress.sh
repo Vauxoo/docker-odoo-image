@@ -1,14 +1,14 @@
 # Run follow commands to re-create odoo compress folder in local
 # and after upload.
-git init ${HOME}/odoo/ \
- ; git --git-dir=${HOME}/odoo/.git remote add odoo https://github.com/odoo/odoo.git \
- ; git --git-dir=${HOME}/odoo/.git remote add oca https://github.com/oca/ocb.git \
- ; git --git-dir=${HOME}/odoo/.git remote add vauxoo https://github.com/vauxoo/odoo.git \
- ; git --git-dir=${HOME}/odoo/.git fetch --all \
- && du -sh ${HOME}/odoo/.git \
- && unbuffer git --git-dir=${HOME}/odoo/.git gc --aggressive \
- && du -sh ${HOME}/odoo/.git \
- && tar -zcvf ${HOME}/odoo_git.tar.gz ${HOME}/odoo/.git
+git init ${HOME}/odoo_git_compress/ \
+ ; git --git-dir=${HOME}/odoo_git_compress/.git remote add odoo https://github.com/odoo/odoo.git \
+ ; git --git-dir=${HOME}/odoo_git_compress/.git remote add oca https://github.com/oca/ocb.git \
+ ; git --git-dir=${HOME}/odoo_git_compress/.git remote add vauxoo https://github.com/vauxoo/odoo.git \
+ ; git --git-dir=${HOME}/odoo_git_compress/.git fetch --all \
+ && du -sh ${HOME}/odoo_git_compress/.git \
+ && unbuffer git --git-dir=${HOME}/odoo_git_compress/.git gc --aggressive \
+ && du -sh ${HOME}/odoo_git_compress/.git \
+ && tar -zcvf ${HOME}/odoo_git.tar.gz ${HOME}/odoo_git_compress/.git \
  && echo "Now you can upload the file ${HOME}/odoo_git.tar.gz"
 
  # && mkdir -p ${HOME}/addons-vauxoo/ \
