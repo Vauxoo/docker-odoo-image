@@ -122,11 +122,11 @@ RUN wget https://github.com/github/hub/releases/download/v2.2.2/hub-linux-amd64-
 #  Download repositories requirements
 #  NOTE: The "git gc" command is executed with "unbuffer" to get output status
 #        and avoid timeout build in CI and hub.docker.com
-RUN mkdir -p ${REPO_REQUIREMENTS}/odoo/.git \
+RUN mkdir -p ${REPO_REQUIREMENTS}/odoo \
   && wget -O /tmp/odoo_git.tar.gz -nv https://www.dropbox.com/s/4e982wpsis63xf6/odoo_git.tar.gz?dl=0 \
   && mkdir -p /tmp/odoo_git_uncompress \
   && tar -xf /tmp/odoo_git.tar.gz -C /tmp/odoo_git_uncompress \
-  && cp -r /tmp/odoo_git_uncompress/*/* ${REPO_REQUIREMENTS}/odoo/.git/. \
+  && mv /tmp/odoo_git_uncompress/.git ${REPO_REQUIREMENTS}/odoo/.git \
   && rm /tmp/odoo_git.tar.gz
 
 # Expose postgresql, odoo, ssh and mosh ports
