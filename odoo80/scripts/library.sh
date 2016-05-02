@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-
-PYPICONTENTS_URL="https://raw.githubusercontent.com/LuisAlejandro/pypicontents/master/pypicontents.json"
-PYPICONTENTS="$( wget -qO- "${PYPICONTENTS_URL}" )"
-
+#
+# PYPICONTENTS_URL="https://raw.githubusercontent.com/LuisAlejandro/pypicontents/master/pypicontents.json"
+# PYPICONTENTS="$( wget -qO- "${PYPICONTENTS_URL}" )"
+#
 
 function decompose_repo_url(){
     REPO="${1}"
@@ -22,20 +22,20 @@ import urlparse
 print os.path.basename(urlparse.urlparse('${URL}').path)" )"
     echo "${BIN} ${URL} ${NAME} ${OPTIONS}"
 }
-
-function search_pypicontents(){
-    MODULE="${1}"
-    PACKAGES="$( python -c "
-import json
-pypicontents = json.loads('''${PYPICONTENTS}''')
-def find_package(contents, module):
-    for pkg, data in contents.items():
-        for mod in data['modules']:
-            if mod == module:
-                yield pkg
-print ' '.join(list(find_package(pypicontents, '${MODULE}')))" )"
-    echo "${PACKAGES}"
-}
+#
+# function search_pypicontents(){
+#     MODULE="${1}"
+#     PACKAGES="$( python -c "
+# import json
+# pypicontents = json.loads('''${PYPICONTENTS}''')
+# def find_package(contents, module):
+#     for pkg, data in contents.items():
+#         for mod in data['modules']:
+#             if mod == module:
+#                 yield pkg
+# print ' '.join(list(find_package(pypicontents, '${MODULE}')))" )"
+#     echo "${PACKAGES}"
+# }
 
 function extract_vcs(){
     python -c "
@@ -77,17 +77,17 @@ function collect_pip_dependencies(){
         DEPENDENCIES+=" $( cat "${REQ}" | xargs )"
     done
 
-    for ODOO in $( find ${TEMPDIR} -type f -iname "__openerp__.py" ); do
-        MODULES="$( python -c "
-x=$( cat "${ODOO}" | sed 's/#.*//g;/^$/d' )
-if 'external_dependencies' in x:
-    if 'python' in x['external_dependencies']:
-        print ' '.join(x['external_dependencies']['python'])" )"
-        for MODULE in ${MODULES}; do
-            DEPENDENCIES+=" $( search_pypicontents "${MODULE}" )"
-        done
-    done
-
+#     for ODOO in $( find ${TEMPDIR} -type f -iname "__openerp__.py" ); do
+#         MODULES="$( python -c "
+# x=$( cat "${ODOO}" | sed 's/#.*//g;/^$/d' )
+# if 'external_dependencies' in x:
+#     if 'python' in x['external_dependencies']:
+#         print ' '.join(x['external_dependencies']['python'])" )"
+#         for MODULE in ${MODULES}; do
+#             DEPENDENCIES+=" $( search_pypicontents "${MODULE}" )"
+#         done
+#     done
+#
     VCS="$( extract_vcs "${DEPENDENCIES}" )"
     PIP="$( extract_pip "${DEPENDENCIES}" )"
 
