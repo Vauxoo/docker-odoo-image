@@ -15,6 +15,7 @@ ODOO_DEPENDENCIES="git+https://github.com/vauxoo/odoo@8.0 \
                    git+https://github.com/vauxoo/odoo-venezuela@8.0 \
                    git+https://github.com/vauxoo/pylint-odoo@master"
                    # git+https://github.com/vauxoo/odoo-mexico-v2@8.0 \
+DEPENDENCIES_FILE="$( mktemp -d )/odoo-requirements.txt"
 DPKG_DEPENDS="nodejs \
               phantomjs \
               antiword \
@@ -31,7 +32,6 @@ NPM_DEPENDS="less \
              jshint"
 PIP_OPTS="--upgrade \
           --no-cache-dir"
-PIP_DEPENDS="$( collect_dependencies "${ODOO_DEPENDENCIES}" )"
 PIP_DEPENDS_EXTRA="pyyaml \
                    pillow \
                    pillow-pil \
@@ -53,14 +53,18 @@ PIP_DEPENDS_EXTRA="pyyaml \
                    git+https://github.com/vauxoo/pylint-odoo@master#egg=pylint-odoo \
                    git+https://github.com/vauxoo/panama-dv@master#egg=ruc"
 PIP_DPKG_BUILD_DEPENDS="gcc \
+                        g++ \
                         gfortran \
                         libblas-dev \
                         liblapack-dev \
                         cython \
                         python-dev \
                         libpq-dev \
+                        libldap2-dev \
+                        libsasl2-dev \
                         libxml2-dev \
                         libxslt1-dev \
+                        libgeoip-dev \
                         zlib1g-dev"
 
 # Let's add the NodeJS upstream repo to install a newer version
@@ -74,8 +78,11 @@ apt-get install ${DPKG_DEPENDS} ${PIP_DPKG_BUILD_DEPENDS}
 # Install node dependencies
 npm install ${NPM_OPTS} ${NPM_DEPENDS}
 
+# Let's recursively find our pip dependencies
+collect_pip_dependencies "${ODOO_DEPENDENCIES}" "${PIP_DEPENDS_EXTRA}" "${DEPENDENCIES_FILE}"
+
 # Install python dependencies
-pip install ${PIP_OPTS} $( process_dependencies "${PIP_DEPENDS} ${PIP_DEPENDS_EXTRA}" )
+pip install ${PIP_OPTS} -r ${DEPENDENCIES_FILE}
 
 # Install qt patched version of wkhtmltopdf because of maintainer nonsense
 wkhtmltox_install "${WKHTMLTOX_URL}"
@@ -85,4 +92,7 @@ apt-get purge ${PIP_DPKG_BUILD_DEPENDS} ${DPKG_UNNECESSARY}
 apt-get autoremove
 
 # Final cleaning
+find /tmp -type f -print0 | xargs -0r rm -rf
+find /var/tmp -type f -print0 | xargs -0r rm -rf
+find /var/log -type f -print0 | xargs -0r rm -rf
 find /var/lib/apt/lists -type f -print0 | xargs -0r rm -rf

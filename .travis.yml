@@ -4,13 +4,14 @@ services:
 
 install:
   - npm install -g dockerlint
-  # - docker pull vauxoo/odoo-80-image
 
 script:
   - for dfile in `find $TRAVIS_BUILD_DIR -name 'Dockerfile' -not -path "./.git/*"`; do echo " ===== [ CHECKING $dfile ] ===== "; dockerlint $dfile; if [ $? -ne 0 ]; then echo " ----- [ FINISHED IN ERROR ] ----- "; fi; echo ""; done
   # TODO: Check git diff changes to build just required image.
-  - cd ${TRAVIS_BUILD_DIR}/odoo80 && docker build --rm -t vauxoo/odoo-80-image .
-  - cd ${TRAVIS_BUILD_DIR}/odoo-shippable && docker build --rm -t vauxoo/odoo-80-image-shippable-auto .
+  - git clone https://github.com/vauxoo-dev/docker-ubuntu-base.git -b master-10-ref-shrink-image-dev-luisalejandro ${TRAVIS_BUILD_DIR}/docker-ubuntu-base
+  - cd ${TRAVIS_BUILD_DIR}/docker-ubuntu-base && docker build --rm -t vauxoo/docker-ubuntu-base:latest .
+  - cd ${TRAVIS_BUILD_DIR}/odoo80 && docker build --rm -t vauxoo/odoo-80-image:latest .
+  - cd ${TRAVIS_BUILD_DIR}/odoo-shippable && docker build --rm -t vauxoo/odoo-80-image-shippable-auto:latest .
 
 after_success:
     # TODO: Add docker push

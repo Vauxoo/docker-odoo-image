@@ -1,4 +1,4 @@
-FROM vauxoodev/docker-ubuntu-base:latest
+FROM vauxoo/docker-ubuntu-base:latest
 MAINTAINER Tulio Ruiz <tulio@vauxoo.com>
 
 COPY scripts/*.sh /usr/share/vx-docker-internal/odoo80/

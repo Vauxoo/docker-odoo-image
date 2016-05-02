@@ -7,18 +7,20 @@ PYPICONTENTS="$( wget -qO- "${PYPICONTENTS_URL}" )"
 
 function decompose_repo_url(){
     REPO="${1}"
-    VCS="$( echo "${REPO}" | awk -F'+' '{print $1}' )"
-    [ -z "${VCS}" ] && VCS="git"
+    BIN="$( echo "${REPO}" | awk -F'+' '{print $1}' )"
+    [ -z "${BIN}" ] && BIN="git"
+    [ "${BIN}" != "git" ] && [ "${BIN}" != "hg"  ] && BIN="git"
     BRANCH="$( echo "${REPO}" | awk -F'@' '{print $2}' | awk -F'#' '{print $1}' )"
-    [ -z "${BRANCH}" ] && [ "${VCS}" == "git" ] && BRANCH="master"
-    [ -z "${BRANCH}" ] && [ "${VCS}" == "hg" ] && BRANCH="default"
-    URL="$( echo "${REPO}" | sed "s|${VCS}+||g;s|@${BRANCH}.*||g" )"
-    [ "${VCS}" == "git" ] && OPTIONS="--depth 1 -q -b ${BRANCH}"
-    [ "${VCS}" == "hg" ] && OPTIONS="-q -b ${BRANCH}"
+    [ -z "${BRANCH}" ] && [ "${BIN}" == "git" ] && BRANCH="8.0"
+    [ -z "${BRANCH}" ] && [ "${BIN}" == "hg" ] && BRANCH="default"
+    URL="$( echo "${REPO}" | sed "s|${BIN}+||g;s|@${BRANCH}.*||g" )"
+    [ "${BIN}" == "git" ] && OPTIONS="--depth 1 -q -b ${BRANCH}"
+    [ "${BIN}" == "hg" ] && OPTIONS="-q -b ${BRANCH}"
     NAME="$( python -c "
-import os, urlparse
+import os
+import urlparse
 print os.path.basename(urlparse.urlparse('${URL}').path)" )"
-    echo "${VCS} ${URL} ${NAME} ${OPTIONS}"
+    echo "${BIN} ${URL} ${NAME} ${OPTIONS}"
 }
 
 function search_pypicontents(){
@@ -35,21 +37,39 @@ print ' '.join(list(find_package(pypicontents, '${MODULE}')))" )"
     echo "${PACKAGES}"
 }
 
-function collect_dependencies(){
+function extract_vcs(){
+    python -c "
+import re
+x='''${1}'''
+print ' '.join(re.findall(r'((?:git|hg)\+https?://[^\s]+)', x))"
+}
+
+function extract_pip(){
+    python -c "
+import re
+regex=r'(?:git|hg)\+\w+:\/{2}[\d\w-]+(\.[\d\w-]+)*(?:(?:\/[^\s/]*))*'
+x='''${1}'''
+print re.sub(regex, '', x)"
+}
+
+function collect_pip_dependencies(){
     REPOLIST="${1}"
+    DEPENDENCIES="${2}"
+    REQFILE="${3}"
     TEMPDIR="$( mktemp -d )"
+    TEMPFILE="$( tempfile )"
 
     for REPO in ${REPOLIST}; do
-        read VCS URL NAME OPTIONS <<< "$( decompose_repo_url "${REPO}" )"
+        read BIN URL NAME OPTIONS <<< "$( decompose_repo_url "${REPO}" )"
         if [ ! -e "${TEMPDIR}/${NAME}" ]; then
-            ${VCS} clone ${URL} ${OPTIONS} ${TEMPDIR}/${NAME}
+            ${BIN} clone ${URL} ${OPTIONS} ${TEMPDIR}/${NAME}
         fi
     done
 
     for OCA in $( find ${TEMPDIR} -type f -iname "oca_dependencies.txt" ); do
-        read VCS URL NAME OPTIONS <<< "$( decompose_repo_url "$( echo "${OCA}" | awk '{print $2}' )" )"
+        read BIN URL NAME OPTIONS <<< "$( decompose_repo_url "$( cat "${OCA}" | awk '{print $2}' )" )"
         if [ ! -e "${TEMPDIR}/${NAME}" ]; then
-            ${VCS} clone ${URL} ${OPTIONS} ${TEMPDIR}/${NAME}
+            ${BIN} clone ${URL} ${OPTIONS} ${TEMPDIR}/${NAME}
         fi
     done
 
@@ -68,39 +88,42 @@ if 'external_dependencies' in x:
         done
     done
 
-    echo "$( echo "${DEPENDENCIES}" )"
-    rm -rf "${TEMPDIR}"
-}
+    VCS="$( extract_vcs "${DEPENDENCIES}" )"
+    PIP="$( extract_pip "${DEPENDENCIES}" )"
 
-function process_dependencies(){
-    TEMPDIR="$( mktemp -d )"
-    TEMPFILE="$( tempfile )"
-    DEPENDENCIES="${1}"
-    SCM="$( python -c "
-import re
-x='''${DEPENDENCIES}'''
-print ' '.join(re.findall(r'((?:git|hg)\+https?://[^\s]+)', x))" )"
-    PIP="$( python -c "
-import re
-regex=r'(?:git|hg)\+\w+:\/{2}[\d\w-]+(\.[\d\w-]+)*(?:(?:\/[^\s/]*))*'
-x='''${DEPENDENCIES}'''
-print re.sub(regex, '', x)" )"
-
-    for S in ${SCM}; do
-        read VCS URL NAME OPTIONS <<< "$( decompose_repo_url "${S}" )"
+    for REPO in ${VCS}; do
+        read BIN URL NAME OPTIONS <<< "$( decompose_repo_url "${REPO}" )"
         if [ ! -e "${TEMPDIR}/${NAME}" ]; then
-            ${VCS} clone ${URL} ${OPTIONS} ${TEMPDIR}/${NAME}
+            ${BIN} clone ${URL} ${OPTIONS} ${TEMPDIR}/${NAME}
         fi
         if [ -e "${TEMPDIR}/${NAME}/requirements.txt" ]; then
-            pip install -q -r "${TEMPDIR}/${NAME}/requirements.txt"
+            VCS+=" $( extract_vcs "$( cat "${TEMPDIR}/${NAME}/requirements.txt" | sed 's/^#.*//g' )" )"
+            PIP+=" $( extract_pip "$( cat "${TEMPDIR}/${NAME}/requirements.txt" | sed 's/^#.*//g' )" )"
         fi
     done
 
-    printf "%s\n" ${PIP} > "${TEMPFILE}"
-    cd /tmp && merge_requirements "${TEMPFILE}" "/dev/null" > /dev/null 2>&1
-    mv "/tmp/requirements-merged.txt" "${TEMPFILE}"
-    printf "\n-e %s" ${SCM} >> "${TEMPFILE}"
-    pip-compile --no-header "${TEMPFILE}"
+    printf "%s\n" ${PIP,,} > "${TEMPFILE}"
+    printf "%s\n" ${VCS,,} | sed 's/#/@@/g' >> "${TEMPFILE}"
+    cd /tmp && merge_requirements "${TEMPFILE}" "/dev/null"
+    printf "%s\n" $( cat "/tmp/requirements-merged.txt" ) | sed 's/@@/#/g' > "${TEMPFILE}"
+
+    VCS="$( extract_vcs "$( cat "${TEMPFILE}" )" )"
+    PIP="$( extract_pip "$( cat "${TEMPFILE}" )" )"
+    printf "%s\n" ${PIP,,} > "${TEMPFILE}"
+    pip-compile "${TEMPFILE}" -o "${TEMPFILE}"
+
+    PIP="$( extract_pip "$( cat "${TEMPFILE}" | sed 's/#.*//g')" )"
+    VCSEGGS="$( printf "%s\n" ${VCS} | sed 's/@@/#/g;s/ /\n/g;s/.*#//g;s/egg=//g;s/&.*//g' | xargs )"
+
+    >"${REQFILE}"
+    for PD in ${PIP,,}; do
+        P="$( echo ${PD} | awk -F'==' '{print $1}' )"
+        if ! echo " ${VCSEGGS} " | grep -q " ${P} "; then
+            echo "${PD}" >> "${REQFILE}"
+        fi
+    done
+
+    printf "%s\n" ${VCS,,} >> "${REQFILE}"
     rm -rf "${TEMPFILE}" "${TEMPDIR}"
 }
 
