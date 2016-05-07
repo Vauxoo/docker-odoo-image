@@ -27,7 +27,7 @@ RUN useradd -d /home/shippable -m -s /bin/bash -p shippablepwd shippable \
 RUN apt-get update && apt-get install postgresql-common \
     && sed -ri 's/#(create_main_cluster) .*$/\1 = false/' /etc/postgresql-common/createcluster.conf \
     && apt-get install -y postgresql-9.3 postgresql-contrib-9.3 \
-    postgresql-9.5 postgresql-contrib-9.5 perl-modules make \
+    postgresql-9.5 postgresql-contrib-9.5 perl-modules make pgtune \
     && mv /tmp/etc_initd_postgresql /etc/init.d/postgresql \
     && chmod +x /etc/init.d/postgresql \
     && rm -rf /var/lib/apt/lists/* \
