@@ -60,7 +60,8 @@ RUN apt-get remove -y git \
         poppler-utils antiword p7zip-full expect-dev mosh bpython \
         ghostscript graphviz openssh-server zsh \
         lua50 liblua50-dev liblualib50-dev \
-        exuberant-ctags \
+        exuberant-ctags python-dev gcc g++ libtiff5-dev libjpeg8-dev zlib1g-dev \
+        libfreetype6-dev liblcms2-dev libwebp-dev \
         git \
     && pip install --upgrade SOAPpy pyopenssl suds \
         pillow qrcode xmltodict M2Crypto \
