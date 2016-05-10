@@ -68,7 +68,7 @@ RUN apt-get remove -y git \
         recaptcha-client egenix-mx-base \
         PyWebDAV mygengo pandas==0.16.2 numexpr==2.4.4 \
         ndg-httpsclient pyasn1 \
-        pylint_odoo watchdog isort coveralls \
+        pylint_odoo watchdog isort coveralls line-profiler \
     && echo "PermitRootLogin yes" >> /etc/ssh/sshd_config \
     && curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | sh; echo "$?" \
     && sed -i 's/robbyrussell/odoo-shippable/g' /root/.zshrc \
