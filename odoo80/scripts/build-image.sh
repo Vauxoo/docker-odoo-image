@@ -19,6 +19,7 @@ DEPENDENCIES_FILE="$( mktemp -d )/odoo-requirements.txt"
 DPKG_DEPENDS="nodejs \
               phantomjs \
               antiword \
+              python-dev \
               poppler-utils \
               xmlstarlet \
               xsltproc \
@@ -33,6 +34,7 @@ NPM_DEPENDS="less \
 PIP_OPTS="--upgrade \
           --no-cache-dir"
 PIP_DEPENDS_EXTRA="pyyaml \
+                   pycrypto \
                    pillow \
                    pillow-pil \
                    M2Crypto \
@@ -55,7 +57,6 @@ PIP_DEPENDS_EXTRA="pyyaml \
 PIP_DPKG_BUILD_DEPENDS="build-essential \
                         gfortran \
                         cython \
-                        python-dev \
                         libfreetype6-dev \
                         zlib1g-dev \
                         libjpeg-dev \
