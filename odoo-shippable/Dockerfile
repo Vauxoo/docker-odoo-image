@@ -132,3 +132,8 @@ RUN mkdir -p ${REPO_REQUIREMENTS}/odoo \
 
 # Expose postgresql, odoo, ssh and mosh ports
 EXPOSE 5432 8069 8070 8071 8072 22 60000-60005/udp
+
+# Fix reinstalling npm v3 fails on docker https://github.com/npm/npm/issues/9863
+RUN cd $(npm root -g)/npm \
+  && npm install fs-extra \
+  && sed -i -e s/graceful-fs/fs-extra/ -e s/fs.rename/fs.move/ ./lib/utils/rename.js
