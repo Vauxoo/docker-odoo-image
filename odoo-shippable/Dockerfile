@@ -91,7 +91,8 @@ RUN wget https://github.com/github/hub/releases/download/v2.2.2/hub-linux-amd64-
   && echo 'source /usr/local/bin/git-completion.bash' >> ${HOME}/.profile \
   && git clone https://github.com/vauxoo-dev/gist-vauxoo.git -b master ${HOME}/tools/gist-vauxoo \
   && mkdir -p ${REPO_REQUIREMENTS}/linit_hook/ \
-  && git clone https://github.com/OCA/maintainer-quality-tools.git ${REPO_REQUIREMENTS}/linit_hook/ \
+  && git clone https://github.com/Vauxoo/maintainer-quality-tools.git ${REPO_REQUIREMENTS}/linit_hook/ \
+  && LINT_CHECK=1 TESTS=0 ${REPO_REQUIREMENTS}/linit_hook/travis/travis_install_nightly \
   && wget https://raw.githubusercontent.com/Vauxoo/pylint-conf/master/conf/pylint_vauxoo_light.cfg -O ${REPO_REQUIREMENTS}/linit_hook/travis/cfg/travis_run_pylint.cfg \
   && wget https://raw.githubusercontent.com/Vauxoo/pylint-conf/master/conf/pylint_vauxoo_light_pr.cfg -O ${REPO_REQUIREMENTS}/linit_hook/travis/cfg/travis_run_pylint_pr.cfg \
   && ln -sf ${REPO_REQUIREMENTS}/linit_hook/git/* /usr/share/git-core/templates/hooks/ \
