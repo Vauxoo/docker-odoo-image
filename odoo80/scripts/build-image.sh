@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+# Exit inmediately after an error
+# See vauxoo/docker-odoo-image#108
+set -e
+
 # With a little help from my friends
 . /usr/share/vx-docker-internal/ubuntu-base/library.sh
 . /usr/share/vx-docker-internal/odoo80/library.sh
