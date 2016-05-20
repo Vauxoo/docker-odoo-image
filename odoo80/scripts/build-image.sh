@@ -19,12 +19,15 @@ DEPENDENCIES_FILE="$( mktemp -d )/odoo-requirements.txt"
 DPKG_DEPENDS="nodejs \
               phantomjs \
               antiword \
+              python-dev \
               poppler-utils \
               xmlstarlet \
               xsltproc \
               xz-utils \
               swig \
-              geoip-database-contrib"
+              geoip-database-contrib \
+              build-essential \
+              cython"
 DPKG_UNNECESSARY=""
 NPM_OPTS="-g"
 NPM_DEPENDS="less \
@@ -52,10 +55,7 @@ PIP_DEPENDS_EXTRA="pyyaml \
                    hg+https://bitbucket.org/birkenfeld/sphinx-contrib@default#egg=sphinxcontrib-youtube&subdirectory=youtube \
                    git+https://github.com/vauxoo/pylint-odoo@master#egg=pylint-odoo \
                    git+https://github.com/vauxoo/panama-dv@master#egg=ruc"
-PIP_DPKG_BUILD_DEPENDS="build-essential \
-                        gfortran \
-                        cython \
-                        python-dev \
+PIP_DPKG_BUILD_DEPENDS="gfortran \
                         libfreetype6-dev \
                         zlib1g-dev \
                         libjpeg-dev \
