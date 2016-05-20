@@ -85,6 +85,7 @@ apt-get install ${DPKG_DEPENDS} ${PIP_DPKG_BUILD_DEPENDS}
 npm install ${NPM_OPTS} ${NPM_DEPENDS}
 
 # Let's recursively find our pip dependencies
+pip install --upgrade requirements-parser==0.1.0
 collect_pip_dependencies "${ODOO_DEPENDENCIES}" "${PIP_DEPENDS_EXTRA}" "${DEPENDENCIES_FILE}"
 
 # Install python dependencies
