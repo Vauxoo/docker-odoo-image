@@ -30,7 +30,19 @@ DPKG_DEPENDS="nodejs \
               xz-utils \
               swig \
               geoip-database-contrib \
+              libpq-dev \
+              libldap2-dev \
+              libsasl2-dev \
               build-essential \
+              gfortran \
+              libfreetype6-dev \
+              zlib1g-dev \
+              libjpeg-dev \
+              libblas-dev \
+              liblapack-dev \
+              libxml2-dev \
+              libxslt1-dev \
+              libgeoip-dev \
               cython"
 DPKG_UNNECESSARY=""
 NPM_OPTS="-g"
@@ -59,18 +71,7 @@ PIP_DEPENDS_EXTRA="pyyaml \
                    hg+https://bitbucket.org/birkenfeld/sphinx-contrib@default#egg=sphinxcontrib-youtube&subdirectory=youtube \
                    git+https://github.com/vauxoo/pylint-odoo@master#egg=pylint-odoo \
                    git+https://github.com/vauxoo/panama-dv@master#egg=ruc"
-PIP_DPKG_BUILD_DEPENDS="gfortran \
-                        libfreetype6-dev \
-                        zlib1g-dev \
-                        libjpeg-dev \
-                        libblas-dev \
-                        liblapack-dev \
-                        libpq-dev \
-                        libldap2-dev \
-                        libsasl2-dev \
-                        libxml2-dev \
-                        libxslt1-dev \
-                        libgeoip-dev"
+PIP_DPKG_BUILD_DEPENDS=""
 
 # Let's add the NodeJS upstream repo to install a newer version
 add_custom_aptsource "${NODE_UPSTREAM_REPO}" "${NODE_UPSTREAM_KEY}"
