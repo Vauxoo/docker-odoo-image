@@ -95,6 +95,7 @@ RUN wget https://github.com/github/hub/releases/download/v2.2.2/hub-linux-amd64-
   && LINT_CHECK=1 TESTS=0 ${REPO_REQUIREMENTS}/linit_hook/travis/travis_install_nightly \
   && wget https://raw.githubusercontent.com/Vauxoo/pylint-conf/master/conf/pylint_vauxoo_light.cfg -O ${REPO_REQUIREMENTS}/linit_hook/travis/cfg/travis_run_pylint.cfg \
   && wget https://raw.githubusercontent.com/Vauxoo/pylint-conf/master/conf/pylint_vauxoo_light_pr.cfg -O ${REPO_REQUIREMENTS}/linit_hook/travis/cfg/travis_run_pylint_pr.cfg \
+  && wget https://raw.githubusercontent.com/Vauxoo/pylint-conf/master/conf/pylint_vauxoo_light_beta.cfg -O ${REPO_REQUIREMENTS}/linit_hook/travis/cfg/travis_run_pylint_beta.cfg \
   && ln -sf ${REPO_REQUIREMENTS}/linit_hook/git/* /usr/share/git-core/templates/hooks/ \
   && curl http://ftp.vim.org/pub/vim/runtime/spell/es.utf-8.spl -o /usr/share/vim/vim74/spell/es.utf-8.spl \
   && curl https://dl.ngrok.com/ngrok_2.0.19_linux_amd64.zip -o /tmp/ngrok.zip \
