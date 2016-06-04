@@ -131,7 +131,8 @@ RUN wget https://github.com/github/hub/releases/download/v2.2.2/hub-linux-amd64-
 #  NOTE: The "git gc" command is executed with "unbuffer" to get output status
 #        and avoid timeout build in CI and hub.docker.com
 RUN mkdir -p ${REPO_REQUIREMENTS}/odoo \
-  && wget -O /tmp/odoo_git.tar.gz -nv https://www.dropbox.com/s/4e982wpsis63xf6/odoo_git.tar.gz?dl=0 \
+  && wget -O /tmp/odoo_git.tar.gz -nv \
+        https://s3.amazonaws.com/s3.vauxoo.com/odoo-git-compress/odoo_git.tar.gz \
   && mkdir -p /tmp/odoo_git_uncompress \
   && tar -xf /tmp/odoo_git.tar.gz -C /tmp/odoo_git_uncompress \
   && mv /tmp/odoo_git_uncompress/.git ${REPO_REQUIREMENTS}/odoo/.git \
