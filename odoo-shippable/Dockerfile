@@ -76,9 +76,11 @@ RUN apt-get remove -y git \
     && rm -rf /var/lib/apt/lists/*
 
 # Fix reinstalling npm v3 fails on docker https://github.com/npm/npm/issues/9863
+#  And install localtunnel similar to ngrok
 RUN cd $(npm root -g)/npm \
   && npm install fs-extra \
-  && sed -i -e s/graceful-fs/fs-extra/ -e s/fs.rename/fs.move/ ./lib/utils/rename.js
+  && sed -i -e s/graceful-fs/fs-extra/ -e s/fs.rename/fs.move/ ./lib/utils/rename.js \
+  && npm install -g localtunnel
 
 # Install hub, git prompt, git auto-completion, other dev packages
 # Install spf13 for vim, fix comments hidden, fix select text
