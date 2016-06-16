@@ -24,14 +24,11 @@ ZSH_THEME_REPO="https://gist.github.com/9931af23bbb59e772eec.git"
 OH_MY_ZSH_REPO="https://github.com/robbyrussell/oh-my-zsh.git"
 SPF13_REPO="https://github.com/spf13/spf13-vim.git"
 VIM_OPENERP_REPO="https://github.com/vauxoo/vim-openerp.git"
-GIT_REPO="https://github.com/git/git.git"
 HUB_REPO="https://github.com/github/hub.git"
 ODOO_REPO="https://github.com/vauxoo/odoo.git"
 MQT_REPO="https://github.com/vauxoo/maintainer-quality-tools.git"
 GIST_VAUXOO_REPO="https://github.com/vauxoo/gist-vauxoo.git"
 PYLINT_REPO="https://github.com/vauxoo/pylint-conf.git"
-
-DEPENDENCIES_FILE="$( mktemp -d )/odoo-requirements.txt"
 
 DPKG_DEPENDS="postgresql-9.3 postgresql-contrib-9.3 \
               postgresql-9.5 postgresql-contrib-9.5 \
@@ -47,7 +44,7 @@ PIP_OPTS="--upgrade \
 PIP_DEPENDS_EXTRA="SOAPpy pyopenssl suds \
                    pillow qrcode xmltodict M2Crypto \
                    recaptcha-client egenix-mx-base \
-                   PyWebDAV mygengo pandas==0.16.2 numexpr==2.4.4 \
+                   PyWebDAV mygengo pandas numexpr \
                    ndg-httpsclient pyasn1 line-profiler \
                    watchdog isort coveralls"
 PIP_DPKG_BUILD_DEPENDS="build-essential \
@@ -65,6 +62,9 @@ PIP_DPKG_BUILD_DEPENDS="build-essential \
                         libxml2-dev \
                         libxslt1-dev \
                         libgeoip-dev"
+NPM_OPTS="-g"
+NPM_DEPENDS="localtunnel \
+             fs-extra"
 
 # Let's add the git-core ppa for having a more up-to-date git
 add_custom_aptsource "${GITCORE_PPA_REPO}" "${GITCORE_PPA_KEY}"
@@ -73,6 +73,13 @@ add_custom_aptsource "${GITCORE_PPA_REPO}" "${GITCORE_PPA_KEY}"
 apt-get update
 apt-get upgrade
 apt-get install ${DPKG_DEPENDS} ${PIP_DPKG_BUILD_DEPENDS}
+
+# Install node dependencies
+npm install ${NPM_OPTS} ${NPM_DEPENDS}
+
+# Fix reinstalling npm packages
+# See https://github.com/npm/npm/issues/9863 for details
+sed -i 's/graceful-fs/fs-extra/g;s/fs.rename/fs.move/g' $(npm root -g)/npm/lib/utils/rename.js
 
 # Install python dependencies
 pip install ${PIP_OPTS} ${PIP_DEPENDS_EXTRA}
@@ -101,6 +108,7 @@ sed -i 's/robbyrussell/odoo-shippable/g' /root/.zshrc
 # Install & configure vim
 git_clone_execute "${SPF13_REPO}" "3.0" "bootstrap.sh"
 git_clone_copy "${VIM_OPENERP_REPO}" "master" "vim/" "/root/.vim/bundle/vim-openerp"
+wget -q -O /usr/share/vim/vim74/spell/es.utf-8.spl http://ftp.vim.org/pub/vim/runtime/spell/es.utf-8.spl
 
 sed -i 's/ set mouse\=a/\"set mouse\=a/g' /root/.vimrc
 sed -i "s/let g:neocomplete#enable_at_startup = 1/let g:neocomplete#enable_at_startup = 0/g" /root/.vimrc
@@ -126,16 +134,46 @@ let g:spf13_bundle_groups = ['general', 'writing', 'odoovim',
                            \ 'misc']
 EOF
 
-# Configure shell completion
-git_clone_copy "${HUB_REPO}" "master" "etc/hub.bash_completion.sh" "/usr/local/bin/"
-git_clone_copy "${GIT_REPO}" "master" "contrib/completion/git-prompt.sh" "/usr/local/bin/"
-git_clone_copy "${GIT_REPO}" "master" "contrib/completion/git-completion.bash" "/usr/local/bin/"
+# Configure shell, shell colors & shell completion
+chsh --shell /bin/bash root
+git_clone_copy "${HUB_REPO}" "master" "etc/hub.bash_completion.sh" "/etc/bash_completion.d/"
 
-cat >> /root/.profile << EOF
-. /usr/local/bin/git-prompt.sh
-. /usr/local/bin/git-completion.bash
-. /usr/local/bin/hub.bash_completion.sh
-. /usr/share/vx-docker-internal/odoo-shippable/bash-colors.sh
+cat >> /root/.bashrc << 'EOF'
+Purple="\[\033[0;35m\]"
+BIPurple="\[\033[1;95m\]"
+Color_Off="\[\033[0m\]"
+PathShort="\w"
+UserMachine="$BIPurple[\u@$Purple\h]"
+GREEN_WOE="\001\033[0;32m\002"
+RED_WOE="\001\033[0;91m\002"
+git_ps1_style(){
+    local git_branch="$(__git_ps1 2>/dev/null)";
+    local git_ps1_style="";
+    if [ -n "$git_branch" ]; then
+        if [ -n "$GIT_STATUS" ]; then
+            (git diff --quiet --ignore-submodules HEAD 2>/dev/null)
+            local git_changed=$?
+            if [ "$git_changed" == 0 ]; then
+                git_ps1_style=$GREEN_WOE;
+            else
+                git_ps1_style=$RED_WOE;
+            fi
+        fi
+        git_ps1_style=$git_ps1_style$git_branch
+    fi
+    echo -e "$git_ps1_style"
+}
+PS1=$UserMachine$Color_Off$PathShort\$\\n"\$(git_ps1_style)"$Color_Off\$" "
+EOF
+
+cat >> /etc/bash.bashrc << EOF
+if ! shopt -oq posix; then
+    if [ -f /usr/share/bash-completion/bash_completion ]; then
+        . /usr/share/bash-completion/bash_completion
+    elif [ -f /etc/bash_completion ]; then
+        . /etc/bash_completion
+    fi
+fi
 EOF
 
 # Create travis_wait
@@ -146,7 +184,7 @@ chmod +x /usr/bin/travis_wait
 echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
 
 # Extend root config to every user created from now on
-cp -r /root/.profile /root/.vim* /etc/skel/
+ln -sf /root/.profile /root/.bash* /root/.vim* /etc/skel/
 
 # Create shippable user with sudo powers and git configuration
 createuser "shippable" "shippablepwd" "Shippable" "hello@shippable.com"
@@ -183,7 +221,7 @@ psql_create_role "shippable" "aeK5NWNr2"
 psql_create_role "root" "aeK5NWNr2"
 
 # Final cleaning
-find /tmp -type f -print0 | xargs -0r rm -rf
+rm -rf /tmp/*
 find /var/tmp -type f -print0 | xargs -0r rm -rf
 find /var/log -type f -print0 | xargs -0r rm -rf
 find /var/lib/apt/lists -type f -print0 | xargs -0r rm -rf
