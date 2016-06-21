@@ -99,7 +99,7 @@ apt-get purge ${PIP_DPKG_BUILD_DEPENDS} ${DPKG_UNNECESSARY}
 apt-get autoremove
 
 # Final cleaning
-find /tmp -type f -print0 | xargs -0r rm -rf
+rm -rf /tmp/*
 find /var/tmp -type f -print0 | xargs -0r rm -rf
 find /var/log -type f -print0 | xargs -0r rm -rf
 find /var/lib/apt/lists -type f -print0 | xargs -0r rm -rf
