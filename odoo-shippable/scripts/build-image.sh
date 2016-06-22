@@ -114,7 +114,7 @@ sed -i 's/ set mouse\=a/\"set mouse\=a/g' /root/.vimrc
 sed -i "s/let g:neocomplete#enable_at_startup = 1/let g:neocomplete#enable_at_startup = 0/g" /root/.vimrc
 
 cat >> /root/.vimrc << EOF
-colorscheme ir_black
+colorscheme heliotrope
 set colorcolumn=80
 set spelllang=en,es
 EOF
