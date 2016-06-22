@@ -7,12 +7,12 @@ set -e
 # With a little help from my friends
 . /usr/share/vx-docker-internal/ubuntu-base/library.sh
 . /usr/share/vx-docker-internal/odoo80/library.sh
-
+. /etc/lsb-release
 # Let's set some defaults here
 ARCH="$( dpkg --print-architecture )"
 NODE_UPSTREAM_REPO="deb http://deb.nodesource.com/node_5.x trusty main"
 NODE_UPSTREAM_KEY="https://deb.nodesource.com/gpgkey/nodesource.gpg.key"
-WKHTMLTOX_URL="http://download.gna.org/wkhtmltopdf/0.12/0.12.3/wkhtmltox-0.12.3_linux-generic-${ARCH}.tar.xz"
+WKHTMLTOX_URL="http://download.gna.org/wkhtmltopdf/0.12/0.12.1/wkhtmltox-0.12.1_linux-${DISTRIB_CODENAME}-${ARCH}.deb"
 ODOO_DEPENDENCIES="git+https://github.com/vauxoo/odoo@8.0 \
                    git+https://github.com/vauxoo/server-tools@8.0 \
                    git+https://github.com/vauxoo/addons-vauxoo@8.0 \
@@ -43,7 +43,8 @@ DPKG_DEPENDS="nodejs \
               libxml2-dev \
               libxslt1-dev \
               libgeoip-dev \
-              cython"
+              cython \
+              fontconfig"
 DPKG_UNNECESSARY=""
 NPM_OPTS="-g"
 NPM_DEPENDS="less \
