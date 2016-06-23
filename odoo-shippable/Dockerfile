@@ -6,7 +6,7 @@ ENV RUN_COMMAND_MQT_10_ENTRYPOINT_IMAGE="/entrypoint_image" \
     REPO_REQUIREMENTS="/.repo_requirements" \
     WITHOUT_DEPENDENCIES="1" OCA_RUNBOT="1"
 
-COPY scripts/entrypoint-image.py /entrypoint_image
+COPY scripts/entrypoint_image /
 COPY scripts/*.sh /usr/share/vx-docker-internal/odoo-shippable/
 RUN bash /usr/share/vx-docker-internal/odoo-shippable/build-image.sh
 
