@@ -25,7 +25,9 @@ OH_MY_ZSH_REPO="https://github.com/robbyrussell/oh-my-zsh.git"
 SPF13_REPO="https://github.com/spf13/spf13-vim.git"
 VIM_OPENERP_REPO="https://github.com/vauxoo/vim-openerp.git"
 HUB_REPO="https://github.com/github/hub.git"
-ODOO_REPO="https://github.com/vauxoo/odoo.git"
+ODOO_VAUXOO_REPO="https://github.com/vauxoo/odoo.git"
+ODOO_ODOO_REPO="https://github.com/odoo/odoo.git"
+ODOO_OCA_REPO="https://github.com/oca/ocb.git"
 MQT_REPO="https://github.com/vauxoo/maintainer-quality-tools.git"
 GIST_VAUXOO_REPO="https://github.com/vauxoo/gist-vauxoo.git"
 PYLINT_REPO="https://github.com/vauxoo/pylint-conf.git"
@@ -85,7 +87,13 @@ sed -i 's/graceful-fs/fs-extra/g;s/fs.rename/fs.move/g' $(npm root -g)/npm/lib/u
 pip install ${PIP_OPTS} ${PIP_DEPENDS_EXTRA}
 
 # Clone odoo & tools
-git_clone_copy "${ODOO_REPO}" "8.0" "" "${REPO_REQUIREMENTS}/odoo"
+git_clone_copy "${ODOO_VAUXOO_REPO}" "8.0" "" "${REPO_REQUIREMENTS}/odoo"
+git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" remote rename origin vauxoo
+git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" remote add odoo "${ODOO_ODOO_REPO}"
+git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" remote add oca "${ODOO_OCA_REPO}"
+git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" gc --aggressive
+
+# Commented until https://github.com/Vauxoo/docker-odoo-image/issues/109 is resolved
 #git_clone_copy "${GIST_VAUXOO_REPO}" "master" "" "/root/tools/gist-vauxoo"
 git_clone_copy "${MQT_REPO}" "master" "" "${REPO_REQUIREMENTS}/linit_hook"
 git_clone_copy "${PYLINT_REPO}" "master" "conf/pylint_vauxoo_light.cfg" "${REPO_REQUIREMENTS}/linit_hook/travis/cfg/travis_run_pylint.cfg"
