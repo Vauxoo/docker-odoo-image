@@ -184,7 +184,7 @@ fi
 EOF
 
 # Create travis_wait
-echo "#\!/bin/bash\n\$@" > /usr/bin/travis_wait
+echo $'#!/bin/bash\n$@' > /usr/bin/travis_wait
 chmod +x /usr/bin/travis_wait
 
 # Configure ssh to allow root login
