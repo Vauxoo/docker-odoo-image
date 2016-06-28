@@ -91,6 +91,7 @@ git_clone_copy "${ODOO_VAUXOO_REPO}" "8.0" "" "${REPO_REQUIREMENTS}/odoo"
 git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" remote rename origin vauxoo
 git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" remote add odoo "${ODOO_ODOO_REPO}"
 git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" remote add oca "${ODOO_OCA_REPO}"
+git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" fetch --depth 10 vauxoo 9.0
 git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" gc --aggressive
 
 git_clone_copy "${GIST_VAUXOO_REPO}" "master" "" "/root/tools/gist-vauxoo"
