@@ -48,7 +48,7 @@ PIP_DEPENDS_EXTRA="SOAPpy pyopenssl suds \
                    recaptcha-client egenix-mx-base \
                    PyWebDAV mygengo pandas numexpr \
                    ndg-httpsclient pyasn1 line-profiler \
-                   watchdog isort coveralls"
+                   watchdog isort coveralls diff-highlight"
 PIP_DPKG_BUILD_DEPENDS="build-essential \
                         gfortran \
                         cython \
@@ -106,6 +106,14 @@ LINT_CHECK=1 TESTS=0 ${REPO_REQUIREMENTS}/linit_hook/travis/travis_install_night
 # Install hub & ngrok
 targz_download_execute "${HUB_ARCHIVE}" "install"
 zip_download_copy "${NGROK_ARCHIVE}" "ngrok" "/usr/local/bin/"
+
+# Configure diff-highlight on git after install
+cat >> /etc/gitconfig << EOF
+[pager]
+    log = diff-highlight | less
+    show = diff-highlight | less
+    diff = diff-highlight | less
+EOF
 
 # Install & configure zsh
 git_clone_execute "${OH_MY_ZSH_REPO}" "master" "tools/install.sh"
