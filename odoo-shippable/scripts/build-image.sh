@@ -134,6 +134,23 @@ set colorcolumn=80
 set spelllang=en,es
 EOF
 
+# Configure pylint_odoo plugin and the .conf file
+# to enable python pylint_odoo checks into the vim editor.
+cat >> /root/.vimrc << EOF
+:filetype on                                                                    
+let g:syntastic_python_checkers = ['pylint']                                    
+let g:syntastic_python_pylint_args =                                            
+    \ '--load-plugins=pylint_odoo -e odoolint'                                  
+function! FindConfig(prefix, what, where)                                       
+    let cfg = findfile(a:what, escape(a:where, ' ') . ';')                      
+    return cfg !=# '' ? ' ' . a:prefix . ' ' . cfg : ''                         
+endfunction                                                                     
+                                                                                
+autocmd FileType python let b:syntastic_python_pylint_args =                    
+    \ get(g:, 'syntastic_python_pylint_args', '') .                             
+    \ FindConfig('-c', 'pylint_vauxoo_light_pr.cfg', expand('<amatch>:p:h', 1))
+EOF
+
 cat >> /root/.vimrc.bundles << EOF
 " Odoo snippets {
 if count(g:spf13_bundle_groups, 'odoovim')
