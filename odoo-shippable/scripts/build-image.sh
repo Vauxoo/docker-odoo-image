@@ -98,6 +98,7 @@ git_clone_copy "${MQT_REPO}" "master" "" "${REPO_REQUIREMENTS}/linit_hook"
 git_clone_copy "${PYLINT_REPO}" "master" "conf/pylint_vauxoo_light.cfg" "${REPO_REQUIREMENTS}/linit_hook/travis/cfg/travis_run_pylint.cfg"
 git_clone_copy "${PYLINT_REPO}" "master" "conf/pylint_vauxoo_light_pr.cfg" "${REPO_REQUIREMENTS}/linit_hook/travis/cfg/travis_run_pylint_pr.cfg"
 git_clone_copy "${PYLINT_REPO}" "master" "conf/pylint_vauxoo_light_beta.cfg" "${REPO_REQUIREMENTS}/linit_hook/travis/cfg/travis_run_pylint_beta.cfg"
+git_clone_copy "${PYLINT_REPO}" "master" "conf/pylint_vauxoo_light_vim.cfg" "${REPO_REQUIREMENTS}/linit_hook/travis/cfg/travis_run_pylint_vim.cfg"
 ln -sf ${REPO_REQUIREMENTS}/linit_hook/git/* /usr/share/git-core/templates/hooks/
 
 # Execute travis_install_nightly
@@ -132,6 +133,19 @@ cat >> /root/.vimrc << EOF
 colorscheme heliotrope
 set colorcolumn=80
 set spelllang=en,es
+EOF
+
+# Configure pylint_odoo plugin and the .conf file
+# to enable python pylint_odoo checks into the vim editor.
+cat >> /root/.vimrc << EOF
+:filetype on
+let g:syntastic_aggregate_errors = 1
+let g:syntastic_python_checkers = ['pylint', 'flake8']
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_python_pylint_args =
+    \ '--rcfile=/.repo_requirements/linit_hook/travis/cfg/travis_run_pylint_vim.cfg --load-plugins=pylint_odoo'
+let g:syntastic_python_flake8_args =
+    \ '--config=/.repo_requirements/linit_hook/travis/cfg/travis_run_flake8.cfg'
 EOF
 
 cat >> /root/.vimrc.bundles << EOF
