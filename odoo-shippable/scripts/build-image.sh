@@ -98,6 +98,7 @@ git_clone_copy "${MQT_REPO}" "master" "" "${REPO_REQUIREMENTS}/linit_hook"
 git_clone_copy "${PYLINT_REPO}" "master" "conf/pylint_vauxoo_light.cfg" "${REPO_REQUIREMENTS}/linit_hook/travis/cfg/travis_run_pylint.cfg"
 git_clone_copy "${PYLINT_REPO}" "master" "conf/pylint_vauxoo_light_pr.cfg" "${REPO_REQUIREMENTS}/linit_hook/travis/cfg/travis_run_pylint_pr.cfg"
 git_clone_copy "${PYLINT_REPO}" "master" "conf/pylint_vauxoo_light_beta.cfg" "${REPO_REQUIREMENTS}/linit_hook/travis/cfg/travis_run_pylint_beta.cfg"
+git_clone_copy "${PYLINT_REPO}" "master" "conf/pylint_vauxoo_light_vim.cfg" "${REPO_REQUIREMENTS}/linit_hook/travis/cfg/travis_run_pylint_vim.cfg"
 ln -sf ${REPO_REQUIREMENTS}/linit_hook/git/* /usr/share/git-core/templates/hooks/
 
 # Execute travis_install_nightly
@@ -138,17 +139,13 @@ EOF
 # to enable python pylint_odoo checks into the vim editor.
 cat >> /root/.vimrc << EOF
 :filetype on
-let g:syntastic_python_checkers = ['pylint']
+let g:syntastic_aggregate_errors = 1
+let g:syntastic_python_checkers = ['pylint', 'flake8']
+let g:syntastic_auto_loc_list = 1
 let g:syntastic_python_pylint_args =
-    \ '--load-plugins=pylint_odoo -e odoolint'
-function! FindConfig(prefix, what, where)
-    let cfg = findfile(a:what, escape(a:where, ' ') . ';')
-    return cfg !=# '' ? ' ' . a:prefix . ' ' . cfg : ''
-endfunction
-
-autocmd FileType python let b:syntastic_python_pylint_args =
-    \ get(g:, 'syntastic_python_pylint_args', '') .
-    \ FindConfig('-c', 'pylint_vauxoo_light_pr.cfg', expand('<amatch>:p:h', 1))
+    \ '--rcfile=/.repo_requirements/linit_hook/travis/cfg/travis_run_pylint_vim.cfg --load-plugins=pylint_odoo'
+let g:syntastic_python_flake8_args =
+    \ '--config=/.repo_requirements/linit_hook/travis/cfg/travis_run_flake8.cfg'
 EOF
 
 cat >> /root/.vimrc.bundles << EOF
