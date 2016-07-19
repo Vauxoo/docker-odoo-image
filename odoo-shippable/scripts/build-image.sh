@@ -15,6 +15,10 @@ ARCH="$( dpkg --print-architecture )"
 GITCORE_PPA_REPO="deb http://ppa.launchpad.net/git-core/ppa/ubuntu trusty main"
 GITCORE_PPA_KEY="http://keyserver.ubuntu.com:11371/pks/lookup?op=get&search=0xA1715D88E1DF1F24"
 
+# ppa sources
+PYTHON_PPA_REPO="deb http://ppa.launchpad.net/fkrull/deadsnakes/ubuntu trusty main"
+PYTHON_PPA_KEY="http://keyserver.ubuntu.com:11371/pks/lookup?op=get&search=0x5BB92C09DB82666C"
+
 # Extra software download URLs
 HUB_ARCHIVE="https://github.com/github/hub/releases/download/v2.2.3/hub-linux-${ARCH}-2.2.3.tgz"
 NGROK_ARCHIVE="https://dl.ngrok.com/ngrok_2.0.19_linux_${ARCH}.zip"
@@ -40,7 +44,8 @@ DPKG_DEPENDS="postgresql-9.3 postgresql-contrib-9.3 \
               expect-dev mosh bpython bsdtar rsync \
               ghostscript graphviz openssh-server zsh \
               lua50 liblua50-dev liblualib50-dev \
-              exuberant-ctags git rake"
+              exuberant-ctags git rake python3.3 python3.4 \
+              python3.5"
 PIP_OPTS="--upgrade \
           --no-cache-dir"
 PIP_DEPENDS_EXTRA="SOAPpy pyopenssl suds \
@@ -70,6 +75,9 @@ NPM_DEPENDS="localtunnel \
 
 # Let's add the git-core ppa for having a more up-to-date git
 add_custom_aptsource "${GITCORE_PPA_REPO}" "${GITCORE_PPA_KEY}"
+# Let's add the fkrull deadsnakes ppa for get python3.x versions
+add_custom_aptsource "${PYTHON_PPA_REPO}" "${PYTHON_PPA_KEY}"
+
 
 # Release the apt monster!
 apt-get update
