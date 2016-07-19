@@ -75,15 +75,15 @@ NPM_DEPENDS="localtunnel \
 
 # Let's add the git-core ppa for having a more up-to-date git
 add_custom_aptsource "${GITCORE_PPA_REPO}" "${GITCORE_PPA_KEY}"
+# Add python repository
+add-apt-repository ppa:${PPA_SOURCES}
 
 # Release the apt monster!
 apt-get update
 apt-get upgrade
-apt-get install -y ${DPKG_DEPENDS} ${PIP_DPKG_BUILD_DEPENDS}
-# Add python repository and install py 3.x
-add-apt-repository -y ppa:${PPA_SOURCES}
-apt-get update
-apt-get install -y ${DPKG_PYTHON_VERS}
+apt-get install ${DPKG_DEPENDS} ${PIP_DPKG_BUILD_DEPENDS}
+# Install py 3.x
+apt-get install ${DPKG_PYTHON_VERS}
 
 # Install node dependencies
 npm install ${NPM_OPTS} ${NPM_DEPENDS}
