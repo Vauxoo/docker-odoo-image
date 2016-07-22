@@ -53,7 +53,8 @@ PIP_DEPENDS_EXTRA="SOAPpy pyopenssl suds \
                    recaptcha-client egenix-mx-base \
                    PyWebDAV mygengo pandas numexpr \
                    ndg-httpsclient pyasn1 line-profiler \
-                   watchdog isort coveralls diff-highlight"
+                   watchdog isort coveralls diff-highlight \
+                   argcomplete"
 PIP_DPKG_BUILD_DEPENDS="build-essential \
                         gfortran \
                         cython \
