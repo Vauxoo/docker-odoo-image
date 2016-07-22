@@ -6,7 +6,7 @@ git_clone_copy(){
     WHAT="${3}"
     WHERE="${4}"
     TEMPDIR="$( mktemp -d )"
-    OPTIONS="--depth 30 -b ${BRANCH} -q --single-branch --recursive"
+    OPTIONS="--depth 10 -b ${BRANCH} -q --single-branch --recursive"
     echo "Cloning ${URL} ..."
     mkdir -p $( dirname "${WHERE}" )
     git clone ${URL} ${OPTIONS} ${TEMPDIR}
