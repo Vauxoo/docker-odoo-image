@@ -69,6 +69,7 @@ PIP_DEPENDS_EXTRA="pyyaml \
                    mygengo \
                    recaptcha-client \
                    egenix-mx-base \
+                   branchesv \
                    hg+https://bitbucket.org/birkenfeld/sphinx-contrib@default#egg=sphinxcontrib-youtube&subdirectory=youtube \
                    git+https://github.com/vauxoo/pylint-odoo@master#egg=pylint-odoo \
                    git+https://github.com/vauxoo/panama-dv@master#egg=ruc"
@@ -86,7 +87,7 @@ apt-get install ${DPKG_DEPENDS} ${PIP_DPKG_BUILD_DEPENDS}
 npm install ${NPM_OPTS} ${NPM_DEPENDS}
 
 # Let's recursively find our pip dependencies
-pip install --upgrade requirements-parser==0.1.0
+pip install --upgrade requirements-parser==0.1.0 branchesv
 collect_pip_dependencies "${ODOO_DEPENDENCIES}" "${PIP_DEPENDS_EXTRA}" "${DEPENDENCIES_FILE}"
 
 # Install python dependencies
