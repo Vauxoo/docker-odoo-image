@@ -58,6 +58,7 @@ function collect_pip_dependencies(){
     REQFILE="${3}"
     TEMPDIR="$( mktemp -d )"
     TEMPFILE="$( tempfile )"
+    PIP_OPTS="--upgrade"
 
     for REPO in ${REPOLIST}; do
         read BIN URL NAME OPTIONS <<< "$( decompose_repo_url "${REPO}" )"
@@ -72,6 +73,11 @@ function collect_pip_dependencies(){
             ${BIN} clone ${URL} ${OPTIONS} ${TEMPDIR}/${NAME}
         fi
     done
+
+    # Install PIP_DEPENDS_EXTRA and
+    # the required requirements-parser for the next step
+
+    pip install ${PIP_OPTS} ${DEPENDENCIES}
 
     for REQ in $( find ${TEMPDIR} -type f -iname "requirements.txt" ); do
         /usr/share/vx-docker-internal/odoo80/gen_pip_deps ${REQ} ${DEPENDENCIES_FILE}

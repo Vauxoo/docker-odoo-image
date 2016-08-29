@@ -72,7 +72,9 @@ PIP_DEPENDS_EXTRA="pyyaml \
                    branchesv \
                    hg+https://bitbucket.org/birkenfeld/sphinx-contrib@default#egg=sphinxcontrib-youtube&subdirectory=youtube \
                    git+https://github.com/vauxoo/pylint-odoo@master#egg=pylint-odoo \
-                   git+https://github.com/vauxoo/panama-dv@master#egg=ruc"
+                   git+https://github.com/vauxoo/panama-dv@master#egg=ruc \
+                   requirements-parser==0.1.0"
+
 PIP_DPKG_BUILD_DEPENDS=""
 
 # Let's add the NodeJS upstream repo to install a newer version
@@ -87,7 +89,6 @@ apt-get install ${DPKG_DEPENDS} ${PIP_DPKG_BUILD_DEPENDS}
 npm install ${NPM_OPTS} ${NPM_DEPENDS}
 
 # Let's recursively find our pip dependencies
-pip install --upgrade requirements-parser==0.1.0 branchesv
 collect_pip_dependencies "${ODOO_DEPENDENCIES}" "${PIP_DEPENDS_EXTRA}" "${DEPENDENCIES_FILE}"
 
 # Install python dependencies
