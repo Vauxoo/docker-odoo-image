@@ -45,8 +45,9 @@ DPKG_DEPENDS="postgresql-9.3 postgresql-contrib-9.3 \
               expect-dev mosh bpython bsdtar rsync \
               ghostscript graphviz openssh-server zsh \
               lua50 liblua50-dev liblualib50-dev \
-              exuberant-ctags git rake python3.3 python3.4 \
-              python3.5 python3-pip software-properties-common"
+              exuberant-ctags git rake python3.3 python3.3-dev \
+              python3.4 python3.4-dev python3.5 python3.5-dev \
+              python3-pip software-properties-common"
 PIP_OPTS="--upgrade \
           --no-cache-dir"
 PIP_DEPENDS_EXTRA="SOAPpy pyopenssl suds \
