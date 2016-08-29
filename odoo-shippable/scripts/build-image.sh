@@ -73,7 +73,7 @@ PIP_DPKG_BUILD_DEPENDS="build-essential \
                         libgeoip-dev"
 NPM_OPTS="-g"
 NPM_DEPENDS="localtunnel \
-             fs-extra"
+             fs-extra eslint"
 
 # Let's add the git-core ppa for having a more up-to-date git
 add_custom_aptsource "${GITCORE_PPA_REPO}" "${GITCORE_PPA_KEY}"
@@ -117,6 +117,7 @@ git_clone_copy "${PYLINT_REPO}" "master" "conf/pylint_vauxoo_light.cfg" "${REPO_
 git_clone_copy "${PYLINT_REPO}" "master" "conf/pylint_vauxoo_light_pr.cfg" "${REPO_REQUIREMENTS}/linit_hook/travis/cfg/travis_run_pylint_pr.cfg"
 git_clone_copy "${PYLINT_REPO}" "master" "conf/pylint_vauxoo_light_beta.cfg" "${REPO_REQUIREMENTS}/linit_hook/travis/cfg/travis_run_pylint_beta.cfg"
 git_clone_copy "${PYLINT_REPO}" "master" "conf/pylint_vauxoo_light_vim.cfg" "${REPO_REQUIREMENTS}/linit_hook/travis/cfg/travis_run_pylint_vim.cfg"
+git_clone_copy "${PYLINT_REPO}" "master" "conf/.jslintrc" "${REPO_REQUIREMENTS}/linit_hook/travis/cfg/.jslintrc"
 ln -sf ${REPO_REQUIREMENTS}/linit_hook/git/* /usr/share/git-core/templates/hooks/
 
 # Execute travis_install_nightly
@@ -154,7 +155,7 @@ set spelllang=en,es
 EOF
 
 # Configure pylint_odoo plugin and the .conf file
-# to enable python pylint_odoo checks into the vim editor.
+# to enable python pylint_odoo checks and eslint checks into the vim editor.
 cat >> /root/.vimrc << EOF
 :filetype on
 let g:syntastic_aggregate_errors = 1
@@ -164,6 +165,9 @@ let g:syntastic_python_pylint_args =
     \ '--rcfile=/.repo_requirements/linit_hook/travis/cfg/travis_run_pylint_vim.cfg --load-plugins=pylint_odoo'
 let g:syntastic_python_flake8_args =
     \ '--config=/.repo_requirements/linit_hook/travis/cfg/travis_run_flake8.cfg'
+let g:syntastic_javascript_checkers = ['eslint']
+let g:syntastic_javascript_eslint_args =
+    \ '--config /.repo_requirements/linit_hook/travis/cfg/.jslintrc'
 EOF
 
 cat >> /root/.vimrc.bundles << EOF
