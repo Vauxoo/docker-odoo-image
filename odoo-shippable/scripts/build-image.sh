@@ -43,7 +43,7 @@ DPKG_DEPENDS="postgresql-9.3 postgresql-contrib-9.3 \
               xsltproc xmlstarlet openssl \
               poppler-utils antiword p7zip-full \
               expect-dev mosh bpython bsdtar rsync \
-              ghostscript graphviz openssh-server zsh \
+              graphviz openssh-server zsh \
               lua50 liblua50-dev liblualib50-dev \
               exuberant-ctags git rake python3.3 python3.3-dev \
               python3.4 python3.4-dev python3.5 python3.5-dev \
