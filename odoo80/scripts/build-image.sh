@@ -44,7 +44,8 @@ DPKG_DEPENDS="nodejs \
               libxslt1-dev \
               libgeoip-dev \
               cython \
-              fontconfig"
+              fontconfig \
+              ghostscript"
 DPKG_UNNECESSARY=""
 NPM_OPTS="-g"
 NPM_DEPENDS="less \
