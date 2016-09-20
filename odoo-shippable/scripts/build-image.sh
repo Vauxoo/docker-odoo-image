@@ -21,7 +21,7 @@ PYTHON_PPA_KEY="http://keyserver.ubuntu.com:11371/pks/lookup?op=get&search=0x5BB
 
 # Extra software download URLs
 HUB_ARCHIVE="https://github.com/github/hub/releases/download/v2.2.3/hub-linux-${ARCH}-2.2.3.tgz"
-NGROK_ARCHIVE="https://dl.ngrok.com/ngrok_2.0.19_linux_${ARCH}.zip"
+NGROK_ARCHIVE="https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-${ARCH}.zip"
 
 # Extra software clone URLs
 ZSH_THEME_REPO="https://gist.github.com/9931af23bbb59e772eec.git"
