@@ -130,6 +130,7 @@ LINT_CHECK=1 TESTS=0 ${REPO_REQUIREMENTS}/linit_hook/travis/travis_install_night
 # Install hub & ngrok
 targz_download_execute "${HUB_ARCHIVE}" "install"
 zip_download_copy "${NGROK_ARCHIVE}" "ngrok" "/usr/local/bin/"
+chmod +x /usr/local/bin/ngrok
 
 # Configure diff-highlight on git after install
 cat >> /etc/gitconfig << EOF
