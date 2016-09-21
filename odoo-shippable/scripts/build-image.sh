@@ -96,6 +96,10 @@ sed -i 's/graceful-fs/fs-extra/g;s/fs.rename/fs.move/g' $(npm root -g)/npm/lib/u
 # Install python dependencies
 pip install ${PIP_OPTS} ${PIP_DEPENDS_EXTRA}
 
+# Install xvfb daemon
+wget https://raw.githubusercontent.com/travis-ci/travis-cookbooks/master/cookbooks/travis_build_environment/files/default/etc-init.d-xvfb.sh -O /etc/init.d/xvfb
+chmod +x /etc/init.d/xvfb
+
 # Init without download to add odoo remotes
 git init ${REPO_REQUIREMENTS}/odoo
 git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" remote add vauxoo "${ODOO_VAUXOO_REPO}"
