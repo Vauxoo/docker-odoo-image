@@ -45,7 +45,8 @@ DPKG_DEPENDS="nodejs \
               libgeoip-dev \
               cython \
               fontconfig \
-              ghostscript"
+              ghostscript \
+              cloc"
 DPKG_UNNECESSARY=""
 NPM_OPTS="-g"
 NPM_DEPENDS="less \
