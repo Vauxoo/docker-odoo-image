@@ -71,7 +71,7 @@ def docker_entrypoint():
     subprocess.call(cmd, shell=True, env=os.environ)
     print("Waiting to start psql service...")
     count = 0
-    max_count = 120
+    max_count = 240
     while True:
         psql_subprocess = subprocess.Popen(
             ["psql", '-l'], stdout=subprocess.PIPE,
@@ -86,7 +86,7 @@ def docker_entrypoint():
             psql_error = False
         if not psql_error or count > max_count:
             break
-        time.sleep(2)
+        time.sleep(3)
         count += 1
     if not psql_error:
         print("...psql service started.")
