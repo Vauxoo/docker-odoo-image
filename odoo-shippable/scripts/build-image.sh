@@ -56,7 +56,7 @@ PIP_DEPENDS_EXTRA="SOAPpy pyopenssl suds \
                    PyWebDAV mygengo pandas numexpr \
                    ndg-httpsclient pyasn1 line-profiler \
                    watchdog isort coveralls diff-highlight \
-                   pgactivity"
+                   pg-activity"
 PIP_DPKG_BUILD_DEPENDS="build-essential \
                         gfortran \
                         cython \
@@ -127,6 +127,9 @@ ln -sf ${REPO_REQUIREMENTS}/linit_hook/git/* /usr/share/git-core/templates/hooks
 
 # Execute travis_install_nightly
 LINT_CHECK=1 TESTS=0 ${REPO_REQUIREMENTS}/linit_hook/travis/travis_install_nightly
+
+# Enable PG LOGS AND NON DURABILITY
+PG_NON_DURABILITY=1 PG_LOGS_ENABLE=1 python ${REPO_REQUIREMENTS}/linit_hook/travis/psql_log.py
 
 # Install hub & ngrok
 targz_download_execute "${HUB_ARCHIVE}" "install"
@@ -221,6 +224,14 @@ git_ps1_style(){
     echo -e "$git_ps1_style"
 }
 PS1=$UserMachine$Color_Off$PathShort\$\\n"\$(git_ps1_style)"$Color_Off\$" "
+EOF
+
+# Add alias for psql logs
+cat >> /etc/bash.bashrc << EOF
+alias psql_logs_enable='export PGOPTIONS="$PGOPTIONS -c client_min_messages=notice -c log_min_messages=warning -c log_min_error_statement=error -c log_min_duration_statement=0 -c log_connections=on -c log_disconnections=on -c log_duration=off -c log_error_verbosity=verbose -c log_lock_waits=on -c log_statement=none -c log_temp_files=0"'
+alias psql_logs_disable='unset PGOPTIONS'
+alias psql_logs_clean='echo "" | tee /var/lib/postgresql/*/main/pg_log/postgresql.log'
+alias psql_logs_tail='tail -f /var/lib/postgresql/*/main/pg_log/postgresql.log'
 EOF
 
 cat >> /etc/bash.bashrc << EOF
