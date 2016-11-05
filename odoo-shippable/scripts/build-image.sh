@@ -128,9 +128,6 @@ ln -sf ${REPO_REQUIREMENTS}/linit_hook/git/* /usr/share/git-core/templates/hooks
 # Execute travis_install_nightly
 LINT_CHECK=1 TESTS=0 ${REPO_REQUIREMENTS}/linit_hook/travis/travis_install_nightly
 
-# Enable PG LOGS AND NON DURABILITY
-PG_NON_DURABILITY=1 PG_LOGS_ENABLE=1 python ${REPO_REQUIREMENTS}/linit_hook/travis/psql_log.py
-
 # Install hub & ngrok
 targz_download_execute "${HUB_ARCHIVE}" "install"
 zip_download_copy "${NGROK_ARCHIVE}" "ngrok" "/usr/local/bin/"
@@ -287,6 +284,9 @@ psql_create_role "root" "aeK5NWNr2"
 PSQL_VERSION="9.3" /entrypoint_image
 psql_create_role "shippable" "aeK5NWNr2"
 psql_create_role "root" "aeK5NWNr2"
+
+# Enable PG LOGS AND NON DURABILITY
+PG_NON_DURABILITY=1 PG_LOGS_ENABLE=1 python ${REPO_REQUIREMENTS}/linit_hook/travis/psql_log.py
 
 # Final cleaning
 rm -rf /tmp/*
