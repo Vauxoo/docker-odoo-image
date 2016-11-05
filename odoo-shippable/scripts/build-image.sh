@@ -55,7 +55,8 @@ PIP_DEPENDS_EXTRA="SOAPpy pyopenssl suds \
                    recaptcha-client egenix-mx-base \
                    PyWebDAV mygengo pandas numexpr \
                    ndg-httpsclient pyasn1 line-profiler \
-                   watchdog isort coveralls diff-highlight"
+                   watchdog isort coveralls diff-highlight \
+                   pg-activity"
 PIP_DPKG_BUILD_DEPENDS="build-essential \
                         gfortran \
                         cython \
@@ -222,6 +223,14 @@ git_ps1_style(){
 PS1=$UserMachine$Color_Off$PathShort\$\\n"\$(git_ps1_style)"$Color_Off\$" "
 EOF
 
+# Add alias for psql logs
+cat >> /etc/bash.bashrc << EOF
+alias psql_logs_enable='export PGOPTIONS="$PGOPTIONS -c client_min_messages=notice -c log_min_messages=warning -c log_min_error_statement=error -c log_min_duration_statement=0 -c log_connections=on -c log_disconnections=on -c log_duration=off -c log_error_verbosity=verbose -c log_lock_waits=on -c log_statement=none -c log_temp_files=0"'
+alias psql_logs_disable='unset PGOPTIONS'
+alias psql_logs_clean='echo "" | tee /var/lib/postgresql/*/main/pg_log/postgresql.log'
+alias psql_logs_tail='tail -f /var/lib/postgresql/*/main/pg_log/postgresql.log'
+EOF
+
 cat >> /etc/bash.bashrc << EOF
 if ! shopt -oq posix; then
     if [ -f /usr/share/bash-completion/bash_completion ]; then
@@ -275,6 +284,9 @@ psql_create_role "root" "aeK5NWNr2"
 PSQL_VERSION="9.3" /entrypoint_image
 psql_create_role "shippable" "aeK5NWNr2"
 psql_create_role "root" "aeK5NWNr2"
+
+# Enable PG LOGS AND NON DURABILITY
+PG_NON_DURABILITY=1 PG_LOGS_ENABLE=1 python ${REPO_REQUIREMENTS}/linit_hook/travis/psql_log.py
 
 # Final cleaning
 rm -rf /tmp/*
