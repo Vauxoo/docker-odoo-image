@@ -62,7 +62,6 @@ PIP_DEPENDS_EXTRA="pyyaml \
                    SOAPpy \
                    suds \
                    lxml \
-                   pandas \
                    qrcode \
                    xmltodict \
                    flake8 \
