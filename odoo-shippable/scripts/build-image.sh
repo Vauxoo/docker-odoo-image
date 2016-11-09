@@ -288,6 +288,10 @@ psql_create_role "root" "aeK5NWNr2"
 # Enable PG LOGS AND NON DURABILITY
 PG_NON_DURABILITY=1 PG_LOGS_ENABLE=1 python ${REPO_REQUIREMENTS}/linit_hook/travis/psql_log.py
 
+# Install addons-vauxoo python packages because is a project used from other ones
+wget https://raw.githubusercontent.com/Vauxoo/addons-vauxoo/8.0/requirements.txt -O /tmp/addons-vx-req.txt
+pip install --upgrade -r /tmp/addons-vx-req.txt
+
 # Final cleaning
 rm -rf /tmp/*
 find /var/tmp -type f -print0 | xargs -0r rm -rf
