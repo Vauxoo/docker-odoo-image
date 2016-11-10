@@ -37,44 +37,18 @@ MQT_REPO="https://github.com/vauxoo/maintainer-quality-tools.git"
 GIST_VAUXOO_REPO="https://github.com/vauxoo-dev/gist-vauxoo.git"
 PYLINT_REPO="https://github.com/vauxoo/pylint-conf.git"
 
-DPKG_DEPENDS="postgresql-9.3 postgresql-contrib-9.3 \
-              postgresql-9.5 postgresql-contrib-9.5 \
-              perl-modules make pgbadger pgtune \
-              xsltproc xmlstarlet openssl \
-              poppler-utils antiword p7zip-full \
-              expect-dev mosh bpython bsdtar rsync \
-              graphviz openssh-server zsh \
-              lua50 liblua50-dev liblualib50-dev \
-              exuberant-ctags git rake python3.3 python3.3-dev \
-              python3.4 python3.4-dev python3.5 python3.5-dev \
+DPKG_DEPENDS="postgresql-9.3 postgresql-contrib-9.3 postgresql-9.5 postgresql-contrib-9.5 \
+              pgbadger pgtune perl-modules make openssl p7zip-full expect-dev mosh bpython \
+              bsdtar rsync graphviz openssh-server zsh \
+              lua50 liblua50-dev liblualib50-dev exuberant-ctags rake \
+              python3.3 python3.3-dev python3.4 python3.4-dev python3.5 python3.5-dev \
               python3-pip software-properties-common Xvfb"
 PIP_OPTS="--upgrade \
           --no-cache-dir"
-PIP_DEPENDS_EXTRA="SOAPpy pyopenssl suds \
-                   pillow qrcode xmltodict M2Crypto \
-                   recaptcha-client egenix-mx-base \
-                   PyWebDAV mygengo pandas numexpr \
-                   ndg-httpsclient pyasn1 line-profiler \
-                   watchdog isort coveralls diff-highlight \
-                   pg-activity"
-PIP_DPKG_BUILD_DEPENDS="build-essential \
-                        gfortran \
-                        cython \
-                        python-dev \
-                        libfreetype6-dev \
-                        zlib1g-dev \
-                        libjpeg-dev \
-                        libblas-dev \
-                        liblapack-dev \
-                        libpq-dev \
-                        libldap2-dev \
-                        libsasl2-dev \
-                        libxml2-dev \
-                        libxslt1-dev \
-                        libgeoip-dev"
+PIP_DEPENDS_EXTRA="line-profiler watchdog isort coveralls diff-highlight pg-activity"
+PIP_DPKG_BUILD_DEPENDS=""
 NPM_OPTS="-g"
-NPM_DEPENDS="localtunnel \
-             fs-extra eslint"
+NPM_DEPENDS="localtunnel fs-extra eslint"
 
 # Let's add the git-core ppa for having a more up-to-date git
 add_custom_aptsource "${GITCORE_PPA_REPO}" "${GITCORE_PPA_KEY}"
