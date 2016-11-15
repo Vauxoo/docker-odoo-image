@@ -262,6 +262,17 @@ psql_create_role "root" "aeK5NWNr2"
 # Enable PG LOGS AND NON DURABILITY
 PG_NON_DURABILITY=1 PG_LOGS_ENABLE=1 python ${REPO_REQUIREMENTS}/linit_hook/travis/psql_log.py
 
+# Install & Configure RVM
+curl -sSL https://rvm.io/mpapis.asc | gpg --import -
+\curl -sSL https://get.rvm.io | /bin/bash -s stable --ruby
+
+cat >> /etc/bash.bashrc << EOF
+
+# Load RVM into a shell session *as a function*
+source "/usr/local/rvm/scripts/rvm"
+
+EOF
+
 # Final cleaning
 rm -rf /tmp/*
 find /var/tmp -type f -print0 | xargs -0r rm -rf
