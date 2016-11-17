@@ -285,6 +285,14 @@ cat >> /bin/rvm << 'EOF'
 EOF
 chmod +x /bin/rvm
 
+# Bypass of ruby
+touch /bin/ruby
+cat >> /bin/ruby << 'EOF'
+#!/bin/bash
+/bin/bash -c "source /usr/local/rvm/scripts/rvm && ruby $*"
+EOF
+chmod +x /bin/ruby
+
 
 # Final cleaning
 rm -rf /tmp/*
