@@ -42,7 +42,7 @@ DPKG_DEPENDS="postgresql-9.3 postgresql-contrib-9.3 postgresql-9.5 postgresql-co
               bsdtar rsync graphviz openssh-server zsh \
               lua50 liblua50-dev liblualib50-dev exuberant-ctags rake \
               python3.3 python3.3-dev python3.4 python3.4-dev python3.5 python3.5-dev \
-              python3-pip software-properties-common Xvfb"
+              python3-pip software-properties-common Xvfb libmagickwand-dev"
 PIP_OPTS="--upgrade \
           --no-cache-dir"
 PIP_DEPENDS_EXTRA="line-profiler watchdog isort coveralls diff-highlight pg-activity"
