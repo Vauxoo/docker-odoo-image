@@ -266,12 +266,25 @@ PG_NON_DURABILITY=1 PG_LOGS_ENABLE=1 python ${REPO_REQUIREMENTS}/linit_hook/trav
 curl -sSL https://rvm.io/mpapis.asc | gpg --import -
 \curl -sSL https://get.rvm.io | /bin/bash -s stable --ruby
 
-cat >> /etc/bash.bashrc << EOF
+# We will use rvm
+apt-get remove --purge ruby
 
-# Load RVM into a shell session *as a function*
-source "/usr/local/rvm/scripts/rvm"
-
+# Bypass of gem to use it from rvm
+touch /bin/gem
+cat >> /bin/gem << 'EOF'
+#!/bin/bash
+/bin/bash -c "source /usr/local/rvm/scripts/rvm && gem $*"
 EOF
+chmod +x /bin/gem
+
+# Bypass of self-rvm
+touch /bin/rvm
+cat >> /bin/rvm << 'EOF'
+#!/bin/bash
+/bin/bash -c "source /usr/local/rvm/scripts/rvm && rvm $*"
+EOF
+chmod +x /bin/rvm
+
 
 # Final cleaning
 rm -rf /tmp/*
