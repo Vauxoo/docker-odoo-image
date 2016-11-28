@@ -75,6 +75,8 @@ pip install ${PIP_OPTS} ${PIP_DEPENDS_EXTRA}
 wget https://raw.githubusercontent.com/travis-ci/travis-cookbooks/master/cookbooks/travis_build_environment/files/default/etc-init.d-xvfb.sh -O /etc/init.d/xvfb
 chmod +x /etc/init.d/xvfb
 
+# Configure ssh server to not allow root and force ssh login to all other users
+configure_sshd
 # Init without download to add odoo remotes
 git init ${REPO_REQUIREMENTS}/odoo
 git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" remote add vauxoo "${ODOO_VAUXOO_REPO}"
