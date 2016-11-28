@@ -219,8 +219,11 @@ EOF
 echo $'#!/bin/bash\n$@' > /usr/bin/travis_wait
 chmod +x /usr/bin/travis_wait
 
-# Configure ssh to allow root login
-echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
+# Configure ssh to allow root login but just using ssh key
+cat >> /etc/ssh/sshd_config << EOF
+PermitRootLogin yes
+PasswordAuthentication no
+EOF
 
 # Extend root config to every user created from now on
 ln -sf /root/.profile /root/.bash* /root/.vim* /etc/skel/
