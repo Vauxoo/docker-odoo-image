@@ -63,11 +63,3 @@ createuser(){
 psql_create_role(){
     su - postgres -c "psql -c  \"CREATE ROLE ${1} LOGIN PASSWORD '${2}' SUPERUSER INHERIT CREATEDB CREATEROLE;\""
 }
-
-configure_sshd(){
-    cat >> /etc/ssh/sshd_config << EOF
-PermitRootLogin no
-DenyUsers root
-PasswordAuthentication no
-EOF
-}
