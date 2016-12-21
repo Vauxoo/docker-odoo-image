@@ -101,6 +101,7 @@ ln -sf ${REPO_REQUIREMENTS}/linit_hook/git/* /usr/share/git-core/templates/hooks
 
 # Execute travis_install_nightly
 LINT_CHECK=1 TESTS=0 ${REPO_REQUIREMENTS}/linit_hook/travis/travis_install_nightly
+pip install --user -q --no-binary pycparser -r ${REPO_REQUIREMENTS}/linit_hook/travis/requirements.txt
 
 # Install hub & ngrok
 targz_download_execute "${HUB_ARCHIVE}" "install"
