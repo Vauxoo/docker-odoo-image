@@ -90,7 +90,7 @@ git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" fetch vauxoo 9.0 --depth=10
 git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" gc --aggressive
 
 # Clone tools
-git_clone_copy "${GIST_VAUXOO_REPO}" "master" "" "/root/tools/gist-vauxoo"
+git_clone_copy "${GIST_VAUXOO_REPO}" "master" "" "~/tools/gist-vauxoo"
 git_clone_copy "${MQT_REPO}" "master" "" "${REPO_REQUIREMENTS}/linit_hook"
 git_clone_copy "${PYLINT_REPO}" "master" "conf/pylint_vauxoo_light.cfg" "${REPO_REQUIREMENTS}/linit_hook/travis/cfg/travis_run_pylint.cfg"
 git_clone_copy "${PYLINT_REPO}" "master" "conf/pylint_vauxoo_light_pr.cfg" "${REPO_REQUIREMENTS}/linit_hook/travis/cfg/travis_run_pylint_pr.cfg"
@@ -118,18 +118,18 @@ EOF
 
 # Install & configure zsh
 git_clone_execute "${OH_MY_ZSH_REPO}" "master" "tools/install.sh"
-git_clone_copy "${ZSH_THEME_REPO}" "master" "schminitz.zsh-theme" "/root/.oh-my-zsh/themes/odoo-shippable.zsh-theme"
-sed -i 's/robbyrussell/odoo-shippable/g' /root/.zshrc
+git_clone_copy "${ZSH_THEME_REPO}" "master" "schminitz.zsh-theme" "~/.oh-my-zsh/themes/odoo-shippable.zsh-theme"
+sed -i 's/robbyrussell/odoo-shippable/g' ~/.zshrc
 
 # Install & configure vim
 git_clone_execute "${SPF13_REPO}" "3.0" "bootstrap.sh"
-git_clone_copy "${VIM_OPENERP_REPO}" "master" "vim/" "/root/.vim/bundle/vim-openerp"
+git_clone_copy "${VIM_OPENERP_REPO}" "master" "vim/" "~/.vim/bundle/vim-openerp"
 wget -q -O /usr/share/vim/vim74/spell/es.utf-8.spl http://ftp.vim.org/pub/vim/runtime/spell/es.utf-8.spl
 
-sed -i 's/ set mouse\=a/\"set mouse\=a/g' /root/.vimrc
-sed -i "s/let g:neocomplete#enable_at_startup = 1/let g:neocomplete#enable_at_startup = 0/g" /root/.vimrc
+sed -i 's/ set mouse\=a/\"set mouse\=a/g' ~/.vimrc
+sed -i "s/let g:neocomplete#enable_at_startup = 1/let g:neocomplete#enable_at_startup = 0/g" ~/.vimrc
 
-cat >> /root/.vimrc << EOF
+cat >> ~/.vimrc << EOF
 colorscheme heliotrope
 set colorcolumn=80
 set spelllang=en,es
@@ -137,7 +137,7 @@ EOF
 
 # Configure pylint_odoo plugin and the .conf file
 # to enable python pylint_odoo checks and eslint checks into the vim editor.
-cat >> /root/.vimrc << EOF
+cat >> ~/.vimrc << EOF
 :filetype on
 let g:syntastic_aggregate_errors = 1
 let g:syntastic_python_checkers = ['pylint', 'flake8']
@@ -151,7 +151,7 @@ let g:syntastic_javascript_eslint_args =
     \ '--config /.repo_requirements/linit_hook/travis/cfg/.jslintrc'
 EOF
 
-cat >> /root/.vimrc.bundles << EOF
+cat >> ~/.vimrc.bundles << EOF
 " Odoo snippets {
 if count(g:spf13_bundle_groups, 'odoovim')
     Bundle 'vim-openerp'
@@ -159,7 +159,7 @@ endif
 " }
 EOF
 
-cat >> /root/.vimrc.before << EOF
+cat >> ~/.vimrc.before << EOF
 let g:spf13_bundle_groups = ['general', 'writing', 'odoovim',
                            \ 'programming', 'php', 'ruby',
                            \ 'python', 'javascript', 'html',
@@ -170,7 +170,7 @@ EOF
 chsh --shell /bin/bash root
 git_clone_copy "${HUB_REPO}" "master" "etc/hub.bash_completion.sh" "/etc/bash_completion.d/"
 
-cat >> /root/.bashrc << 'EOF'
+cat >> ~/.bashrc << 'EOF'
 Purple="\[\033[0;35m\]"
 BIPurple="\[\033[1;95m\]"
 Color_Off="\[\033[0m\]"
@@ -227,7 +227,7 @@ PasswordAuthentication no
 EOF
 
 # Extend root config to every user created from now on
-ln -sf /root/.profile /root/.bash* /root/.vim* /etc/skel/
+ln -sf ~/.profile ~/.bash* ~/.vim* /etc/skel/
 
 # Create shippable user with sudo powers and git configuration
 createuser "shippable" "shippablepwd" "Shippable" "hello@shippable.com"
