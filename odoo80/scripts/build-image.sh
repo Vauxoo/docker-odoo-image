@@ -43,6 +43,7 @@ DPKG_DEPENDS="nodejs \
               libxml2-dev \
               libxslt1-dev \
               libgeoip-dev \
+              libssl-dev \
               cython \
               fontconfig \
               ghostscript \
