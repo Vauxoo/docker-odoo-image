@@ -129,6 +129,16 @@ wget -q -O /usr/share/vim/vim74/spell/es.utf-8.spl http://ftp.vim.org/pub/vim/ru
 sed -i 's/ set mouse\=a/\"set mouse\=a/g' ~/.vimrc
 sed -i "s/let g:neocomplete#enable_at_startup = 1/let g:neocomplete#enable_at_startup = 0/g" ~/.vimrc
 
+# Install YouCompleteMe
+git_clone_copy "git@github.com:Valloric/YouCompleteMe.git" "master" "~/.vim/bundle/YouCompleteMe"
+rm -rf ~/.vim/bundle/YouCompleteMe/third_party/
+cd ~/.vim/bundle/YouCompleteMe
+git submodule update --init --recursive
+./install.py
+cd -
+sed -i "s/let g:spf13_bundle_groups=['general', 'writing', 'neocomplete', 'programming', 'php', 'ruby', 'python', 'javascript', 'html', 'misc',]/let g:spf13_bundle_groups=['general', 'writing', 'youcompleteme', 'programming', 'php', 'ruby', 'python', 'javascript', 'html', 'misc',]/g" ~/.vimrc.bundles
+vim +PluginInstall +qall
+
 cat >> ~/.vimrc << EOF
 colorscheme heliotrope
 set colorcolumn=80
