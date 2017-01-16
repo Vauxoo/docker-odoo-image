@@ -131,14 +131,16 @@ sed -i "s/let g:neocomplete#enable_at_startup = 1/let g:neocomplete#enable_at_st
 
 # Install YouCompleteMe
 apt-get install cmake
+add-apt-repository ppa:jonathonf/vim -y
+apt update
+apt-get upgrade
+apt-get upgrade vim
 git_clone_copy "git@github.com:Valloric/YouCompleteMe.git" "master" "~/.vim/bundle/YouCompleteMe"
 rm -rf ~/.vim/bundle/YouCompleteMe/third_party/
 cd ~/.vim/bundle/YouCompleteMe
 git submodule update --init --recursive
 ./install.py
 cd -
-sed -i "s/let g:spf13_bundle_groups=['general', 'writing', 'neocomplete', 'programming', 'php', 'ruby', 'python', 'javascript', 'html', 'misc',]/let g:spf13_bundle_groups=['general', 'writing', 'youcompleteme', 'programming', 'php', 'ruby', 'python', 'javascript', 'html', 'misc',]/g" ~/.vimrc.bundles
-vim +PluginInstall +qall
 
 cat >> ~/.vimrc << EOF
 colorscheme heliotrope
@@ -172,10 +174,12 @@ EOF
 
 cat >> ~/.vimrc.before << EOF
 let g:spf13_bundle_groups = ['general', 'writing', 'odoovim',
-                           \ 'programming', 'php', 'ruby',
+                           \ 'programming', 'youcompleteme', 'php', 'ruby',
                            \ 'python', 'javascript', 'html',
                            \ 'misc']
 EOF
+
+vim +PluginInstall +qall
 
 # Configure shell, shell colors & shell completion
 chsh --shell /bin/bash root
