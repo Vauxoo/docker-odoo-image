@@ -182,8 +182,6 @@ cat >> ~/.vimrc.local << EOF
 setlocal nospell
 EOF
 
-echo | echo | vim +PluginInstall +qall &>/dev/null
-
 # Configure shell, shell colors & shell completion
 chsh --shell /bin/bash root
 git_clone_copy "${HUB_REPO}" "master" "etc/hub.bash_completion.sh" "/etc/bash_completion.d/"
