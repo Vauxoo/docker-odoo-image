@@ -178,6 +178,10 @@ let g:spf13_bundle_groups = ['general', 'writing', 'odoovim',
                            \ 'misc']
 EOF
 
+cat >> ~/.vimrc.local << EOF
+setlocal nospell
+EOF
+
 vim +PluginInstall +qall
 
 # Configure shell, shell colors & shell completion
