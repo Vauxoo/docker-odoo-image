@@ -182,7 +182,7 @@ cat >> ~/.vimrc.local << EOF
 setlocal nospell
 EOF
 
-vim +PluginInstall +qall
+echo | echo | vim +PluginInstall +qall &>/dev/null
 
 # Configure shell, shell colors & shell completion
 chsh --shell /bin/bash root
