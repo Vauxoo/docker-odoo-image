@@ -18,6 +18,8 @@ GITCORE_PPA_KEY="http://keyserver.ubuntu.com:11371/pks/lookup?op=get&search=0xA1
 # ppa sources
 PYTHON_PPA_REPO="deb http://ppa.launchpad.net/fkrull/deadsnakes/ubuntu trusty main"
 PYTHON_PPA_KEY="http://keyserver.ubuntu.com:11371/pks/lookup?op=get&search=0x5BB92C09DB82666C"
+VIM_PPA_REPO="deb http://ppa.launchpad.net/jonathonf/vim/ubuntu trusty main"
+VIM_PPA_KEY="http://keyserver.ubuntu.com:11371/pks/lookup?op=get&search=0x8CF63AD3F06FC659"
 
 # Extra software download URLs
 HUB_ARCHIVE="https://github.com/github/hub/releases/download/v2.2.3/hub-linux-${ARCH}-2.2.3.tgz"
@@ -131,7 +133,8 @@ sed -i "s/let g:neocomplete#enable_at_startup = 1/let g:neocomplete#enable_at_st
 
 # Install YouCompleteMe
 apt-get install cmake
-add-apt-repository ppa:jonathonf/vim -y
+add_custom_aptsource "${VIM_PPA_REPO}" "${VIM_PPA_KEY}"
+# Release the apt monster!
 apt update
 apt-get upgrade
 apt-get upgrade vim
