@@ -130,6 +130,7 @@ sed -i 's/ set mouse\=a/\"set mouse\=a/g' ~/.vimrc
 sed -i "s/let g:neocomplete#enable_at_startup = 1/let g:neocomplete#enable_at_startup = 0/g" ~/.vimrc
 
 # Install YouCompleteMe
+apt-get install cmake
 git_clone_copy "git@github.com:Valloric/YouCompleteMe.git" "master" "~/.vim/bundle/YouCompleteMe"
 rm -rf ~/.vim/bundle/YouCompleteMe/third_party/
 cd ~/.vim/bundle/YouCompleteMe
