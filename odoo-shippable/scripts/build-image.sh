@@ -137,7 +137,6 @@ add_custom_aptsource "${VIM_PPA_REPO}" "${VIM_PPA_KEY}"
 # Release the apt monster!
 apt update
 apt-get upgrade
-apt-get upgrade vim
 git clone https://github.com/Valloric/YouCompleteMe.git ~/.vim/bundle/YouCompleteMe
 cd ~/.vim/bundle/YouCompleteMe
 git submodule update --init --recursive
