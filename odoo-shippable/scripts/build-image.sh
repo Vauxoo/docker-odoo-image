@@ -41,7 +41,7 @@ PYLINT_REPO="https://github.com/vauxoo/pylint-conf.git"
 
 DPKG_DEPENDS="postgresql-9.3 postgresql-contrib-9.3 postgresql-9.5 postgresql-contrib-9.5 \
               pgbadger pgtune perl-modules make openssl p7zip-full expect-dev mosh bpython \
-              bsdtar rsync graphviz openssh-server zsh \
+              bsdtar rsync graphviz openssh-server cmake zsh \
               lua50 liblua50-dev liblualib50-dev exuberant-ctags rake \
               python3.3 python3.3-dev python3.4 python3.4-dev python3.5 python3.5-dev \
               python3-pip software-properties-common Xvfb libmagickwand-dev"
@@ -56,7 +56,8 @@ NPM_DEPENDS="localtunnel fs-extra eslint"
 add_custom_aptsource "${GITCORE_PPA_REPO}" "${GITCORE_PPA_KEY}"
 # Let's add the fkrull deadsnakes ppa for get python3.x versions
 add_custom_aptsource "${PYTHON_PPA_REPO}" "${PYTHON_PPA_KEY}"
-
+# Let's add the vim ppa for having a more up-to-date vim
+add_custom_aptsource "${VIM_PPA_REPO}" "${VIM_PPA_KEY
 
 # Release the apt monster!
 apt-get update
@@ -132,11 +133,6 @@ sed -i 's/ set mouse\=a/\"set mouse\=a/g' ~/.vimrc
 sed -i "s/let g:neocomplete#enable_at_startup = 1/let g:neocomplete#enable_at_startup = 0/g" ~/.vimrc
 
 # Install YouCompleteMe
-apt-get install cmake
-add_custom_aptsource "${VIM_PPA_REPO}" "${VIM_PPA_KEY}"
-# Release the apt monster!
-apt update
-apt-get upgrade
 git clone https://github.com/Valloric/YouCompleteMe.git ~/.vim/bundle/YouCompleteMe
 cd ~/.vim/bundle/YouCompleteMe
 git submodule update --init --recursive
