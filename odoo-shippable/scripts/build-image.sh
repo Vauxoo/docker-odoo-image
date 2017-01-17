@@ -57,7 +57,7 @@ add_custom_aptsource "${GITCORE_PPA_REPO}" "${GITCORE_PPA_KEY}"
 # Let's add the fkrull deadsnakes ppa for get python3.x versions
 add_custom_aptsource "${PYTHON_PPA_REPO}" "${PYTHON_PPA_KEY}"
 # Let's add the vim ppa for having a more up-to-date vim
-add_custom_aptsource "${VIM_PPA_REPO}" "${VIM_PPA_KEY
+add_custom_aptsource "${VIM_PPA_REPO}" "${VIM_PPA_KEY}"
 
 # Release the apt monster!
 apt-get update
