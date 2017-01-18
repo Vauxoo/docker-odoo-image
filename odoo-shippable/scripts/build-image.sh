@@ -124,7 +124,7 @@ git_clone_execute "${OH_MY_ZSH_REPO}" "master" "tools/install.sh"
 git_clone_copy "${ZSH_THEME_REPO}" "master" "schminitz.zsh-theme" "~/.oh-my-zsh/themes/odoo-shippable.zsh-theme"
 sed -i 's/robbyrussell/odoo-shippable/g' ~/.zshrc
 
-# Install & configure vim
+# Upgrade & configure vim
 apt-get upgrade vim
 wget -q -O /usr/share/vim/vim80/spell/es.utf-8.spl http://ftp.vim.org/pub/vim/runtime/spell/es.utf-8.spl
 git_clone_execute "${SPF13_REPO}" "3.0" "bootstrap.sh"
