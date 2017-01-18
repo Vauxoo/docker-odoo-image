@@ -125,9 +125,10 @@ git_clone_copy "${ZSH_THEME_REPO}" "master" "schminitz.zsh-theme" "~/.oh-my-zsh/
 sed -i 's/robbyrussell/odoo-shippable/g' ~/.zshrc
 
 # Install & configure vim
+apt-get upgrade vim
+wget -q -O /usr/share/vim/vim80/spell/es.utf-8.spl http://ftp.vim.org/pub/vim/runtime/spell/es.utf-8.spl
 git_clone_execute "${SPF13_REPO}" "3.0" "bootstrap.sh"
 git_clone_copy "${VIM_OPENERP_REPO}" "master" "vim/" "~/.vim/bundle/vim-openerp"
-wget -q -O /usr/share/vim/vim74/spell/es.utf-8.spl http://ftp.vim.org/pub/vim/runtime/spell/es.utf-8.spl
 
 sed -i 's/ set mouse\=a/\"set mouse\=a/g' ~/.vimrc
 sed -i "s/let g:neocomplete#enable_at_startup = 1/let g:neocomplete#enable_at_startup = 0/g" ~/.vimrc
@@ -181,10 +182,6 @@ let g:spf13_bundle_groups = ['general', 'writing', 'odoovim',
                            \ 'programming', 'youcompleteme', 'php', 'ruby',
                            \ 'python', 'javascript', 'html',
                            \ 'misc']
-EOF
-
-cat >> ~/.vimrc.local << EOF
-setlocal nospell
 EOF
 
 # Configure shell, shell colors & shell completion
