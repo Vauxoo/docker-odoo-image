@@ -167,13 +167,6 @@ endif
 " }
 EOF
 
-cat >> ~/.vimrc.before << EOF
-let g:spf13_bundle_groups = ['general', 'writing', 'odoovim',
-                           \ 'programming', 'youcompleteme', 'php', 'ruby',
-                           \ 'python', 'javascript', 'html',
-                           \ 'misc']
-EOF
-
 cat >> ~/.vimrc.before.local << EOF
 let g:spf13_bundle_groups = ['general', 'writing', 'odoovim',
                            \ 'programming', 'youcompleteme', 'php', 'ruby',
