@@ -18,8 +18,8 @@ GITCORE_PPA_KEY="http://keyserver.ubuntu.com:11371/pks/lookup?op=get&search=0xA1
 # ppa sources
 PYTHON_PPA_REPO="deb http://ppa.launchpad.net/fkrull/deadsnakes/ubuntu trusty main"
 PYTHON_PPA_KEY="http://keyserver.ubuntu.com:11371/pks/lookup?op=get&search=0x5BB92C09DB82666C"
-VIM_PPA_REPO="deb http://ppa.launchpad.net/jonathonf/vim/ubuntu trusty main"
-VIM_PPA_KEY="http://keyserver.ubuntu.com:11371/pks/lookup?op=get&search=0x8CF63AD3F06FC659"
+VIM_PPA_REPO="deb http://ppa.launchpad.net/pkg-vim/vim-daily/ubuntu trusty main"
+VIM_PPA_KEY="http://keyserver.ubuntu.com:11371/pks/lookup?op=get&search=0xA7266A2DD31525A0"
 
 # Extra software download URLs
 HUB_ARCHIVE="https://github.com/github/hub/releases/download/v2.2.3/hub-linux-${ARCH}-2.2.3.tgz"
@@ -126,7 +126,7 @@ sed -i 's/robbyrussell/odoo-shippable/g' ~/.zshrc
 
 # Upgrade & configure vim
 apt-get upgrade vim
-wget -q -O /usr/share/vim/vim80/spell/es.utf-8.spl http://ftp.vim.org/pub/vim/runtime/spell/es.utf-8.spl
+wget -q -O /usr/share/vim/vim74/spell/es.utf-8.spl http://ftp.vim.org/pub/vim/runtime/spell/es.utf-8.spl
 git_clone_execute "${SPF13_REPO}" "3.0" "bootstrap.sh"
 git_clone_copy "${VIM_OPENERP_REPO}" "master" "vim/" "~/.vim/bundle/vim-openerp"
 
