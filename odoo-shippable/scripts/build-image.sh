@@ -135,10 +135,7 @@ sed -i "s/let g:neocomplete#enable_at_startup = 1/let g:neocomplete#enable_at_st
 
 # Install YouCompleteMe
 git clone https://github.com/Valloric/YouCompleteMe.git ~/.vim/bundle/YouCompleteMe
-cd ~/.vim/bundle/YouCompleteMe
-git submodule update --init --recursive
-./install.py
-cd -
+(cd ~/.vim/bundle/YouCompleteMe && git submodule update --init --recursive && ./install.py)
 
 cat >> ~/.vimrc << EOF
 colorscheme heliotrope
