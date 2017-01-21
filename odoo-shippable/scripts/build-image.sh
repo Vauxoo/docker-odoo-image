@@ -100,7 +100,7 @@ git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" fetch odoo master --depth=10
 git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" gc --aggressive
 
 # Clone tools
-git_clone_copy "${GIST_VAUXOO_REPO}" "master" "" "~/tools/gist-vauxoo"
+git_clone_copy "${GIST_VAUXOO_REPO}" "master" "" "${HOME}/tools/gist-vauxoo"
 git_clone_copy "${MQT_REPO}" "master" "" "${REPO_REQUIREMENTS}/linit_hook"
 git_clone_copy "${PYLINT_REPO}" "master" "conf/pylint_vauxoo_light.cfg" "${REPO_REQUIREMENTS}/linit_hook/travis/cfg/travis_run_pylint.cfg"
 git_clone_copy "${PYLINT_REPO}" "master" "conf/pylint_vauxoo_light_pr.cfg" "${REPO_REQUIREMENTS}/linit_hook/travis/cfg/travis_run_pylint_pr.cfg"
@@ -128,14 +128,14 @@ EOF
 
 # Install & configure zsh
 git_clone_execute "${OH_MY_ZSH_REPO}" "master" "tools/install.sh"
-git_clone_copy "${ZSH_THEME_REPO}" "master" "schminitz.zsh-theme" "~/.oh-my-zsh/themes/odoo-shippable.zsh-theme"
+git_clone_copy "${ZSH_THEME_REPO}" "master" "schminitz.zsh-theme" "${HOME}/.oh-my-zsh/themes/odoo-shippable.zsh-theme"
 sed -i 's/robbyrussell/odoo-shippable/g' ~/.zshrc
 
 # Upgrade & configure vim
 apt-get upgrade vim
 wget -q -O /usr/share/vim/vim74/spell/es.utf-8.spl http://ftp.vim.org/pub/vim/runtime/spell/es.utf-8.spl
 git_clone_execute "${SPF13_REPO}" "3.0" "bootstrap.sh"
-git_clone_copy "${VIM_OPENERP_REPO}" "master" "vim/" "~/.vim/bundle/vim-openerp"
+git_clone_copy "${VIM_OPENERP_REPO}" "master" "vim/" "${HOME}/.vim/bundle/vim-openerp"
 
 sed -i 's/ set mouse\=a/\"set mouse\=a/g' ~/.vimrc
 sed -i "s/let g:neocomplete#enable_at_startup = 1/let g:neocomplete#enable_at_startup = 0/g" ~/.vimrc
@@ -146,7 +146,7 @@ git_clone_copy "${VIM_YOUCOMPLETEME_REPO}" "master" "." "${VIM_YOUCOMPLETEME_PAT
 (cd "${VIM_YOUCOMPLETEME_PATH}" && ./install.py)
 
 # Install WakaTime
-git_clone_copy "${VIM_WAKATIME_REPO}" "master" "." ~/.vim/bundle/vim-wakatime
+git_clone_copy "${VIM_WAKATIME_REPO}" "master" "." "${HOME}/.vim/bundle/vim-wakatime"
 
 cat >> ~/.vimrc << EOF
 colorscheme heliotrope
