@@ -30,6 +30,8 @@ ZSH_THEME_REPO="https://gist.github.com/9931af23bbb59e772eec.git"
 OH_MY_ZSH_REPO="https://github.com/robbyrussell/oh-my-zsh.git"
 SPF13_REPO="https://github.com/spf13/spf13-vim.git"
 VIM_OPENERP_REPO="https://github.com/vauxoo/vim-openerp.git"
+VIM_WAKATIME_REPO="https://github.com/wakatime/vim-wakatime.git"
+VIM_YOUCOMPLETEME_REPO="https://github.com/Valloric/YouCompleteMe.git"
 HUB_REPO="https://github.com/github/hub.git"
 ODOO_VAUXOO_REPO="https://github.com/vauxoo/odoo.git"
 ODOO_VAUXOO_DEV_REPO="https://github.com/vauxoo-dev/odoo.git"
@@ -134,11 +136,12 @@ sed -i 's/ set mouse\=a/\"set mouse\=a/g' ~/.vimrc
 sed -i "s/let g:neocomplete#enable_at_startup = 1/let g:neocomplete#enable_at_startup = 0/g" ~/.vimrc
 
 # Install YouCompleteMe
-git clone https://github.com/Valloric/YouCompleteMe.git ~/.vim/bundle/YouCompleteMe
-(cd ~/.vim/bundle/YouCompleteMe && git submodule update --init --recursive && ./install.py)
+VIM_YOUCOMPLETEME_PATH="~/.vim/bundle/YouCompleteMe"
+git_clone_copy "${VIM_YOUCOMPLETEME_REPO}" "master" "." "${VIM_YOUCOMPLETEME_PATH}"
+(cd "${VIM_YOUCOMPLETEME_PATH}" && ./install.py)
 
 # Install WakaTime
-git clone --depth=1 --single-branch git://github.com/wakatime/vim-wakatime.git ~/.vim/bundle/wakatime
+git_clone_copy "${VIM_WAKATIME_REPO}" "master" "." ~/.vim/bundle/vim-wakatime
 
 cat >> ~/.vimrc << EOF
 colorscheme heliotrope
