@@ -137,6 +137,9 @@ sed -i "s/let g:neocomplete#enable_at_startup = 1/let g:neocomplete#enable_at_st
 git clone https://github.com/Valloric/YouCompleteMe.git ~/.vim/bundle/YouCompleteMe
 (cd ~/.vim/bundle/YouCompleteMe && git submodule update --init --recursive && ./install.py)
 
+# Install WakaTime
+git clone --depth=1 --single-branch git://github.com/wakatime/vim-wakatime.git ~/.vim/bundle/wakatime
+
 cat >> ~/.vimrc << EOF
 colorscheme heliotrope
 set colorcolumn=80
@@ -159,16 +162,21 @@ let g:syntastic_javascript_eslint_args =
     \ '--config /.repo_requirements/linit_hook/travis/cfg/.jslintrc'
 EOF
 
-cat >> ~/.vimrc.bundles << EOF
+cat >> ~/.vimrc.bundles.local << EOF
 " Odoo snippets {
 if count(g:spf13_bundle_groups, 'odoovim')
     Bundle 'vim-openerp'
 endif
 " }
+" wakatime bundle {
+if filereadable(expand("~/.wakatime.cfg")) && count(g:spf13_bundle_groups, 'wakatime')
+    Bundle 'vim-wakatime'
+endif
+" }
 EOF
 
 cat >> ~/.vimrc.before.local << EOF
-let g:spf13_bundle_groups = ['general', 'writing', 'odoovim',
+let g:spf13_bundle_groups = ['general', 'writing', 'odoovim', 'wakatime',
                            \ 'programming', 'youcompleteme', 'php', 'ruby',
                            \ 'python', 'javascript', 'html',
                            \ 'misc']
