@@ -141,7 +141,7 @@ sed -i 's/ set mouse\=a/\"set mouse\=a/g' ~/.vimrc
 sed -i "s/let g:neocomplete#enable_at_startup = 1/let g:neocomplete#enable_at_startup = 0/g" ~/.vimrc
 
 # Install YouCompleteMe
-VIM_YOUCOMPLETEME_PATH="~/.vim/bundle/YouCompleteMe"
+VIM_YOUCOMPLETEME_PATH="${HOME}/.vim/bundle/YouCompleteMe"
 git_clone_copy "${VIM_YOUCOMPLETEME_REPO}" "master" "." "${VIM_YOUCOMPLETEME_PATH}"
 (cd "${VIM_YOUCOMPLETEME_PATH}" && ./install.py)
 
