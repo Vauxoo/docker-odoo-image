@@ -168,6 +168,15 @@ let g:syntastic_python_flake8_args =
 let g:syntastic_javascript_checkers = ['eslint']
 let g:syntastic_javascript_eslint_args =
     \ '--config /.repo_requirements/linit_hook/travis/cfg/.jslintrc'
+
+" make YCM compatible with UltiSnips (using supertab) more info http://stackoverflow.com/a/22253548/3753497
+let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
+let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
+let g:SuperTabDefaultCompletionType = '<C-n>'
+" better key bindings for Snippets Expand Trigger
+let g:UltiSnipsExpandTrigger = "<tab>"
+let g:UltiSnipsJumpForwardTrigger = "<tab>"
+let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
 EOF
 
 cat >> ~/.vimrc.bundles.local << EOF
