@@ -30,6 +30,8 @@ ZSH_THEME_REPO="https://gist.github.com/9931af23bbb59e772eec.git"
 OH_MY_ZSH_REPO="https://github.com/robbyrussell/oh-my-zsh.git"
 SPF13_REPO="https://github.com/spf13/spf13-vim.git"
 VIM_OPENERP_REPO="https://github.com/vauxoo/vim-openerp.git"
+VIM_WAKATIME_REPO="https://github.com/wakatime/vim-wakatime.git"
+VIM_YOUCOMPLETEME_REPO="https://github.com/Valloric/YouCompleteMe.git"
 HUB_REPO="https://github.com/github/hub.git"
 ODOO_VAUXOO_REPO="https://github.com/vauxoo/odoo.git"
 ODOO_VAUXOO_DEV_REPO="https://github.com/vauxoo-dev/odoo.git"
@@ -85,15 +87,20 @@ git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" remote add vauxoo-dev "${ODOO_VAU
 git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" remote add odoo "${ODOO_ODOO_REPO}"
 git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" remote add oca "${ODOO_OCA_REPO}"
 
-# Download the cached branches from vauxoo/odoo to avoid the download by each build
+# Download the cached branches to avoid the download by each build
 git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" fetch vauxoo 8.0 --depth=10
 git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" fetch vauxoo 9.0 --depth=10
+git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" fetch vauxoo 10.0 --depth=10
+git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" fetch odoo 8.0 --depth=10
+git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" fetch odoo 9.0 --depth=10
+git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" fetch odoo 10.0 --depth=10
+git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" fetch odoo master --depth=10
 
 # Clean
 git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" gc --aggressive
 
 # Clone tools
-git_clone_copy "${GIST_VAUXOO_REPO}" "master" "" "~/tools/gist-vauxoo"
+git_clone_copy "${GIST_VAUXOO_REPO}" "master" "" "${HOME}/tools/gist-vauxoo"
 git_clone_copy "${MQT_REPO}" "master" "" "${REPO_REQUIREMENTS}/linit_hook"
 git_clone_copy "${PYLINT_REPO}" "master" "conf/pylint_vauxoo_light.cfg" "${REPO_REQUIREMENTS}/linit_hook/travis/cfg/travis_run_pylint.cfg"
 git_clone_copy "${PYLINT_REPO}" "master" "conf/pylint_vauxoo_light_pr.cfg" "${REPO_REQUIREMENTS}/linit_hook/travis/cfg/travis_run_pylint_pr.cfg"
@@ -121,21 +128,26 @@ EOF
 
 # Install & configure zsh
 git_clone_execute "${OH_MY_ZSH_REPO}" "master" "tools/install.sh"
-git_clone_copy "${ZSH_THEME_REPO}" "master" "schminitz.zsh-theme" "~/.oh-my-zsh/themes/odoo-shippable.zsh-theme"
+git_clone_copy "${ZSH_THEME_REPO}" "master" "schminitz.zsh-theme" "${HOME}/.oh-my-zsh/themes/odoo-shippable.zsh-theme"
 sed -i 's/robbyrussell/odoo-shippable/g' ~/.zshrc
 
 # Upgrade & configure vim
 apt-get upgrade vim
-wget -q -O /usr/share/vim/vim74/spell/es.utf-8.spl http://ftp.vim.org/pub/vim/runtime/spell/es.utf-8.spl
+mkdir -p ~/.vim/spell
+wget -q -O ~/.vim/spell/es.utf-8.spl http://ftp.vim.org/pub/vim/runtime/spell/es.utf-8.spl
 git_clone_execute "${SPF13_REPO}" "3.0" "bootstrap.sh"
-git_clone_copy "${VIM_OPENERP_REPO}" "master" "vim/" "~/.vim/bundle/vim-openerp"
+git_clone_copy "${VIM_OPENERP_REPO}" "master" "vim/" "${HOME}/.vim/bundle/vim-openerp"
 
 sed -i 's/ set mouse\=a/\"set mouse\=a/g' ~/.vimrc
 sed -i "s/let g:neocomplete#enable_at_startup = 1/let g:neocomplete#enable_at_startup = 0/g" ~/.vimrc
 
 # Install YouCompleteMe
-git clone https://github.com/Valloric/YouCompleteMe.git ~/.vim/bundle/YouCompleteMe
-(cd ~/.vim/bundle/YouCompleteMe && git submodule update --init --recursive && ./install.py)
+VIM_YOUCOMPLETEME_PATH="~/.vim/bundle/YouCompleteMe"
+git_clone_copy "${VIM_YOUCOMPLETEME_REPO}" "master" "." "${VIM_YOUCOMPLETEME_PATH}"
+(cd "${VIM_YOUCOMPLETEME_PATH}" && ./install.py)
+
+# Install WakaTime
+git_clone_copy "${VIM_WAKATIME_REPO}" "master" "." "${HOME}/.vim/bundle/vim-wakatime"
 
 cat >> ~/.vimrc << EOF
 colorscheme heliotrope
@@ -159,16 +171,21 @@ let g:syntastic_javascript_eslint_args =
     \ '--config /.repo_requirements/linit_hook/travis/cfg/.jslintrc'
 EOF
 
-cat >> ~/.vimrc.bundles << EOF
+cat >> ~/.vimrc.bundles.local << EOF
 " Odoo snippets {
 if count(g:spf13_bundle_groups, 'odoovim')
     Bundle 'vim-openerp'
 endif
 " }
+" wakatime bundle {
+if filereadable(expand("~/.wakatime.cfg")) && count(g:spf13_bundle_groups, 'wakatime')
+    Bundle 'vim-wakatime'
+endif
+" }
 EOF
 
 cat >> ~/.vimrc.before.local << EOF
-let g:spf13_bundle_groups = ['general', 'writing', 'odoovim',
+let g:spf13_bundle_groups = ['general', 'writing', 'odoovim', 'wakatime',
                            \ 'programming', 'youcompleteme', 'php', 'ruby',
                            \ 'python', 'javascript', 'html',
                            \ 'misc']

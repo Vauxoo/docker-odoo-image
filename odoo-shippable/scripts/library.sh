@@ -6,10 +6,9 @@ git_clone_copy(){
     WHAT="${3}"
     WHERE="${4}"
     TEMPDIR="$( mktemp -d )"
-    OPTIONS="--depth 30 -b ${BRANCH} -q --single-branch --recursive"
     echo "Cloning ${URL} ..."
     mkdir -p $( dirname "${WHERE}" )
-    git clone ${URL} ${OPTIONS} ${TEMPDIR}
+    git clone ${URL} --depth 1 -b ${BRANCH} -q --single-branch --recursive ${TEMPDIR}
     rsync -aqz "${TEMPDIR}/${WHAT}" "${WHERE}"
     rm -rf ${TEMPDIR}
 }
@@ -31,10 +30,9 @@ git_clone_execute(){
     BRANCH="${2}"
     SCRIPT="${3}"
     TEMPDIR="$( mktemp -d )"
-    OPTIONS="--depth 30 -b ${BRANCH} -q --single-branch --recursive"
     echo "Cloning ${URL} ..."
-    git clone ${URL} ${OPTIONS} ${TEMPDIR}
-    bash "${TEMPDIR}/${SCRIPT}"
+    git clone ${URL} --depth 1 -b ${BRANCH} -q --single-branch --recursive ${TEMPDIR}
+    (cd ${TEMPDIR} && ./${SCRIPT})
     rm -rf ${TEMPDIR}
 }
 
