@@ -242,6 +242,7 @@ EOF
 
 cat >> /etc/multitail.conf << EOF
 # Odoo log
+cs_re:yellow:WAR
 cs_re_s:blue:^[^ ]* *[^,]*,[^ ]* *[0-9]* *(TEST) *[^ ]* [^ ]* *(.*)$
 EOF
 
