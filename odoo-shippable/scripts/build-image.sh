@@ -235,6 +235,16 @@ git_ps1_style(){
 PS1=$UserMachine$Color_Off$PathShort\$\\n"\$(git_ps1_style)"$Color_Off\$" "
 EOF
 
+# Add alias for multitail and configure
+cat >> /etc/bash.bashrc << EOF
+alias tail2="multitail -cS log4j"
+EOF
+
+cat >> /etc/multitail.conf << EOF
+# Odoo log
+cs_re_s:blue:^[^ ]* *[^,]*,[^ ]* *[0-9]* *(TEST) *[^ ]* [^ ]* *(.*)$
+EOF
+
 # Add alias for psql logs
 cat >> /etc/bash.bashrc << EOF
 alias psql_logs_enable='export PGOPTIONS="$PGOPTIONS -c client_min_messages=notice -c log_min_messages=warning -c log_min_error_statement=error -c log_min_duration_statement=0 -c log_connections=on -c log_disconnections=on -c log_duration=off -c log_error_verbosity=verbose -c log_lock_waits=on -c log_statement=none -c log_temp_files=0"'
