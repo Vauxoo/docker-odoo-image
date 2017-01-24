@@ -242,8 +242,13 @@ EOF
 
 cat >> /etc/multitail.conf << EOF
 # Odoo log
-cs_re:yellow:WAR
-cs_re_s:blue:^[^ ]* *[^,]*,[^ ]* *[0-9]* *(TEST) *[^ ]* [^ ]* *(.*)$
+colorscheme:odoo
+cs_re:blue:^[0-9]*-[0-9]*-[0-9]* [0-9]*:[0-9]*:[0-9]*,[0-9]*
+cs_re_s:blue,,bold:^[^ ]* *[^,]*,[^ ]* *[0-9]* *(DEBUG) *[^ ]* [^ ]* *(.*)$
+cs_re_s:green:^[^ ]* *[^,]*,[0-9]* *[0-9]* *(INFO) *[^ ]* [^ ]* *(.*)$
+cs_re_s:yellow:^[^ ]* *[^,]*,[0-9]* *[0-9]* *(WARNING) *[^ ]* [^ ]* *(.*)$
+cs_re_s:red:^[^ ]* *[^,]*,[0-9]* *[0-9]* *(ERROR) *[^ ]* [^ ]* *(.*)$
+cs_re_s:red,,bold:^[^ ]* *[^,]*,[0-9]* *[0-9]* *(CRITICAL) *[^ ]* [^ ]* *(.*)$
 EOF
 
 # Add alias for psql logs
