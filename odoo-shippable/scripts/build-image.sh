@@ -251,6 +251,10 @@ cs_re_s:red:^[^ ]* *[^,]*,[0-9]* *[0-9]* *(ERROR) *[^ ]* [^ ]* *(.*)$
 cs_re_s:red,,bold:^[^ ]* *[^,]*,[0-9]* *[0-9]* *(CRITICAL) *[^ ]* [^ ]* *(.*)$
 EOF
 
+# Comment log4j
+sed -i "s/cs_re_s:white,,bold:^\[^ ]\* \*\[^,]\*,\[0-9]\* \*\[0-9]\* \*\[A-Z]\* \*(.\*)/#cs_re_s:white,,bold:^\[^ ]\* \*\[^,]\*,\[0-9]\* \*\[0-9]\* \*\[A-Z]\* \*(.\*)/g" /etc/multitail.conf
+sed -i "s/cs_re_s:yellow:^\[^ ]\* \*\[^,]\*,\[0-9]\* \*\[0-9]\* \*(WARN) \*\[^ ]\* \[^ ]\* \*(.\*)\\$/#cs_re_s:yellow:^\[^ ]\* \*\[^,]\*,\[0-9]\* \*\[0-9]\* \*(WARN) \*\[^ ]\* \[^ ]\* \*(.\*)\\$/g"/etc/multitail.conf
+
 # Add alias for psql logs
 cat >> /etc/bash.bashrc << EOF
 alias psql_logs_enable='export PGOPTIONS="$PGOPTIONS -c client_min_messages=notice -c log_min_messages=warning -c log_min_error_statement=error -c log_min_duration_statement=0 -c log_connections=on -c log_disconnections=on -c log_duration=off -c log_error_verbosity=verbose -c log_lock_waits=on -c log_statement=none -c log_temp_files=0"'
