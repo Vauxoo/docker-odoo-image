@@ -237,7 +237,7 @@ EOF
 
 # Add alias for multitail and configure
 cat >> /etc/bash.bashrc << EOF
-alias tail2="multitail -cS log4j"
+alias tail2="multitail -cS odoo"
 EOF
 
 cat >> /etc/multitail.conf << EOF
@@ -250,10 +250,6 @@ cs_re_s:yellow:^[^ ]* *[^,]*,[0-9]* *[0-9]* *(WARNING) *[^ ]* [^ ]* *(.*)$
 cs_re_s:red:^[^ ]* *[^,]*,[0-9]* *[0-9]* *(ERROR) *[^ ]* [^ ]* *(.*)$
 cs_re_s:red,,bold:^[^ ]* *[^,]*,[0-9]* *[0-9]* *(CRITICAL) *[^ ]* [^ ]* *(.*)$
 EOF
-
-# Comment log4j
-sed -i "s/cs_re_s:white,,bold:^\[^ ]\* \*\[^,]\*,\[0-9]\* \*\[0-9]\* \*\[A-Z]\* \*(.\*)/#cs_re_s:white,,bold:^\[^ ]\* \*\[^,]\*,\[0-9]\* \*\[0-9]\* \*\[A-Z]\* \*(.\*)/g" /etc/multitail.conf
-sed -i "s/cs_re_s:yellow:^\[^ ]\* \*\[^,]\*,\[0-9]\* \*\[0-9]\* \*(WARN) \*\[^ ]\* \[^ ]\* \*(.\*)\\$/#cs_re_s:yellow:^\[^ ]\* \*\[^,]\*,\[0-9]\* \*\[0-9]\* \*(WARN) \*\[^ ]\* \[^ ]\* \*(.\*)\\$/g"/etc/multitail.conf
 
 # Add alias for psql logs
 cat >> /etc/bash.bashrc << EOF
