@@ -241,8 +241,12 @@ alias tail2="multitail -cS odoo"
 alias rgrep="rgrep -n"
 git_fetch_pr() {
     REMOTE=$1
+    NUMBER="*"
+    if [ -z "$2"  ]; then
+        NUMBER=$2
+    fi
     shift 1
-    git fetch -p $REMOTE +refs/pull/*/head:refs/pull/$REMOTE/*
+    git fetch -p $REMOTE +refs/pull/$NUMBER/head:refs/pull/$REMOTE/$NUMBER
 }
 EOF
 
