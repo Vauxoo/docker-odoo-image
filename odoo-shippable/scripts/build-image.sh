@@ -203,6 +203,10 @@ cat >> /etc/bash.bashrc << EOF
 PYTHONPATH=${PYTHONPATH}:/.repo_requirements/odoo
 EOF
 
+cat >> ~/.zshrc << EOF
+PYTHONPATH=${PYTHONPATH}:/.repo_requirements/odoo
+EOF
+
 # Configure shell, shell colors & shell completion
 chsh --shell /bin/bash root
 git_clone_copy "${HUB_REPO}" "master" "etc/hub.bash_completion.sh" "/etc/bash_completion.d/"
