@@ -248,7 +248,7 @@ EOF
 
 # Load .container.profile
 if [ ! -f "~/.container.profile" ]; then
-sources ~/.container.profile
+source ~/.container.profile
 fi
 
 cat >> /etc/multitail.conf << EOF
