@@ -235,9 +235,15 @@ git_ps1_style(){
 PS1=$UserMachine$Color_Off$PathShort\$\\n"\$(git_ps1_style)"$Color_Off\$" "
 EOF
 
-# Add alias for multitail and configure
+# Add alias and function
 cat >> /etc/bash.bashrc << EOF
 alias tail2="multitail -cS odoo"
+alias rgrep="rgrep -n"
+git_fetch_pr() {
+    REMOTE=$1
+    shift 1
+    git fetch -p $REMOTE +refs/pull/*/head:refs/pull/$REMOTE/*
+}
 EOF
 
 cat >> /etc/multitail.conf << EOF
