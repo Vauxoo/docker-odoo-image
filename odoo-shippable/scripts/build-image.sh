@@ -203,7 +203,7 @@ cat >> /etc/bash.bashrc << EOF
 PYTHONPATH=${PYTHONPATH}:/.repo_requirements/odoo
 EOF
 
-cat >> /etc/zsh/zshrc << EOF
+cat >> ~/.zshrc << EOF
 PYTHONPATH=${PYTHONPATH}:/.repo_requirements/odoo
 EOF
 
