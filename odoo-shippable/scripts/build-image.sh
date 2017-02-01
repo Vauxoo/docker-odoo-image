@@ -251,7 +251,7 @@ git_fetch_pr() {
 EOF
 
 # Load .container.profile
-if [ ! -f "~/.container.profile" ]; then
+if [ -f "~/.container.profile" ]; then
 source ~/.container.profile
 fi
 
