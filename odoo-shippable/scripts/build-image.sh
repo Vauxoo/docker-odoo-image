@@ -246,6 +246,11 @@ git_fetch_pr() {
 }
 EOF
 
+# Load .container.profile
+if [ ! -f "~/.container.profile" ]; then
+sources ~/.container.profile
+fi
+
 cat >> /etc/multitail.conf << EOF
 # Odoo log
 colorscheme:odoo
