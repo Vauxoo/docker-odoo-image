@@ -299,7 +299,10 @@ PasswordAuthentication no
 EOF
 
 # Extend root config to every user created from now on
-ln -sf ~/.profile ~/.bash* ~/.vim* /etc/skel/
+cp -r ~/.profile ~/.bash* ~/.vim* /etc/skel/
+rm /etc/skel/.vimrc.before
+rm /etc/skel/.vimrc.bundles
+cp -r ~/.spf13-vim-3/.vimrc.before ~/.spf13-vim-3/.vimrc.bundles /etc/skel/
 
 # Create shippable user with sudo powers and git configuration
 createuser "shippable" "shippablepwd" "Shippable" "hello@shippable.com"
