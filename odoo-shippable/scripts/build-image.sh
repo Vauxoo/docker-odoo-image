@@ -49,7 +49,7 @@ DPKG_DEPENDS="postgresql-9.3 postgresql-contrib-9.3 postgresql-9.5 postgresql-co
               python3-pip software-properties-common Xvfb libmagickwand-dev"
 PIP_OPTS="--upgrade \
           --no-cache-dir"
-PIP_DEPENDS_EXTRA="line-profiler watchdog isort coveralls diff-highlight pg-activity virtualenv"
+PIP_DEPENDS_EXTRA="line-profiler watchdog isort coveralls diff-highlight pg-activity virtualenv setuptools==33.1.1"
 PIP_DPKG_BUILD_DEPENDS=""
 NPM_OPTS="-g"
 NPM_DEPENDS="localtunnel fs-extra eslint"
@@ -111,7 +111,7 @@ ln -sf ${REPO_REQUIREMENTS}/linit_hook/git/* /usr/share/git-core/templates/hooks
 
 # Execute travis_install_nightly
 LINT_CHECK=1 TESTS=0 ${REPO_REQUIREMENTS}/linit_hook/travis/travis_install_nightly
-pip install --user -q --no-binary pycparser -r ${REPO_REQUIREMENTS}/linit_hook/travis/requirements.txt
+pip install --no-binary pycparser -r ${REPO_REQUIREMENTS}/linit_hook/travis/requirements.txt
 
 # Install hub & ngrok
 targz_download_execute "${HUB_ARCHIVE}" "install"
