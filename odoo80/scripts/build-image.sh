@@ -93,6 +93,7 @@ npm install ${NPM_OPTS} ${NPM_DEPENDS}
 
 # Let's recursively find our pip dependencies
 collect_pip_dependencies "${ODOO_DEPENDENCIES}" "${PIP_DEPENDS_EXTRA}" "${DEPENDENCIES_FILE}"
+echo "setuptools==33.1.1" >> ${DEPENDENCIES_FILE}
 
 # Install python dependencies
 pip install ${PIP_OPTS} -r ${DEPENDENCIES_FILE}
