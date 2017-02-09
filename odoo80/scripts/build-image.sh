@@ -75,7 +75,8 @@ PIP_DEPENDS_EXTRA="pyyaml \
                    hg+https://bitbucket.org/birkenfeld/sphinx-contrib@default#egg=sphinxcontrib-youtube&subdirectory=youtube \
                    git+https://github.com/vauxoo/pylint-odoo@master#egg=pylint-odoo \
                    git+https://github.com/vauxoo/panama-dv@master#egg=ruc \
-                   requirements-parser==0.1.0"
+                   requirements-parser==0.1.0 \
+                   setuptools==33.1.1"
 
 PIP_DPKG_BUILD_DEPENDS=""
 
@@ -92,6 +93,7 @@ npm install ${NPM_OPTS} ${NPM_DEPENDS}
 
 # Let's recursively find our pip dependencies
 collect_pip_dependencies "${ODOO_DEPENDENCIES}" "${PIP_DEPENDS_EXTRA}" "${DEPENDENCIES_FILE}"
+echo "setuptools==33.1.1" >> ${DEPENDENCIES_FILE}
 
 # Install python dependencies
 pip install ${PIP_OPTS} -r ${DEPENDENCIES_FILE}
