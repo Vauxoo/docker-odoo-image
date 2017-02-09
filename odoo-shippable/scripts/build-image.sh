@@ -88,13 +88,13 @@ git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" remote add odoo "${ODOO_ODOO_REPO
 git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" remote add oca "${ODOO_OCA_REPO}"
 
 # Download the cached branches to avoid the download by each build
-git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" fetch vauxoo 8.0 --depth=10
-git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" fetch vauxoo 9.0 --depth=10
-git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" fetch vauxoo 10.0 --depth=10
-git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" fetch odoo 8.0 --depth=10
-git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" fetch odoo 9.0 --depth=10
-git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" fetch odoo 10.0 --depth=10
-git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" fetch odoo master --depth=10
+git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" fetch vauxoo 8.0 --depth=1
+git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" fetch vauxoo 9.0 --depth=1
+git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" fetch vauxoo 10.0 --depth=1
+git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" fetch odoo 8.0 --depth=1
+git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" fetch odoo 9.0 --depth=1
+git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" fetch odoo 10.0 --depth=1
+git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" fetch odoo master --depth=1
 
 # Clean
 git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" gc --aggressive
