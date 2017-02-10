@@ -6,15 +6,9 @@ install:
   - npm install -g dockerlint
 
 script:
-  - for dfile in `find $TRAVIS_BUILD_DIR -name 'Dockerfile' -not -path "./.git/*"`; do echo " ===== [ CHECKING $dfile ] ===== "; dockerlint $dfile; if [ $? -ne 0 ]; then echo " ----- [ FINISHED IN ERROR ] ----- "; fi; echo ""; done
-  # TODO: Check git diff changes to build just required image.
-  - git clone https://github.com/vauxoo/docker-ubuntu-base ${TRAVIS_BUILD_DIR}/docker-ubuntu-base
-  - git clone -b 16.04 https://github.com/vauxoo/docker-ubuntu-base ${TRAVIS_BUILD_DIR}/docker-ubuntu-base-1604
-  - cd ${TRAVIS_BUILD_DIR}/docker-ubuntu-base && docker build --rm -t vauxoo/docker-ubuntu-base:latest .
-  - cd ${TRAVIS_BUILD_DIR}/docker-ubuntu-base-1604 && docker build --rm -t vauxoo/docker-ubuntu-base:16.04 .
-  - cd ${TRAVIS_BUILD_DIR}/odoo80 && docker build --rm -t vauxoo/odoo-80-image:latest .
-  - cd ${TRAVIS_BUILD_DIR}/odoo-shippable && docker build --rm -t vauxoo/odoo-80-image-shippable-auto:latest .
-  - cd ${TRAVIS_BUILD_DIR}/odoo100 && docker build --rm -t vauxoo/odoo-100-image:latest .
+  - python ${TRAVIS_BUILD_DIR}/build.py --folder ${TRAVIS_BUILD_DIR}/odoo80 --docker-image vauxoo/odoo-80-image:latest
+  - python ${TRAVIS_BUILD_DIR}/build.py --folder ${TRAVIS_BUILD_DIR}/odoo-shippable --docker-image vauxoo/odoo-80-image-shippable-auto:latest
+  - python ${TRAVIS_BUILD_DIR}/build.py --folder ${TRAVIS_BUILD_DIR}/odoo100 --docker-image vauxoo/odoo-100-image:latest
 
 after_success:
     # TODO: Add docker push
