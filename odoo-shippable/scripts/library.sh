@@ -47,15 +47,12 @@ targz_download_execute(){
 }
 
 
-createuser(){
+createuser_custom(){
     USER="${1}"
-    PASSWD="$( openssl passwd -crypt "${2}" )"
-    NAME="${3}"
-    EMAIL="${4}"
-    useradd -d "/home/${USER}" -m -s "/bin/bash" -p "${PASSWD}" "${USER}"
+    useradd -d "/home/${USER}" -m -s "/bin/bash" "${USER}"
     echo "${USER} ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/100-vauxoo-sudoers
-    git config --global user.name "${NAME}"
-    git config --global user.email "${EMAIL}"
+    su - ${USER} -c "git config --global user.name ${USER}"
+    su - ${USER} -c "git config --global user.email ${USER}@email.com"
 }
 
 psql_create_role(){

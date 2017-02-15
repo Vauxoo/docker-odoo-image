@@ -309,7 +309,8 @@ rm /etc/skel/.vimrc.bundles
 cp -r ~/.spf13-vim-3/.vimrc.before ~/.spf13-vim-3/.vimrc.bundles /etc/skel/
 
 # Create shippable user with sudo powers and git configuration
-createuser "shippable" "shippablepwd" "Shippable" "hello@shippable.com"
+createuser_custom "odoo"
+createuser_custom "shippable"
 
 # Set custom configuration of max connections, port and locks for postgresql
 sed -i 's/#max_pred_locks_per_transaction = 64/max_pred_locks_per_transaction = 100/g' /etc/postgresql/*/main*/postgresql.conf
@@ -335,12 +336,14 @@ EOF
 PSQL_VERSION="9.5" /entrypoint_image
 psql_create_role "shippable" "aeK5NWNr2"
 psql_create_role "root" "aeK5NWNr2"
+psql_create_role "odoo" "aeK5NWNr2"
 
 /etc/init.d/postgresql stop
 
 PSQL_VERSION="9.3" /entrypoint_image
 psql_create_role "shippable" "aeK5NWNr2"
 psql_create_role "root" "aeK5NWNr2"
+psql_create_role "odoo" "aeK5NWNr2"
 
 # Enable PG LOGS AND NON DURABILITY
 PG_NON_DURABILITY=1 PG_LOGS_ENABLE=1 python ${REPO_REQUIREMENTS}/linit_hook/travis/psql_log.py
