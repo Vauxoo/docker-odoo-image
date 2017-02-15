@@ -4,6 +4,7 @@
 from __future__ import print_function
 
 import os
+import pwd
 import subprocess
 import time
 import glob
@@ -46,22 +47,23 @@ def docker_entrypoint():
     # Fix postgresql
     #  https://github.com/docker/docker/issues/783
     #   issuecomment-56013588
-    cmds = [
-        ["mkdir", "-p", "/etc/ssl/private-copy"],
-        ["mkdir", "-p", "/etc/ssl/private"],
-        ["mv", "/etc/ssl/private/*", "/etc/ssl/private-copy/"],
-        ["rm", "-r", "/etc/ssl/private"],
-        ["mv", "/etc/ssl/private-copy", "/etc/ssl/private"],
-        ["chmod", "-R", "0700", "/etc/ssl/private"],
-        ["chown", "-R", "postgres", "/etc/ssl/private"],
-    ]
-    for cmd in cmds:
-        subprocess.call(' '.join(cmd), shell=True)
+    if pwd.getpwuid(os.getuid())[0] == 'root':
+        cmds = [
+            ["mkdir", "-p", "/etc/ssl/private-copy"],
+            ["mkdir", "-p", "/etc/ssl/private"],
+            ["mv", "/etc/ssl/private/*", "/etc/ssl/private-copy/"],
+            ["rm", "-r", "/etc/ssl/private"],
+            ["mv", "/etc/ssl/private-copy", "/etc/ssl/private"],
+            ["chmod", "-R", "0700", "/etc/ssl/private"],
+            ["chown", "-R", "postgres", "/etc/ssl/private"],
+        ]
+        for cmd in cmds:
+            subprocess.call(' '.join(cmd), shell=True)
 
-    # Patch to force start odoo as root
-    if glob.glob(os.getenv("HOME") + '/*/*/cli/server.py'):
-        cmd = """sed -i "s/== 'root'/== 'force_root'/g" %s/*/*/cli/server.py""" % os.getenv("HOME")  # noqa
-        subprocess.call(cmd, shell=True)
+        # Patch to force start odoo as root
+        if glob.glob(os.getenv("HOME") + '/*/*/cli/server.py'):
+            cmd = """sed -i "s/== 'root'/== 'force_root'/g" %s/*/*/cli/server.py""" % os.getenv("HOME")  # noqa
+            subprocess.call(cmd, shell=True)
 
     # Start ssh service
     if os.environ.get('START_SSH', False):
