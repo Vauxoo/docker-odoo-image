@@ -65,11 +65,11 @@ def docker_entrypoint():
 
     # Start ssh service
     if os.environ.get('START_SSH', False):
-        cmd = "/etc/init.d/ssh start"
+        cmd = "sudo /etc/init.d/ssh start"
         subprocess.call(cmd, shell=True)
 
     # Start postgresql service
-    cmd = '/etc/init.d/postgresql start'
+    cmd = 'sudo /etc/init.d/postgresql start ' + os.environ.get('PSQL_VERSION', '')
     subprocess.call(cmd, shell=True, env=os.environ)
     print("Waiting to start psql service...")
     count = 0
