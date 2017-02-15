@@ -4,6 +4,7 @@
 from __future__ import print_function
 
 import os
+import pwd
 import subprocess
 import time
 import glob
@@ -46,30 +47,31 @@ def docker_entrypoint():
     # Fix postgresql
     #  https://github.com/docker/docker/issues/783
     #   issuecomment-56013588
-    cmds = [
-        ["mkdir", "-p", "/etc/ssl/private-copy"],
-        ["mkdir", "-p", "/etc/ssl/private"],
-        ["mv", "/etc/ssl/private/*", "/etc/ssl/private-copy/"],
-        ["rm", "-r", "/etc/ssl/private"],
-        ["mv", "/etc/ssl/private-copy", "/etc/ssl/private"],
-        ["chmod", "-R", "0700", "/etc/ssl/private"],
-        ["chown", "-R", "postgres", "/etc/ssl/private"],
-    ]
-    for cmd in cmds:
-        subprocess.call(' '.join(cmd), shell=True)
+    if pwd.getpwuid(os.getuid())[0] == 'root':
+        cmds = [
+            ["mkdir", "-p", "/etc/ssl/private-copy"],
+            ["mkdir", "-p", "/etc/ssl/private"],
+            ["mv", "/etc/ssl/private/*", "/etc/ssl/private-copy/"],
+            ["rm", "-r", "/etc/ssl/private"],
+            ["mv", "/etc/ssl/private-copy", "/etc/ssl/private"],
+            ["chmod", "-R", "0700", "/etc/ssl/private"],
+            ["chown", "-R", "postgres", "/etc/ssl/private"],
+        ]
+        for cmd in cmds:
+            subprocess.call(' '.join(cmd), shell=True)
 
-    # Patch to force start odoo as root
-    if glob.glob(os.getenv("HOME") + '/*/*/cli/server.py'):
-        cmd = """sed -i "s/== 'root'/== 'force_root'/g" %s/*/*/cli/server.py""" % os.getenv("HOME")  # noqa
-        subprocess.call(cmd, shell=True)
+        # Patch to force start odoo as root
+        if glob.glob(os.getenv("HOME") + '/*/*/cli/server.py'):
+            cmd = """sed -i "s/== 'root'/== 'force_root'/g" %s/*/*/cli/server.py""" % os.getenv("HOME")  # noqa
+            subprocess.call(cmd, shell=True)
 
     # Start ssh service
     if os.environ.get('START_SSH', False):
-        cmd = "/etc/init.d/ssh start"
+        cmd = "sudo /etc/init.d/ssh start"
         subprocess.call(cmd, shell=True)
 
     # Start postgresql service
-    cmd = '/etc/init.d/postgresql start'
+    cmd = 'sudo /etc/init.d/postgresql start ' + os.environ.get('PSQL_VERSION', '')
     subprocess.call(cmd, shell=True, env=os.environ)
     print("Waiting to start psql service...")
     count = 0
@@ -108,24 +110,6 @@ def docker_entrypoint():
             print("Reindex created: ", cmd)
     except BaseException:
         pass
-
-    # Change travis pro info from coveralls
-    travis_build_dir = os.environ.get('TRAVIS_BUILD_DIR', '')
-    fname_coveralls = os.path.join(travis_build_dir, '.coveralls.yml')
-    coveralls_lines = []
-    exists_service_name_ok = False
-    if os.path.isfile(fname_coveralls):
-        with open(fname_coveralls, 'r') as fcoveralls:
-            for line in fcoveralls:
-                if 'service_name' in line:
-                    if 'travis' in line:
-                        continue
-                    exists_service_name_ok = True
-                coveralls_lines.append(line)
-    if not exists_service_name_ok:
-        # TODO: Add git user.name to service_name
-        coveralls_lines.append('service_name: vauxoo_container')
-    open(fname_coveralls, 'w').writelines(coveralls_lines)
 
     if os.environ.get('CACHE'):
         docker_cache()
