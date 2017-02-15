@@ -100,7 +100,8 @@ git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" fetch odoo master --depth=10
 git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" gc --aggressive
 
 # Clone tools
-git_clone_copy "${GIST_VAUXOO_REPO}" "master" "" "${HOME}/tools/gist-vauxoo"
+git_clone_copy "${GIST_VAUXOO_REPO}" "master" "" "${REPO_REQUIREMENTS}/tools/gist-vauxoo"
+ln -s "${REPO_REQUIREMENTS}/tools" "${HOME}/tools"
 git_clone_copy "${MQT_REPO}" "master" "" "${REPO_REQUIREMENTS}/linit_hook"
 git_clone_copy "${PYLINT_REPO}" "master" "conf/pylint_vauxoo_light.cfg" "${REPO_REQUIREMENTS}/linit_hook/travis/cfg/travis_run_pylint.cfg"
 git_clone_copy "${PYLINT_REPO}" "master" "conf/pylint_vauxoo_light_pr.cfg" "${REPO_REQUIREMENTS}/linit_hook/travis/cfg/travis_run_pylint_pr.cfg"
@@ -311,6 +312,8 @@ cp -r ~/.spf13-vim-3/.vimrc.before ~/.spf13-vim-3/.vimrc.bundles /etc/skel/
 # Create shippable user with sudo powers and git configuration
 createuser_custom "odoo"
 createuser_custom "shippable"
+chown -R odoo:odoo ${REPO_REQUIREMENTS}
+ln -s "${REPO_REQUIREMENTS}/tools" "/home/odoo/tools"
 
 # Set custom configuration of max connections, port and locks for postgresql
 sed -i 's/#max_pred_locks_per_transaction = 64/max_pred_locks_per_transaction = 100/g' /etc/postgresql/*/main*/postgresql.conf
