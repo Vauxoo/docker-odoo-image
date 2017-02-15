@@ -111,24 +111,6 @@ def docker_entrypoint():
     except BaseException:
         pass
 
-    # Change travis pro info from coveralls
-    travis_build_dir = os.environ.get('TRAVIS_BUILD_DIR', '')
-    fname_coveralls = os.path.join(travis_build_dir, '.coveralls.yml')
-    coveralls_lines = []
-    exists_service_name_ok = False
-    if os.path.isfile(fname_coveralls):
-        with open(fname_coveralls, 'r') as fcoveralls:
-            for line in fcoveralls:
-                if 'service_name' in line:
-                    if 'travis' in line:
-                        continue
-                    exists_service_name_ok = True
-                coveralls_lines.append(line)
-    if not exists_service_name_ok:
-        # TODO: Add git user.name to service_name
-        coveralls_lines.append('service_name: vauxoo_container')
-    open(fname_coveralls, 'w').writelines(coveralls_lines)
-
     if os.environ.get('CACHE'):
         docker_cache()
     return True
