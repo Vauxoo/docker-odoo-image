@@ -315,6 +315,10 @@ createuser_custom "shippable"
 chown -R odoo:odoo ${REPO_REQUIREMENTS}
 ln -s "${REPO_REQUIREMENTS}/tools" "/home/odoo/tools"
 
+chown -R odoo:staff /usr/local/lib/python2.7/dist-packages
+chmod -R 777 /usr/local/bin/
+chmod -R 777 /usr/lib/node_modules
+
 # Set custom configuration of max connections, port and locks for postgresql
 sed -i 's/#max_pred_locks_per_transaction = 64/max_pred_locks_per_transaction = 100/g' /etc/postgresql/*/main*/postgresql.conf
 sed -i 's/max_connections = 100/max_connections = 200/g' /etc/postgresql/*/main*/postgresql.conf
