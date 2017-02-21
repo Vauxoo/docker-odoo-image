@@ -49,7 +49,7 @@ DPKG_DEPENDS="postgresql-9.3 postgresql-contrib-9.3 postgresql-9.5 postgresql-co
               python3-pip software-properties-common Xvfb libmagickwand-dev"
 PIP_OPTS="--upgrade \
           --no-cache-dir"
-PIP_DEPENDS_EXTRA="line-profiler watchdog isort coveralls diff-highlight pg-activity virtualenv setuptools==33.1.1"
+PIP_DEPENDS_EXTRA="line-profiler watchdog isort coveralls diff-highlight pg-activity virtualenv setuptools==33.1.1 nodeenv"
 PIP_DPKG_BUILD_DEPENDS=""
 NPM_OPTS="-g"
 NPM_DEPENDS="localtunnel fs-extra eslint"
@@ -109,6 +109,10 @@ git_clone_copy "${PYLINT_REPO}" "master" "conf/pylint_vauxoo_light_beta.cfg" "${
 git_clone_copy "${PYLINT_REPO}" "master" "conf/pylint_vauxoo_light_vim.cfg" "${REPO_REQUIREMENTS}/linit_hook/travis/cfg/travis_run_pylint_vim.cfg"
 git_clone_copy "${PYLINT_REPO}" "master" "conf/.jslintrc" "${REPO_REQUIREMENTS}/linit_hook/travis/cfg/.jslintrc"
 ln -sf ${REPO_REQUIREMENTS}/linit_hook/git/* /usr/share/git-core/templates/hooks/
+
+# Creating virtual environments for python and node js
+virtualenv --system-site-packages ${REPO_REQUIREMENTS}/virtualenv/python2.7
+nodeenv ${REPO_REQUIREMENTS}/virtualenv/nodejs
 
 # Execute travis_install_nightly
 LINT_CHECK=1 TESTS=0 ${REPO_REQUIREMENTS}/linit_hook/travis/travis_install_nightly
@@ -314,6 +318,26 @@ createuser_custom "odoo"
 createuser_custom "shippable"
 chown -R odoo:odoo ${REPO_REQUIREMENTS}
 ln -s "${REPO_REQUIREMENTS}/tools" "/home/odoo/tools"
+
+cat >> /home/odoo/.bashrc << 'EOF'
+source ${REPO_REQUIREMENTS}/virtualenv/python2.7/bin/activate
+source ${REPO_REQUIREMENTS}/virtualenv/nodejs/bin/activate
+EOF
+
+cat >> /home/odoo/.zshrc << 'EOF'
+source ${REPO_REQUIREMENTS}/virtualenv/python2.7/bin/activate
+source ${REPO_REQUIREMENTS}/virtualenv/nodejs/bin/activate
+EOF
+
+cat >> /root/.bashrc << 'EOF'
+source ${REPO_REQUIREMENTS}/virtualenv/python2.7/bin/activate
+source ${REPO_REQUIREMENTS}/virtualenv/nodejs/bin/activate
+EOF
+
+cat >> /root/.zshrc << 'EOF'
+source ${REPO_REQUIREMENTS}/virtualenv/python2.7/bin/activate
+source ${REPO_REQUIREMENTS}/virtualenv/nodejs/bin/activate
+EOF
 
 # Set custom configuration of max connections, port and locks for postgresql
 sed -i 's/#max_pred_locks_per_transaction = 64/max_pred_locks_per_transaction = 100/g' /etc/postgresql/*/main*/postgresql.conf
