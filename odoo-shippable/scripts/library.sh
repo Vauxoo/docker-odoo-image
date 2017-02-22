@@ -50,7 +50,6 @@ targz_download_execute(){
 createuser_custom(){
     USER="${1}"
     useradd -d "/home/${USER}" -m -s "/bin/bash" "${USER}"
-    echo "${USER} ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/100-vauxoo-sudoers
     su - ${USER} -c "git config --global user.name ${USER}"
     su - ${USER} -c "git config --global user.email ${USER}@email.com"
 }
@@ -69,7 +68,6 @@ service_postgres_without_sudo(){
     chown -R ${USER}:postgres /var/run/postgresql
     for version in $VERSIONS; do
         pg_createcluster -u ${USER} -g postgres -s /var/run/postgresql -p 15432 --start-conf auto --start $version main
-        PGPORT=$(pg_lsclusters| grep $version| awk '{print $3}')
         su - ${USER} -c "psql -p 15432 -d postgres -c  \"CREATE ROLE postgres LOGIN SUPERUSER INHERIT CREATEDB CREATEROLE;\""
         /etc/init.d/postgresql stop $version
         sed -i "s/port = 15432/port = 5432/g" /etc/postgresql/$version/main/postgresql.conf

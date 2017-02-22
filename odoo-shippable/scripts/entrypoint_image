@@ -66,8 +66,8 @@ def docker_entrypoint():
             subprocess.call(cmd, shell=True)
 
     # Start ssh service
-    if os.environ.get('START_SSH', False):
-        cmd = "sudo /etc/init.d/ssh start"
+    if os.environ.get('START_SSH', False) and pwd.getpwuid(os.getuid())[0] == 'root':
+        cmd = "/etc/init.d/ssh start"
         subprocess.call(cmd, shell=True)
 
     # Start postgresql service
