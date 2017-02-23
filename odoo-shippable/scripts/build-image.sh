@@ -361,17 +361,17 @@ get_versions() {
 EOF
 
 # Create shippable role to postgres and shippable for postgres 9.5 and default version
+service_postgres_without_sudo 'odoo'
+
 PSQL_VERSION="9.5" /entrypoint_image
 psql_create_role "shippable" "aeK5NWNr2"
 psql_create_role "root" "aeK5NWNr2"
-psql_create_role "odoo" "aeK5NWNr2"
 
 /etc/init.d/postgresql stop
 
 PSQL_VERSION="9.3" /entrypoint_image
 psql_create_role "shippable" "aeK5NWNr2"
 psql_create_role "root" "aeK5NWNr2"
-psql_create_role "odoo" "aeK5NWNr2"
 
 # Enable PG LOGS AND NON DURABILITY
 PG_NON_DURABILITY=1 PG_LOGS_ENABLE=1 python ${REPO_REQUIREMENTS}/linit_hook/travis/psql_log.py
