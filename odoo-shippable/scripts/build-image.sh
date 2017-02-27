@@ -49,7 +49,9 @@ DPKG_DEPENDS="postgresql-9.3 postgresql-contrib-9.3 postgresql-9.5 postgresql-co
               python3-pip software-properties-common Xvfb libmagickwand-dev"
 PIP_OPTS="--upgrade \
           --no-cache-dir"
-PIP_DEPENDS_EXTRA="line-profiler watchdog isort coveralls diff-highlight pg-activity virtualenv setuptools==33.1.1 nodeenv"
+PIP_DEPENDS_EXTRA="line-profiler watchdog isort coveralls diff-highlight \
+                   pg-activity virtualenv setuptools==33.1.1 nodeenv \
+                   pstats_print2list"
 PIP_DPKG_BUILD_DEPENDS=""
 NPM_OPTS="-g"
 NPM_DEPENDS="localtunnel fs-extra eslint"
