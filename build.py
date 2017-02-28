@@ -36,8 +36,14 @@ class DockerOdooImages(object):
 
     def build(self):
         """Build changed image"""
+        cmd = ['git', 'remote', '-v']
+        print " ".join(cmd)
+        print subprocess.check_output(cmd)
+        cmd = ['git', 'branch', '-a']
+        print " ".join(cmd)
+        print subprocess.check_output(cmd)
         can_be_build = self.check_path()
-        cmd = ['git', 'diff', 'origin/master', '--name-only',
+        cmd = ['git', 'diff', 'HEAD^', 'HEAD', '--name-only',
                '--relative=%s' % self._relpath]
         print " ".join(cmd)
         diffs = subprocess.check_output(cmd)
