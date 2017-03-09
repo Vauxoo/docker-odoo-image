@@ -155,6 +155,12 @@ git_clone_copy "${VIM_OPENERP_REPO}" "master" "vim/" "${HOME}/.vim/bundle/vim-op
 sed -i 's/ set mouse\=a/\"set mouse\=a/g' ~/.vimrc
 sed -i "s/let g:neocomplete#enable_at_startup = 1/let g:neocomplete#enable_at_startup = 0/g" ~/.vimrc
 
+# Disable virtualenv in Pymode 
+cat >> ~/.vimrc << EOF
+" Disable virtualenv in Pymode 
+let g:pymode_virtualenv = 0 
+EOF
+
 # Install and configure YouCompleteMe
 VIM_YOUCOMPLETEME_PATH="${HOME}/.vim/bundle/YouCompleteMe"
 git_clone_copy "${VIM_YOUCOMPLETEME_REPO}" "master" "." "${VIM_YOUCOMPLETEME_PATH}"
