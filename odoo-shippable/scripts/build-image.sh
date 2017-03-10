@@ -161,6 +161,12 @@ cat >> ~/.vimrc << EOF
 let g:pymode_virtualenv = 0 
 EOF
 
+# Disable vim-signify 
+cat >> ~/.vimrc << EOF
+" Disable vim-signify 
+let g:signify_disable_by_default = 1 
+EOF
+
 # Install and configure YouCompleteMe
 VIM_YOUCOMPLETEME_PATH="${HOME}/.vim/bundle/YouCompleteMe"
 git_clone_copy "${VIM_YOUCOMPLETEME_REPO}" "master" "." "${VIM_YOUCOMPLETEME_PATH}"
