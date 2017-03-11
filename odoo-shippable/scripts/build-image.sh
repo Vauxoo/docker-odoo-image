@@ -366,6 +366,15 @@ sed -i 's/#max_pred_locks_per_transaction = 64/max_pred_locks_per_transaction = 
 sed -i 's/max_connections = 100/max_connections = 200/g' /etc/postgresql/*/main*/postgresql.conf
 sed -i 's/^port = .*/port = 5432/g' /etc/postgresql/*/main*/postgresql.conf
 
+# Configure ssh service to be started by user odoo
+setcap CAP_NET_BIND_SERVICE=+eip /usr/sbin/sshd
+chown  odoo:odoo /etc/ssh/ssh_host_*
+mkdir /var/run/sshd
+sed -i "s/\/var\/run\/sshd.pid/\/tmp\/sshd.pid/g" /etc/init.d/ssh
+cat >> /etc/ssh/sshd_config << EOF
+PidFile /tmp/sshd.pid
+EOF
+
 # Overwrite get_versions function to avoid overwriting the init script
 # See https://github.com/vauxoo/docker-odoo-image/issues/114 for details
 cat >> /usr/share/postgresql-common/init.d-functions << 'EOF'
