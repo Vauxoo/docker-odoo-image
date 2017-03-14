@@ -3,6 +3,7 @@
 import os
 import glob
 import argparse
+import linecache
 
 
 class FixVimSnippet(object):
@@ -16,12 +17,16 @@ class FixVimSnippet(object):
         self.repeated_snippet = {}
         self._fix()
 
+    def _add_extension_snippet(self, extension, name_snippet, data):
+        self.extension_snippet[extension].setdefault(name_snippet, [])
+        self.extension_snippet[extension][name_snippet].append(data)
+
     def _fix(self):
         if os.path.isdir(self.bundle_dir):
             module = None
             for path in glob.glob(self.bundle_dir + '/*/*/*.snippets'):
-                module, folder, file_name = (path.replace(
-                    self.bundle_dir + os.sep, '').split(os.sep))
+                module, folder, file_name = (os.path.relpath(
+                    path, self.bundle_dir).split(os.sep))
                 name, extension = os.path.splitext(file_name)
                 if self.extensions and name not in self.extensions:
                     continue
@@ -35,45 +40,45 @@ class FixVimSnippet(object):
                 self.extension_snippet.setdefault(extension, {})
                 for snippet in snippets:
                     path = snippet['path']
-                    with open(path) as fobj:
-                        lines_file = [item.strip() for item in
-                                      fobj.readlines()]
-                        line = 0
-                        total_lines = len(lines_file)
-                        name_snippet = None
-                        begin_line = None
-                        end_line = None
-                        for line_file in lines_file:
-                            line += 1
-                            if line_file.startswith('snippet'):
-                                try:
-                                    name_snippet = line_file.split(" ")[1]
-                                except Exception:
-                                    continue
-                                begin_line = line
-                                end_line = None
-                            elif line_file.startswith('endsnippet'):
+                    line = 0
+                    name_snippet = None
+                    begin_line = None
+                    end_line = None
+                    for line_file in open(path):
+                        line_file = line_file.strip()
+                        line += 1
+                        if line_file.startswith('snippet'):
+                            try:
+                                name_snippet = line_file.split(" ")[1]
+                            except Exception:
+                                continue
+                            begin_line = line
+                            end_line = None
+                        elif line_file.startswith('endsnippet'):
+                            end_line = line
+                        else:
+                            if (linecache.getline(path, line + 1).
+                                        startswith('snippet')):
                                 end_line = line
-                            else:
-                                next = lines_file[(line - 1) +
-                                                  (0 if (line + 1) >=
-                                                   total_lines else 1)]
-                                if (next.startswith('snippet') or
-                                        (line == total_lines)):
-                                    end_line = line
-                            if name_snippet and end_line and begin_line:
-                                self.extension_snippet[extension].setdefault(
-                                    name_snippet, [])
-                                self.extension_snippet[extension] \
-                                    [name_snippet].append({
-                                        'path': path,
+                        if name_snippet and end_line and begin_line:
+                            data = {'path': path,
                                         'name_snippet': name_snippet,
                                         'begin_line': begin_line,
-                                        'end_line': end_line,
-                                })
-                                name_snippet = None
-                                begin_line = None
-                                end_line = None
+                                        'end_line': end_line}
+                            self._add_extension_snippet(extension,
+                                                            name_snippet,
+                                                            data)
+                            name_snippet = None
+                            begin_line = None
+                            end_line = None
+                    if name_snippet and begin_line and not end_line:
+                        data = {'path': path,
+                                    'name_snippet': name_snippet,
+                                    'begin_line': begin_line,
+                                    'end_line': line}
+                        self._add_extension_snippet(extension,
+                                                        name_snippet,
+                                                        data)
             for extension, snippets in self.extension_snippet.items():
                 for name, snippet in snippets.items():
                     if len(snippet) == 1:
