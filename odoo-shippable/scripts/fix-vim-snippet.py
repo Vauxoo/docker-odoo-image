@@ -23,78 +23,74 @@ class FixVimSnippet(object):
                 module, folder, file_name = (path.replace(
                     self.bundle_dir + os.sep, '').split(os.sep))
                 name, extension = os.path.splitext(file_name)
-                if self.extensions and not name in self.extensions:
+                if self.extensions and name not in self.extensions:
                     continue
-                if not self.snippet.has_key(name):
-                    self.snippet[name] = []
-                self.snippet[name].append({'snippet': file_name,
-                                           'module': module,
-                                           'folder': folder,
-                                           'path': path})
-            for extension, snippets in self.snippet.iteritems():
-                if len(snippets) > 1:
-                    for snippet in snippets:
-                        if not self.extension_snippet.has_key(extension):
-                            self.extension_snippet[extension] = {}
-                        path = snippet['path']
-                        with open(path) as _file:
-                            _snippets = [item.strip() for item in
-                                         _file.readlines()]
-                            line = 0
-                            total_lines = len(_snippets)
-                            name_snippet = None
-                            begin_line = None
-                            end_line = None
-                            for _snippet in _snippets:
-                                line += 1
-                                if _snippet.startswith('snippet'):
-                                    try:
-                                        name_snippet = _snippet.split(" ")[1]
-                                    except Exception:
-                                        continue
-                                    begin_line = line
-                                    end_line = None
-                                elif _snippet.startswith('endsnippet'):
+                self.snippet.setdefault(name, []).append({'snippet': file_name,
+                                                          'module': module,
+                                                          'folder': folder,
+                                                          'path': path})
+            for extension, snippets in self.snippet.items():
+                if len(snippets) == 1:
+                    continue
+                self.extension_snippet.setdefault(extension, {})
+                for snippet in snippets:
+                    path = snippet['path']
+                    with open(path) as fobj:
+                        lines_file = [item.strip() for item in
+                                      fobj.readlines()]
+                        line = 0
+                        total_lines = len(lines_file)
+                        name_snippet = None
+                        begin_line = None
+                        end_line = None
+                        for line_file in lines_file:
+                            line += 1
+                            if line_file.startswith('snippet'):
+                                try:
+                                    name_snippet = line_file.split(" ")[1]
+                                except Exception:
+                                    continue
+                                begin_line = line
+                                end_line = None
+                            elif line_file.startswith('endsnippet'):
+                                end_line = line
+                            else:
+                                next = lines_file[(line - 1) +
+                                                  (0 if (line + 1) >=
+                                                   total_lines else 1)]
+                                if (next.startswith('snippet') or
+                                        (line == total_lines)):
                                     end_line = line
-                                else:
-                                    _next = _snippets[(line - 1) +
-                                                      (0 if (line + 1) >=
-                                                       total_lines else 1)]
-                                    if (_next.startswith('snippet') or
-                                            (line == total_lines)):
-                                        end_line = line
-                                if name_snippet and end_line and begin_line:
-                                    if (not self.extension_snippet[extension]
-                                            .has_key(name_snippet)):
-                                        self.extension_snippet[extension]\
-                                            [name_snippet] = []
-                                    self.extension_snippet[extension]\
-                                        [name_snippet].append({
-                                            'path': path,
-                                            'name_snippet': name_snippet,
-                                            'begin_line': begin_line,
-                                            'end_line': end_line
-                                    })
-                                    name_snippet = None
-                                    begin_line = None
-                                    end_line = None
-            for extension in self.extension_snippet:
-                for snippet in self.extension_snippet[extension]:
-                    if len(self.extension_snippet[extension][snippet]) > 1:
-                        original = self.extension_snippet[extension]\
-                            [snippet][0]
-                        print "Snippet repeated for '%s' named '%s'" % (
-                            extension, snippet)
-                        print "First defined in %s line(%s:%s)" % (
-                            original['path'], original['begin_line'],
-                            original['end_line'])
-                        print "+++++"
-                        repeated = self.extension_snippet[extension][snippet][1:]
-                        for _snippet in repeated:
-                            print "Snippet defined in %s line(%s:%s)" %(
-                                _snippet['path'], _snippet['begin_line'],
-                                 _snippet['end_line'])
-                        print "+++++"
+                            if name_snippet and end_line and begin_line:
+                                self.extension_snippet[extension].setdefault(
+                                    name_snippet, [])
+                                self.extension_snippet[extension] \
+                                    [name_snippet].append({
+                                        'path': path,
+                                        'name_snippet': name_snippet,
+                                        'begin_line': begin_line,
+                                        'end_line': end_line,
+                                })
+                                name_snippet = None
+                                begin_line = None
+                                end_line = None
+            for extension, snippets in self.extension_snippet.items():
+                for name, snippet in snippets.items():
+                    if len(snippet) == 1:
+                        continue
+                    original = snippet[0]
+                    print "Snippet repeated for '%s' named '%s'" % (extension,
+                                                                    name)
+                    print "First defined in %s line(%s:%s)" % (
+                        original['path'], original['begin_line'],
+                        original['end_line'])
+                    print "+++++"
+                    duplicates = snippet[1:]
+                    for duplicate in duplicates:
+                        print "Snippet defined in %s line(%s:%s)" %(
+                            duplicate['path'], duplicate['begin_line'],
+                            duplicate['end_line'])
+                    print "+++++"
 
 
 if __name__ == "__main__":
