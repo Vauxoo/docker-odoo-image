@@ -54,6 +54,7 @@ class FixVimSnippet(object):
                     line += 1
                     if line_file.startswith('snippet'):
                         try:
+                            line_snippet = line_file
                             line_split = line_file.split(" ")
                             name_snippet = line_split[1]
                             if (not all(item not in ('<', '>', '<=', '>=',
@@ -73,16 +74,19 @@ class FixVimSnippet(object):
                     if name_snippet and end_line and begin_line:
                         data = {'path': path,
                                 'name_snippet': name_snippet,
+                                'line_snippet': line_snippet,
                                 'begin_line': begin_line,
                                 'end_line': end_line}
                         self._add_extension_snippet(extension, name_snippet,
                                                     data)
+                        line_snippet = None
                         name_snippet = None
                         begin_line = None
                         end_line = None
                 if name_snippet and begin_line and not end_line:
                     data = {'path': path,
                             'name_snippet': name_snippet,
+                            'line_snippet': line_snippet,
                             'begin_line': begin_line,
                             'end_line': line}
                     self._add_extension_snippet(extension, name_snippet, data)
@@ -90,19 +94,31 @@ class FixVimSnippet(object):
             for name, snippet in snippets.items():
                 if len(snippet) == 1:
                     continue
+                has_repeated = False
                 original = snippet[0]
-                print "Snippet repeated for '%s' named '%s'" % (extension,
-                                                                name)
-                print "First defined in %s line(%s:%s)" % (
+                index = 0
+                for key, item in enumerate(snippet):
+                    if (len(original['line_snippet'].split(' ')) >
+                            len(item['line_snippet'].split(' '))):
+                        original = item
+                        index = key
+                output = "Snippet repeated for '%s' named '%s'" % (extension,
+                                                                   name)
+                output+="\nFirst defined in %s line(%s:%s)" % (
                      original['path'], original['begin_line'],
                      original['end_line'])
-                print "+++++"
-                duplicates = snippet[1:]
-                for duplicate in duplicates:
-                    print "Snippet defined in %s line(%s:%s)" %(
-                         duplicate['path'], duplicate['begin_line'],
-                         duplicate['end_line'])
-                print "+++++"
+                output+="\n+++++"
+                for key, duplicate in enumerate(snippet):
+                    if (duplicate['line_snippet'].replace(' ', '') ==
+                            original['line_snippet'].replace(' ', '') and
+                            index != key):
+                        has_repeated = True
+                        output+="\nSnippet defined in %s line(%s:%s)" %(
+                             duplicate['path'], duplicate['begin_line'],
+                             duplicate['end_line'])
+                output+="\n+++++"
+                if has_repeated:
+                    print output
 
 
 if __name__ == "__main__":
