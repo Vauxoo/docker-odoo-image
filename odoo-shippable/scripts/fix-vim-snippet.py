@@ -19,6 +19,10 @@ class FixVimSnippet(object):
 
     def _add_extension_snippet(self, extension, name_snippet, data):
         self.extension_snippet[extension].setdefault(name_snippet, [])
+        for snippet in self.extension_snippet[extension][name_snippet]:
+            if (data['path'] == snippet['path'] and
+                    data['name_snippet'] == snippet['name_snippet']):
+                return
         self.extension_snippet[extension][name_snippet].append(data)
 
     def _fix(self):
@@ -50,7 +54,12 @@ class FixVimSnippet(object):
                     line += 1
                     if line_file.startswith('snippet'):
                         try:
-                            name_snippet = line_file.split(" ")[1]
+                            line_split = line_file.split(" ")
+                            name_snippet = line_split[1]
+                            if (not all(item not in ('<', '>', '<=', '>=',
+                                                     '==') for item in
+                                        line_split[2:])):
+                                continue
                         except Exception:
                             continue
                         begin_line = line
