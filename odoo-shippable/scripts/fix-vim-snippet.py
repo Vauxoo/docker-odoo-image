@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import os
+import sys
 import glob
 import argparse
 import linecache
@@ -15,7 +16,6 @@ class FixVimSnippet(object):
         self.snippet = {}
         self.extension_snippet = {}
         self.repeated_snippet = {}
-        self._fix()
 
     def _add_extension_snippet(self, extension, name_snippet, data):
         self.extension_snippet[extension].setdefault(name_snippet, [])
@@ -25,9 +25,9 @@ class FixVimSnippet(object):
                 return
         self.extension_snippet[extension][name_snippet].append(data)
 
-    def _fix(self):
+    def fix(self):
         if not os.path.isdir(self.bundle_dir):
-            return
+            return 1
         module = None
         for path in glob.glob(self.bundle_dir + '/*/*/*.snippets'):
             module, folder, file_name = (os.path.relpath(
@@ -90,6 +90,7 @@ class FixVimSnippet(object):
                             'begin_line': begin_line,
                             'end_line': line}
                     self._add_extension_snippet(extension, name_snippet, data)
+        return_value = 0
         for extension, snippets in self.extension_snippet.items():
             for name, snippet in snippets.items():
                 if len(snippet) == 1:
@@ -118,11 +119,13 @@ class FixVimSnippet(object):
                              duplicate['end_line'])
                 output+="\n+++++"
                 if has_repeated:
+                    return_value = 1
                     print output
+        return return_value
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--extensions', dest='extensions', default=[],
                         help='Extensions you will be looking for')
-    FixVimSnippet(parser.parse_args().extensions)
+    sys.exit(FixVimSnippet(parser.parse_args().extensions).fix())
