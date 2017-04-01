@@ -6,7 +6,7 @@ set -e
 
 # With a little help from my friends
 . /usr/share/vx-docker-internal/ubuntu-base/library.sh
-. /usr/share/vx-docker-internal/odoo80/library.sh
+. /usr/share/vx-docker-internal/odoo100/library.sh
 . /etc/lsb-release
 # Let's set some defaults here
 ARCH="$( dpkg --print-architecture )"
@@ -45,7 +45,12 @@ DPKG_DEPENDS="nodejs \
               cython \
               fontconfig \
               ghostscript \
-              cloc"
+              cloc \
+              postgresql-common \
+              postgresql-${PSQL_VERSION} \
+              postgresql-client-${PSQL_VERSION} \
+              postgresql-contrib-${PSQL_VERSION} \
+              pgbadger"
 DPKG_UNNECESSARY=""
 NPM_OPTS="-g"
 NPM_DEPENDS="less \
@@ -73,7 +78,8 @@ PIP_DEPENDS_EXTRA="pyyaml \
                    hg+https://bitbucket.org/birkenfeld/sphinx-contrib@default#egg=sphinxcontrib-youtube&subdirectory=youtube \
                    git+https://github.com/vauxoo/pylint-odoo@master#egg=pylint-odoo \
                    git+https://github.com/vauxoo/panama-dv@master#egg=ruc \
-                   requirements-parser==0.1.0"
+                   requirements-parser==0.1.0 \
+                   pstats_print2list"
 
 PIP_DPKG_BUILD_DEPENDS=""
 
@@ -108,3 +114,5 @@ rm -rf /tmp/*
 find /var/tmp -type f -print0 | xargs -0r rm -rf
 find /var/log -type f -print0 | xargs -0r rm -rf
 find /var/lib/apt/lists -type f -print0 | xargs -0r rm -rf
+echo "include = '/etc/postgresql-common/common-vauxoo.conf'" >> /etc/postgresql/${PSQL_VERSION}/main/postgresql.conf
+echo "host all  all    0.0.0.0/0  md5" >> /etc/postgresql/$PSQL_VERSION/main/pg_hba.conf
