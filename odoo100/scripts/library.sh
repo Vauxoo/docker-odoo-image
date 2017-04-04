@@ -80,7 +80,7 @@ function collect_pip_dependencies(){
     pip install ${PIP_OPTS} ${DEPENDENCIES}
 
     for REQ in $( find ${TEMPDIR} -type f -iname "requirements.txt" ); do
-        /usr/share/vx-docker-internal/odoo80/gen_pip_deps ${REQ} ${DEPENDENCIES_FILE}
+        /usr/share/vx-docker-internal/odoo100/gen_pip_deps ${REQ} ${DEPENDENCIES_FILE}
     done
 }
 
