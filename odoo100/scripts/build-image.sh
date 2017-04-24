@@ -17,7 +17,7 @@ ODOO_DEPENDENCIES="git+https://github.com/vauxoo/odoo@10.0 \
                    git+https://github.com/vauxoo/server-tools@10.0 \
                    git+https://github.com/vauxoo/addons-vauxoo@10.0 \
                    git+https://github.com/vauxoo/pylint-odoo@master"
-DEPENDENCIES_FILE="$( mktemp -d )/odoo-requirements.txt"
+DEPENDENCIES_FILE="/usr/share/vx-docker-internal/odoo10/10.0-full_requirements.txt"
 DPKG_DEPENDS="nodejs \
               phantomjs \
               antiword \
@@ -58,28 +58,7 @@ NPM_DEPENDS="less \
              jshint"
 PIP_OPTS="--upgrade \
           --no-cache-dir"
-PIP_DEPENDS_EXTRA="pyyaml \
-                   pillow \
-                   pillow-pil \
-                   M2Crypto \
-                   GeoIP \
-                   SOAPpy \
-                   suds \
-                   lxml \
-                   qrcode \
-                   xmltodict \
-                   flake8 \
-                   pylint-mccabe \
-                   PyWebDAV \
-                   mygengo \
-                   recaptcha-client \
-                   egenix-mx-base \
-                   branchesv \
-                   hg+https://bitbucket.org/birkenfeld/sphinx-contrib@default#egg=sphinxcontrib-youtube&subdirectory=youtube \
-                   git+https://github.com/vauxoo/pylint-odoo@master#egg=pylint-odoo \
-                   git+https://github.com/vauxoo/panama-dv@master#egg=ruc \
-                   requirements-parser==0.1.0 \
-                   pstats_print2list"
+PIP_DEPENDS_EXTRA=$(cat ${DEPENDENCIES_FILE})
 
 PIP_DPKG_BUILD_DEPENDS=""
 
@@ -94,8 +73,14 @@ apt-get install ${DPKG_DEPENDS} ${PIP_DPKG_BUILD_DEPENDS}
 # Install node dependencies
 npm install ${NPM_OPTS} ${NPM_DEPENDS}
 
+# Update pip 
+pip install --upgrade pip
+
 # Let's recursively find our pip dependencies
 collect_pip_dependencies "${ODOO_DEPENDENCIES}" "${PIP_DEPENDS_EXTRA}" "${DEPENDENCIES_FILE}"
+
+# Cleans incorrect dependency lines  
+clean_requirements ${DEPENDENCIES_FILE}
 
 # Install python dependencies
 pip install ${PIP_OPTS} -r ${DEPENDENCIES_FILE}

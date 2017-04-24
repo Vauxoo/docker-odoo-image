@@ -1,5 +1,5 @@
 FROM vauxoo/docker-ubuntu-base:latest
 MAINTAINER Tulio Ruiz <tulio@vauxoo.com>
 
-COPY scripts/*.sh /usr/share/vx-docker-internal/odoo80/
-RUN bash /usr/share/vx-docker-internal/odoo80/build-image.sh
+COPY scripts/* /usr/share/vx-docker-internal/odoo90/
+RUN bash /usr/share/vx-docker-internal/odoo90/build-image.sh

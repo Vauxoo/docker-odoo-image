@@ -52,6 +52,20 @@ x='''${1}'''
 print re.sub(regex, '', x)"
 }
 
+function clean_requirements(){
+    python -c "
+import re
+req = open('$1', 'r').read()
+req = list(set(req.split('\n')))
+req2 = []
+regex = r'([a-z](([0-9][a-z])|([a-z]+)))(((==|>=)[0-9].+)|'')'
+for i in req:
+    match = re.match(regex, i)
+    if match:
+        req2.append(i)
+open('$1', 'w').writelines('\n'.join(req2))"
+}
+
 function collect_pip_dependencies(){
     REPOLIST="${1}"
     DEPENDENCIES="${2}"
@@ -74,7 +88,7 @@ function collect_pip_dependencies(){
     done
 
     for REQ in $( find ${TEMPDIR} -type f -iname "requirements.txt" ); do
-        DEPENDENCIES+=" $( cat "${REQ}" | xargs )"
+        DEPENDENCIES+=" $( cat "${REQ}" | xargs -0 )"
     done
 
 #     for ODOO in $( find ${TEMPDIR} -type f -iname "__openerp__.py" ); do
@@ -104,6 +118,7 @@ function collect_pip_dependencies(){
 
     printf "%s\n" ${PIP,,} > "${TEMPFILE}"
     printf "%s\n" ${VCS,,} | sed 's/#/@@/g' >> "${TEMPFILE}"
+    clean_requirements ${TEMPFILE}
     cd /tmp && merge_requirements "${TEMPFILE}" "/dev/null"
     printf "%s\n" $( cat "/tmp/requirements-merged.txt" ) | sed 's/@@/#/g' > "${TEMPFILE}"
 
