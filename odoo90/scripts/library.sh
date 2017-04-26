@@ -72,6 +72,7 @@ function collect_pip_dependencies(){
     REQFILE="${3}"
     TEMPDIR="$( mktemp -d )"
     TEMPFILE="$( tempfile )"
+    PIP_OPTS="--upgrade"
 
     for REPO in ${REPOLIST}; do
         read BIN URL NAME OPTIONS <<< "$( decompose_repo_url "${REPO}" )"
@@ -87,59 +88,14 @@ function collect_pip_dependencies(){
         fi
     done
 
+    # Install PIP_DEPENDS_EXTRA and
+    # the required requirements-parser for the next step
+
+    pip install ${PIP_OPTS} ${DEPENDENCIES}
+
     for REQ in $( find ${TEMPDIR} -type f -iname "requirements.txt" ); do
-        DEPENDENCIES+=" $( cat "${REQ}" | xargs -0 )"
+        /usr/share/vx-docker-internal/odoo90/gen_pip_deps ${REQ} ${DEPENDENCIES_FILE}
     done
-
-#     for ODOO in $( find ${TEMPDIR} -type f -iname "__openerp__.py" ); do
-#         MODULES="$( python -c "
-# x=$( cat "${ODOO}" | sed 's/#.*//g;/^$/d' )
-# if 'external_dependencies' in x:
-#     if 'python' in x['external_dependencies']:
-#         print ' '.join(x['external_dependencies']['python'])" )"
-#         for MODULE in ${MODULES}; do
-#             DEPENDENCIES+=" $( search_pypicontents "${MODULE}" )"
-#         done
-#     done
-#
-    VCS="$( extract_vcs "${DEPENDENCIES}" )"
-    PIP="$( extract_pip "${DEPENDENCIES}" )"
-
-    for REPO in ${VCS}; do
-        read BIN URL NAME OPTIONS <<< "$( decompose_repo_url "${REPO}" )"
-        if [ ! -e "${TEMPDIR}/${NAME}" ]; then
-            ${BIN} clone ${URL} ${OPTIONS} ${TEMPDIR}/${NAME}
-        fi
-        if [ -e "${TEMPDIR}/${NAME}/requirements.txt" ]; then
-            VCS+=" $( extract_vcs "$( cat "${TEMPDIR}/${NAME}/requirements.txt" | sed 's/^#.*//g' )" )"
-            PIP+=" $( extract_pip "$( cat "${TEMPDIR}/${NAME}/requirements.txt" | sed 's/^#.*//g' )" )"
-        fi
-    done
-
-    printf "%s\n" ${PIP,,} > "${TEMPFILE}"
-    printf "%s\n" ${VCS,,} | sed 's/#/@@/g' >> "${TEMPFILE}"
-    clean_requirements ${TEMPFILE}
-    cd /tmp && merge_requirements "${TEMPFILE}" "/dev/null"
-    printf "%s\n" $( cat "/tmp/requirements-merged.txt" ) | sed 's/@@/#/g' > "${TEMPFILE}"
-
-    VCS="$( extract_vcs "$( cat "${TEMPFILE}" )" )"
-    PIP="$( extract_pip "$( cat "${TEMPFILE}" )" )"
-    printf "%s\n" ${PIP,,} > "${TEMPFILE}"
-    pip-compile "${TEMPFILE}" -o "${TEMPFILE}"
-
-    PIP="$( extract_pip "$( cat "${TEMPFILE}" | sed 's/#.*//g')" )"
-    VCSEGGS="$( printf "%s\n" ${VCS} | sed 's/@@/#/g;s/ /\n/g;s/.*#//g;s/egg=//g;s/&.*//g' | xargs )"
-
-    >"${REQFILE}"
-    for PD in ${PIP,,}; do
-        P="$( echo ${PD} | awk -F'==' '{print $1}' )"
-        if ! echo " ${VCSEGGS} " | grep -q " ${P} "; then
-            echo "${PD}" >> "${REQFILE}"
-        fi
-    done
-
-    printf "%s\n" ${VCS,,} >> "${REQFILE}"
-    rm -rf "${TEMPFILE}" "${TEMPDIR}"
 }
 
 function wkhtmltox_install(){

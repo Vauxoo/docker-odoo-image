@@ -15,7 +15,7 @@ PyWebDAV
 mygengo
 recaptcha-client
 egenix-mx-base
-hg+https://bitbucket.org/birkenfeld/sphinx-contrib@default#egg=sphinxcontrib-youtube&subdirectory=youtube
+setuptools==33.1.1
 git+https://github.com/vauxoo/pylint-odoo@master#egg=pylint-odoo
 git+https://github.com/vauxoo/panama-dv@master#egg=ruc
 unidecode
@@ -70,7 +70,6 @@ validate_email
 json2html===1.0.1
 Pillow==2.7.0
 psutil==2.2.0
-mercurial==3.2.2
 greenlet==0.4.7
 mock==1.0.1
 Werkzeug==0.9.6
