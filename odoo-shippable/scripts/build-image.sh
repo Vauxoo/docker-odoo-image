@@ -75,6 +75,12 @@ apt-get install ${DPKG_DEPENDS} ${PIP_DPKG_BUILD_DEPENDS}
 # Install node dependencies
 npm install ${NPM_OPTS} ${NPM_DEPENDS}
 
+# Install virtualenv for each version of python
+for version in '3.3' '3.4' '3.5' '3.6'
+do
+     python"$version" -m pip install virtualenv
+done
+
 # Fix reinstalling npm packages
 # See https://github.com/npm/npm/issues/9863 for details
 sed -i 's/graceful-fs/fs-extra/g;s/fs.rename/fs.move/g' $(npm root -g)/npm/lib/utils/rename.js
