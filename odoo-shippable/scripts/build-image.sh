@@ -361,6 +361,21 @@ source ${REPO_REQUIREMENTS}/virtualenv/python2.7/bin/activate
 source ${REPO_REQUIREMENTS}/virtualenv/nodejs/bin/activate
 EOF
 
+# Move inclusion of .bash_aliases to the end of .bashrc so it takes presedence
+sed -i '/^if \[ -f ~\/.bash_aliases \]; then/,+2d' /home/odoo/.bashrc
+cat >> /home/odoo/.bashrc << 'EOF'
+if [ -f ~/.bash_aliases ]; then
+    . ~/.bash_aliases
+fi
+EOF
+
+sed -i '/^if \[ -f ~\/.bash_aliases \]; then/,+2d' /root/.bashrc
+cat >> /root/.bashrc << 'EOF'
+if [ -f ~/.bash_aliases ]; then
+    . ~/.bash_aliases
+fi
+EOF
+
 # Set custom configuration of max connections, port and locks for postgresql
 sed -i 's/#max_pred_locks_per_transaction = 64/max_pred_locks_per_transaction = 100/g' /etc/postgresql/*/main*/postgresql.conf
 sed -i 's/max_connections = 100/max_connections = 200/g' /etc/postgresql/*/main*/postgresql.conf
