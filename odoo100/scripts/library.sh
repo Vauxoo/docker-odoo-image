@@ -52,6 +52,20 @@ x='''${1}'''
 print re.sub(regex, '', x)"
 }
 
+function clean_requirements(){
+    python -c "
+import re
+req = open('$1', 'r').read()
+req = list(set(req.split('\n')))
+req2 = []
+regex = r'([a-z](([0-9][a-z])|([a-z]+)))(((==|>=)[0-9].+)|'')'
+for i in req:
+    match = re.match(regex, i, re.I)
+    if match:
+        req2.append(i)
+open('$1', 'w').writelines('\n'.join(req2))"
+}
+
 function collect_pip_dependencies(){
     REPOLIST="${1}"
     DEPENDENCIES="${2}"
@@ -76,7 +90,6 @@ function collect_pip_dependencies(){
 
     # Install PIP_DEPENDS_EXTRA and
     # the required requirements-parser for the next step
-
     pip install ${PIP_OPTS} ${DEPENDENCIES}
 
     for REQ in $( find ${TEMPDIR} -type f -iname "requirements.txt" ); do
