@@ -1,11 +1,14 @@
+Pillow==3.4.1
+fdb==1.7
+lxml==3.5.0
+sqlalchemy==1.1.9
+xlrd==1.0.0
 pyyaml
-pillow
 pillow-pil
 M2Crypto
 GeoIP
 SOAPpy
 suds
-lxml
 qrcode
 xmltodict
 flake8
