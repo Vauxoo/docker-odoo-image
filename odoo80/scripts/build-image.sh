@@ -19,7 +19,7 @@ ODOO_DEPENDENCIES="git+https://github.com/vauxoo/odoo@8.0 \
                    git+https://github.com/vauxoo/odoo-venezuela@8.0 \
                    git+https://github.com/vauxoo/pylint-odoo@master"
                    # git+https://github.com/vauxoo/odoo-mexico-v2@8.0 \
-DEPENDENCIES_FILE="$( mktemp -d )/odoo-requirements.txt"
+DEPENDENCIES_FILE="/usr/share/vx-docker-internal/odoo80/8.0-full_requirements.txt"
 DPKG_DEPENDS="nodejs \
               phantomjs \
               antiword \
@@ -60,29 +60,10 @@ NPM_DEPENDS="less \
              jshint"
 PIP_OPTS="--upgrade \
           --no-cache-dir"
-PIP_DEPENDS_EXTRA="pyyaml \
-                   pillow \
-                   pillow-pil \
-                   M2Crypto \
-                   GeoIP \
-                   SOAPpy \
-                   suds \
-                   lxml \
-                   qrcode \
-                   xmltodict \
-                   flake8 \
-                   pylint-mccabe \
-                   PyWebDAV \
-                   mygengo \
-                   recaptcha-client \
-                   egenix-mx-base \
-                   branchesv \
-                   hg+https://bitbucket.org/birkenfeld/sphinx-contrib@default#egg=sphinxcontrib-youtube&subdirectory=youtube \
-                   git+https://github.com/vauxoo/pylint-odoo@master#egg=pylint-odoo \
-                   git+https://github.com/vauxoo/panama-dv@master#egg=ruc \
-                   requirements-parser==0.1.0 \
+PIP_DEPENDS_EXTRA="requirements-parser==0.1.0 \
+                   mercurial==3.2.2 \
                    setuptools==33.1.1 \
-                   pstats_print2list"
+                   hg+https://bitbucket.org/birkenfeld/sphinx-contrib@default#egg=sphinxcontrib-youtube&subdirectory=youtube"
 
 PIP_DPKG_BUILD_DEPENDS=""
 
@@ -97,9 +78,11 @@ apt-get install ${DPKG_DEPENDS} ${PIP_DPKG_BUILD_DEPENDS}
 # Install node dependencies
 npm install ${NPM_OPTS} ${NPM_DEPENDS}
 
+# Update pip 
+pip install --upgrade pip
+
 # Let's recursively find our pip dependencies
 collect_pip_dependencies "${ODOO_DEPENDENCIES}" "${PIP_DEPENDS_EXTRA}" "${DEPENDENCIES_FILE}"
-echo "setuptools==33.1.1" >> ${DEPENDENCIES_FILE}
 
 # Install python dependencies
 pip install ${PIP_OPTS} -r ${DEPENDENCIES_FILE}

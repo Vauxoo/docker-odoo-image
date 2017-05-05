@@ -4,6 +4,17 @@
 import os
 import requirements
 import sys
+import urlparse
+
+
+def validate_url(uri):
+    uri_parse = urlparse.urlparse(uri)
+    name = uri_parse.fragment
+    if "&" in uri_parse.fragment:
+        uri = uri.split("&")[0]
+    if not name:
+        name = name.split("@")[0]
+    return {'uri': uri, 'name': name}
 
 
 def gt(first, second):
@@ -31,8 +42,12 @@ def load_deps(filename):
     with open(filename, 'r') as req_file:
         lines = req_file.readlines()
         for line in lines:
-            for req in requirements.parse(line):
-                reqs.update({req.name.upper(): req})
+            validate = validate_url(line)
+            for req in requirements.parse(validate['uri']):
+                name = req.name
+                if not name:
+                    name = validate['name']
+                reqs.update({name.upper(): req})
     return reqs
 
 
