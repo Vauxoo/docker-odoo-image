@@ -52,20 +52,6 @@ x='''${1}'''
 print re.sub(regex, '', x)"
 }
 
-function clean_requirements(){
-    python -c "
-import re
-req = open('$1', 'r').read()
-req = list(set(req.split('\n')))
-req2 = []
-regex = r'([a-z](([0-9][a-z])|([a-z]+)))(((==|>=)[0-9].+)|'')'
-for i in req:
-    match = re.match(regex, i, re.I)
-    if match:
-        req2.append(i)
-open('$1', 'w').writelines('\n'.join(req2))"
-}
-
 function collect_pip_dependencies(){
     REPOLIST="${1}"
     DEPENDENCIES="${2}"
@@ -101,7 +87,7 @@ function collect_pip_dependencies(){
 function wkhtmltox_install(){
     URL="${1}"
     DIR="$( mktemp -d )"
-    wget -qO- "${URL}" | tar -xJ -C "${DIR}/"
-    mv "${DIR}/wkhtmltox/bin/wkhtmltopdf" "/usr/local/bin/wkhtmltopdf"
-    rm -rf "${DIR}"
+    wget -q "${URL}" -O wkhtmltox.deb
+    dpkg -i wkhtmltox.deb
+    rm wkhtmltox.deb
 }
