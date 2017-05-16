@@ -20,8 +20,6 @@ PYTHON_PPA_REPO="deb http://ppa.launchpad.net/fkrull/deadsnakes/ubuntu trusty ma
 PYTHON_PPA_KEY="http://keyserver.ubuntu.com:11371/pks/lookup?op=get&search=0x5BB92C09DB82666C"
 VIM_PPA_REPO="deb http://ppa.launchpad.net/pkg-vim/vim-daily/ubuntu trusty main"
 VIM_PPA_KEY="http://keyserver.ubuntu.com:11371/pks/lookup?op=get&search=0xA7266A2DD31525A0"
-PY36_PPA_REPO="deb http://ppa.launchpad.net/jonathonf/python-3.6/ubuntu trusty main"
-PY36_PPA_KEY="http://keyserver.ubuntu.com:11371/pks/lookup?op=get&search=0x8CF63AD3F06FC659"
 
 # Extra software download URLs
 HUB_ARCHIVE="https://github.com/github/hub/releases/download/v2.2.3/hub-linux-${ARCH}-2.2.3.tgz"
@@ -48,7 +46,7 @@ DPKG_DEPENDS="postgresql-9.3 postgresql-contrib-9.3 postgresql-9.5 postgresql-co
               bsdtar rsync graphviz openssh-server cmake zsh tree \
               lua50 liblua50-dev liblualib50-dev exuberant-ctags rake \
               python3.3 python3.3-dev python3.4 python3.4-dev python3.5 python3.5-dev python3.6 python3.6-dev \
-              python3-pip software-properties-common Xvfb libmagickwand-dev openjdk-7-jre \
+              software-properties-common Xvfb libmagickwand-dev openjdk-7-jre \
               dos2unix"
 PIP_OPTS="--upgrade \
           --no-cache-dir"
@@ -64,8 +62,6 @@ add_custom_aptsource "${GITCORE_PPA_REPO}" "${GITCORE_PPA_KEY}"
 add_custom_aptsource "${PYTHON_PPA_REPO}" "${PYTHON_PPA_KEY}"
 # Let's add the vim ppa for having a more up-to-date vim
 add_custom_aptsource "${VIM_PPA_REPO}" "${VIM_PPA_KEY}"
-# Let's add the python3.6 ppa
-add_custom_aptsource "${PY36_PPA_REPO}" "${PY36_PPA_KEY}"
 
 # Release the apt monster!
 apt-get update
@@ -75,10 +71,17 @@ apt-get install ${DPKG_DEPENDS} ${PIP_DPKG_BUILD_DEPENDS}
 # Install node dependencies
 npm install ${NPM_OPTS} ${NPM_DEPENDS}
 
-# Install virtualenv for each version of python
+# Upgrade pip for python3
+curl "https://bootstrap.pypa.io/get-pip.py" -o "get-pip.py"
 for version in '3.3' '3.4' '3.5' '3.6'
 do
-     python"$version" -m pip install virtualenv
+    python"$version" get-pip.py
+done
+
+# Install virtualenv for each version of python
+for version in '2.7' '3.3' '3.4' '3.5' '3.6'
+do
+    python"$version" -m pip install virtualenv
 done
 
 # Fix reinstalling npm packages
