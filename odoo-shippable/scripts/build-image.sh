@@ -45,8 +45,8 @@ DPKG_DEPENDS="postgresql-9.3 postgresql-contrib-9.3 postgresql-9.5 postgresql-co
               pgbadger pgtune perl-modules make openssl p7zip-full expect-dev mosh bpython \
               bsdtar rsync graphviz openssh-server cmake zsh tree \
               lua50 liblua50-dev liblualib50-dev exuberant-ctags rake \
-              python3.3 python3.3-dev python3.4 python3.4-dev python3.5 python3.5-dev \
-              python3-pip software-properties-common Xvfb libmagickwand-dev openjdk-7-jre \
+              python3.3 python3.3-dev python3.4 python3.4-dev python3.5 python3.5-dev python3.6 python3.6-dev \
+              software-properties-common Xvfb libmagickwand-dev openjdk-7-jre \
               dos2unix"
 PIP_OPTS="--upgrade \
           --no-cache-dir"
@@ -71,6 +71,20 @@ apt-get install ${DPKG_DEPENDS} ${PIP_DPKG_BUILD_DEPENDS}
 
 # Install node dependencies
 npm install ${NPM_OPTS} ${NPM_DEPENDS}
+
+# Upgrade pip for python3
+curl "https://bootstrap.pypa.io/get-pip.py" -o "get-pip.py"
+for version in '3.3' '3.4' '3.5' '3.6'
+do
+    python"$version" get-pip.py
+done
+
+# Install virtualenv for each version of python
+for version in '2.7' '3.3' '3.4' '3.5' '3.6'
+do
+    python"$version" -m pip install virtualenv
+done
+cp /usr/local/bin/pip2 /usr/local/bin/pip
 
 # Fix reinstalling npm packages
 # See https://github.com/npm/npm/issues/9863 for details
@@ -114,7 +128,9 @@ git_clone_copy "${PYLINT_REPO}" "master" "conf/.jslintrc" "${REPO_REQUIREMENTS}/
 ln -sf ${REPO_REQUIREMENTS}/linit_hook/git/* /usr/share/git-core/templates/hooks/
 
 # Creating virtual environments for python and node js
-virtualenv --system-site-packages ${REPO_REQUIREMENTS}/virtualenv/python2.7
+export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python2.7
+echo "VIRTUALENVWRAPPER_PYTHON=/usr/bin/python2.7" >> /etc/bash.bashrc
+virtualenv -p /usr/bin/python2 --system-site-packages ${REPO_REQUIREMENTS}/virtualenv/python2.7
 nodeenv ${REPO_REQUIREMENTS}/virtualenv/nodejs
 echo "REPO_REQUIREMENTS=${REPO_REQUIREMENTS}" >> /etc/bash.bashrc
 
