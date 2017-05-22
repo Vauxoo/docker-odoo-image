@@ -128,7 +128,7 @@ ln -sf ${REPO_REQUIREMENTS}/linit_hook/git/* /usr/share/git-core/templates/hooks
 
 # Creating virtual environments for python and node js
 export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python2.7
-echo "VIRTUALENVWRAPPER_PYTHON=/usr/bin/python2.7"
+echo "VIRTUALENVWRAPPER_PYTHON=/usr/bin/python2.7" >> /etc/bash.bashrc
 virtualenv -p /usr/bin/python2 --system-site-packages ${REPO_REQUIREMENTS}/virtualenv/python2.7
 nodeenv ${REPO_REQUIREMENTS}/virtualenv/nodejs
 echo "REPO_REQUIREMENTS=${REPO_REQUIREMENTS}" >> /etc/bash.bashrc
