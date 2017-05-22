@@ -83,6 +83,7 @@ for version in '2.7' '3.3' '3.4' '3.5' '3.6'
 do
     python"$version" -m pip install virtualenv
 done
+cp /usr/local/bin/pip2 /usr/local/bin/pip
 
 # Fix reinstalling npm packages
 # See https://github.com/npm/npm/issues/9863 for details
@@ -126,7 +127,9 @@ git_clone_copy "${PYLINT_REPO}" "master" "conf/.jslintrc" "${REPO_REQUIREMENTS}/
 ln -sf ${REPO_REQUIREMENTS}/linit_hook/git/* /usr/share/git-core/templates/hooks/
 
 # Creating virtual environments for python and node js
-virtualenv --system-site-packages ${REPO_REQUIREMENTS}/virtualenv/python2.7
+export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python2.7
+echo "VIRTUALENVWRAPPER_PYTHON=/usr/bin/python2.7"
+virtualenv -p /usr/bin/python2 --system-site-packages ${REPO_REQUIREMENTS}/virtualenv/python2.7
 nodeenv ${REPO_REQUIREMENTS}/virtualenv/nodejs
 echo "REPO_REQUIREMENTS=${REPO_REQUIREMENTS}" >> /etc/bash.bashrc
 
