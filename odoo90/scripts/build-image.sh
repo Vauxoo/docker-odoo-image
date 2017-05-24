@@ -12,7 +12,7 @@ set -e
 ARCH="$( dpkg --print-architecture )"
 NODE_UPSTREAM_REPO="deb http://deb.nodesource.com/node_5.x trusty main"
 NODE_UPSTREAM_KEY="https://deb.nodesource.com/gpgkey/nodesource.gpg.key"
-WKHTMLTOX_URL="http://download.gna.org/wkhtmltopdf/0.12/0.12.1/wkhtmltox-0.12.1_linux-${DISTRIB_CODENAME}-${ARCH}.deb"
+WKHTMLTOX_URL="https://downloads.wkhtmltopdf.org/0.12/0.12.1/wkhtmltox-0.12.1_linux-${DISTRIB_CODENAME}-${ARCH}.deb"
 ODOO_DEPENDENCIES="git+https://github.com/vauxoo/odoo@8.0 \
                    git+https://github.com/vauxoo/server-tools@8.0 \
                    git+https://github.com/vauxoo/addons-vauxoo@8.0 \
