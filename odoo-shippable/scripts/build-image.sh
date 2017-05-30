@@ -417,6 +417,7 @@ PG_NON_DURABILITY=1 PG_LOGS_ENABLE=1 python ${REPO_REQUIREMENTS}/linit_hook/trav
 # Install & Configure RVM
 curl -sSL https://rvm.io/mpapis.asc | gpg --import -
 \curl -sSL https://get.rvm.io | /bin/bash -s stable --ruby
+usermod -a -G rvm odoo
 
 cat >> /etc/bash.bashrc << EOF
 
