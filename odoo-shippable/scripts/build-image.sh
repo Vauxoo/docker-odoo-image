@@ -2,7 +2,6 @@
 
 # Exit inmediately after an error
 set -e
-set -x
 
 # With a little help from my friends
 . /usr/share/vx-docker-internal/ubuntu-base/library.sh
@@ -176,8 +175,7 @@ sed -i 's/robbyrussell/odoo-shippable/g' ~/.zshrc
 
 # Upgrade & configure vim
 apt-get upgrade vim
-tree -d /usr/share/vim
-wget -q -O /usr/share/vim/vim80/spell/es.utf-8.spl http://ftp.vim.org/pub/vim/runtime/spell/es.utf-8.spl
+wget -q -O /usr/share/vim/vim80/spell/es.utf-8.spl ftp://ftp.vim.org/pub/vim/runtime/spell/es.utf-8.spl
 git_clone_execute "${SPF13_REPO}" "3.0" "bootstrap.sh"
 git_clone_copy "${VIM_OPENERP_REPO}" "master" "vim/" "${HOME}/.vim/bundle/vim-openerp"
 
