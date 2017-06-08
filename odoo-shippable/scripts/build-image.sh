@@ -2,6 +2,7 @@
 
 # Exit inmediately after an error
 set -e
+set -x
 
 # With a little help from my friends
 . /usr/share/vx-docker-internal/ubuntu-base/library.sh
