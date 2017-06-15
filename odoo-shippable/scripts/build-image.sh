@@ -18,8 +18,10 @@ GITCORE_PPA_KEY="http://keyserver.ubuntu.com:11371/pks/lookup?op=get&search=0xA1
 # ppa sources
 PYTHON_PPA_REPO="deb http://ppa.launchpad.net/fkrull/deadsnakes/ubuntu trusty main"
 PYTHON_PPA_KEY="http://keyserver.ubuntu.com:11371/pks/lookup?op=get&search=0x5BB92C09DB82666C"
-VIM_PPA_REPO="deb http://ppa.launchpad.net/pkg-vim/vim-daily/ubuntu trusty main"
-VIM_PPA_KEY="http://keyserver.ubuntu.com:11371/pks/lookup?op=get&search=0xA7266A2DD31525A0"
+VIM_PPA_REPO="deb http://ppa.launchpad.net/jonathonf/vim/ubuntu trusty main"
+VIM_PPA_KEY="http://keyserver.ubuntu.com:11371/pks/lookup?op=get&search=0x8CF63AD3F06FC659"
+GCC_PPA_REPO="deb http://ppa.launchpad.net/ubuntu-toolchain-r/test/ubuntu trusty main"
+GCC_PPA_KEY="http://keyserver.ubuntu.com:11371/pks/lookup?op=get&search=0x1E9377A2BA9EF27F"
 
 # Extra software download URLs
 HUB_ARCHIVE="https://github.com/github/hub/releases/download/v2.2.3/hub-linux-${ARCH}-2.2.3.tgz"
@@ -47,7 +49,7 @@ DPKG_DEPENDS="postgresql-9.3 postgresql-contrib-9.3 postgresql-9.5 postgresql-co
               lua50 liblua50-dev liblualib50-dev exuberant-ctags rake \
               python3.3 python3.3-dev python3.4 python3.4-dev python3.5 python3.5-dev python3.6 python3.6-dev \
               software-properties-common Xvfb libmagickwand-dev openjdk-7-jre \
-              dos2unix"
+              dos2unix gcc-4.9 g++-4.9 cpp-4.9"
 PIP_OPTS="--upgrade \
           --no-cache-dir"
 PIP_DEPENDS_EXTRA="line-profiler watchdog coveralls diff-highlight \
@@ -63,11 +65,19 @@ add_custom_aptsource "${GITCORE_PPA_REPO}" "${GITCORE_PPA_KEY}"
 add_custom_aptsource "${PYTHON_PPA_REPO}" "${PYTHON_PPA_KEY}"
 # Let's add the vim ppa for having a more up-to-date vim
 add_custom_aptsource "${VIM_PPA_REPO}" "${VIM_PPA_KEY}"
+# Let's add the vim ppa for having a more up-to-date gcc, g++, cpp
+add_custom_aptsource "${GCC_PPA_REPO}" "${GCC_PPA_KEY}"
 
 # Release the apt monster!
 apt-get update
 apt-get upgrade
 apt-get install ${DPKG_DEPENDS} ${PIP_DPKG_BUILD_DEPENDS}
+
+# Use the 4.9 for default
+rm /usr/bin/gcc /usr/bin/g++ /usr/bin/cpp
+ln -s /usr/bin/gcc-4.9 /usr/bin/gcc
+ln -s /usr/bin/g++-4.9 /usr/bin/g++
+ln -s /usr/bin/cpp-4.9 /usr/bin/cpp
 
 # Install node dependencies
 npm install ${NPM_OPTS} ${NPM_DEPENDS}
@@ -165,7 +175,7 @@ sed -i 's/robbyrussell/odoo-shippable/g' ~/.zshrc
 
 # Upgrade & configure vim
 apt-get upgrade vim
-wget -q -O /usr/share/vim/vim74/spell/es.utf-8.spl http://ftp.vim.org/pub/vim/runtime/spell/es.utf-8.spl
+wget -q -O /usr/share/vim/vim80/spell/es.utf-8.spl ftp://ftp.vim.org/pub/vim/runtime/spell/es.utf-8.spl
 git_clone_execute "${SPF13_REPO}" "3.0" "bootstrap.sh"
 git_clone_copy "${VIM_OPENERP_REPO}" "master" "vim/" "${HOME}/.vim/bundle/vim-openerp"
 
