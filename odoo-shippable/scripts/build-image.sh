@@ -185,13 +185,14 @@ let g:signify_disable_by_default = 1
 EOF
 
 # Install and configure YouCompleteMe
-VIM_YOUCOMPLETEME_PATH="${HOME}/.vim/bundle/YouCompleteMe"
-git_clone_copy "${VIM_YOUCOMPLETEME_REPO}" "master" "." "${VIM_YOUCOMPLETEME_PATH}"
-(cd "${VIM_YOUCOMPLETEME_PATH}" && ./install.py)
-cat >> ~/.vimrc << EOF
-" Disable auto trigger for youcompleteme
-let g:ycm_auto_trigger = 0
-EOF
+# Disable youcompleteme for default
+#VIM_YOUCOMPLETEME_PATH="${HOME}/.vim/bundle/YouCompleteMe"
+#git_clone_copy "${VIM_YOUCOMPLETEME_REPO}" "master" "." "${VIM_YOUCOMPLETEME_PATH}"
+#(cd "${VIM_YOUCOMPLETEME_PATH}" && ./install.py)
+#cat >> ~/.vimrc << EOF
+#" Disable auto trigger for youcompleteme
+#let g:ycm_auto_trigger = 0
+#EOF
 
 # Install WakaTime
 git_clone_copy "${VIM_WAKATIME_REPO}" "master" "." "${HOME}/.vim/bundle/vim-wakatime"
@@ -241,8 +242,13 @@ endif
 EOF
 
 cat >> ~/.vimrc.before.local << EOF
+# Disable youcompleteme for default
+#let g:spf13_bundle_groups = ['general', 'writing', 'odoovim', 'wakatime',
+#                           \ 'programming', 'youcompleteme', 'php', 'ruby',
+#                           \ 'python', 'javascript', 'html',
+#                           \ 'misc']
 let g:spf13_bundle_groups = ['general', 'writing', 'odoovim', 'wakatime',
-                           \ 'programming', 'youcompleteme', 'php', 'ruby',
+                           \ 'programming', 'php', 'ruby',
                            \ 'python', 'javascript', 'html',
                            \ 'misc']
 EOF
