@@ -186,13 +186,13 @@ EOF
 
 # Install and configure YouCompleteMe
 # Disable youcompleteme for default
-#VIM_YOUCOMPLETEME_PATH="${HOME}/.vim/bundle/YouCompleteMe"
-#git_clone_copy "${VIM_YOUCOMPLETEME_REPO}" "master" "." "${VIM_YOUCOMPLETEME_PATH}"
+VIM_YOUCOMPLETEME_PATH="${HOME}/.vim/bundle/YouCompleteMe"
+git_clone_copy "${VIM_YOUCOMPLETEME_REPO}" "master" "." "${VIM_YOUCOMPLETEME_PATH}"
 #(cd "${VIM_YOUCOMPLETEME_PATH}" && ./install.py)
-#cat >> ~/.vimrc << EOF
-#" Disable auto trigger for youcompleteme
-#let g:ycm_auto_trigger = 0
-#EOF
+cat >> ~/.vimrc << EOF
+" Disable auto trigger for youcompleteme
+let g:ycm_auto_trigger = 0
+EOF
 
 # Install WakaTime
 git_clone_copy "${VIM_WAKATIME_REPO}" "master" "." "${HOME}/.vim/bundle/vim-wakatime"
@@ -241,12 +241,12 @@ endif
 " }
 EOF
 
-cat >> ~/.vimrc.before.local << EOF
 # Disable youcompleteme for default
 #let g:spf13_bundle_groups = ['general', 'writing', 'odoovim', 'wakatime',
 #                           \ 'programming', 'youcompleteme', 'php', 'ruby',
 #                           \ 'python', 'javascript', 'html',
 #                           \ 'misc']
+cat >> ~/.vimrc.before.local << EOF
 let g:spf13_bundle_groups = ['general', 'writing', 'odoovim', 'wakatime',
                            \ 'programming', 'php', 'ruby',
                            \ 'python', 'javascript', 'html',
@@ -422,7 +422,7 @@ PG_NON_DURABILITY=1 PG_LOGS_ENABLE=1 python ${REPO_REQUIREMENTS}/linit_hook/trav
 
 # Install & Configure RVM
 curl -sSL https://rvm.io/mpapis.asc | gpg --import -
-\curl -sSL https://get.rvm.io | /bin/bash -s stable --ruby
+\curl -sSL https://raw.githubusercontent.com/wayneeseguin/rvm/stable/binscripts/rvm-installer | /bin/bash -s stable --ruby
 usermod -a -G rvm odoo
 
 cat >> /etc/bash.bashrc << EOF
