@@ -240,12 +240,8 @@ endif
 " }
 EOF
 
-# Disable youcompleteme for default
-#let g:spf13_bundle_groups = ['general', 'writing', 'odoovim', 'wakatime',
-#                           \ 'programming', 'youcompleteme', 'php', 'ruby',
-#                           \ 'python', 'javascript', 'html',
-#                           \ 'misc']
 cat >> ~/.vimrc.before.local << EOF
+# Disabled 'youcompleteme' by default
 let g:spf13_bundle_groups = ['general', 'writing', 'odoovim', 'wakatime',
                            \ 'programming', 'php', 'ruby',
                            \ 'python', 'javascript', 'html',
