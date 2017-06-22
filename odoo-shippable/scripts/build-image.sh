@@ -187,7 +187,8 @@ EOF
 # Install and configure YouCompleteMe
 VIM_YOUCOMPLETEME_PATH="${HOME}/.vim/bundle/YouCompleteMe"
 git_clone_copy "${VIM_YOUCOMPLETEME_REPO}" "master" "." "${VIM_YOUCOMPLETEME_PATH}"
-(cd "${VIM_YOUCOMPLETEME_PATH}" && ./install.py)
+# The version required by youcompleteme is g++4.9
+#(cd "${VIM_YOUCOMPLETEME_PATH}" && ./install.py)
 cat >> ~/.vimrc << EOF
 " Disable auto trigger for youcompleteme
 let g:ycm_auto_trigger = 0
