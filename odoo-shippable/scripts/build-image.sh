@@ -185,7 +185,6 @@ let g:signify_disable_by_default = 1
 EOF
 
 # Install and configure YouCompleteMe
-# Disable youcompleteme for default
 VIM_YOUCOMPLETEME_PATH="${HOME}/.vim/bundle/YouCompleteMe"
 git_clone_copy "${VIM_YOUCOMPLETEME_REPO}" "master" "." "${VIM_YOUCOMPLETEME_PATH}"
 (cd "${VIM_YOUCOMPLETEME_PATH}" && ./install.py)
