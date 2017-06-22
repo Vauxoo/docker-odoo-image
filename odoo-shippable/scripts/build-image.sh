@@ -241,8 +241,9 @@ endif
 EOF
 
 cat >> ~/.vimrc.before.local << EOF
+# Disabled 'youcompleteme' by default
 let g:spf13_bundle_groups = ['general', 'writing', 'odoovim', 'wakatime',
-                           \ 'programming', 'youcompleteme', 'php', 'ruby',
+                           \ 'programming', 'php', 'ruby',
                            \ 'python', 'javascript', 'html',
                            \ 'misc']
 EOF
@@ -416,7 +417,7 @@ PG_NON_DURABILITY=1 PG_LOGS_ENABLE=1 python ${REPO_REQUIREMENTS}/linit_hook/trav
 
 # Install & Configure RVM
 curl -sSL https://rvm.io/mpapis.asc | gpg --import -
-\curl -sSL https://get.rvm.io | /bin/bash -s stable --ruby
+\curl -sSL https://raw.githubusercontent.com/wayneeseguin/rvm/stable/binscripts/rvm-installer | /bin/bash -s stable --ruby
 usermod -a -G rvm odoo
 
 cat >> /etc/bash.bashrc << EOF
