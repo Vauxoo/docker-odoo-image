@@ -187,6 +187,7 @@ EOF
 # Install and configure YouCompleteMe
 VIM_YOUCOMPLETEME_PATH="${HOME}/.vim/bundle/YouCompleteMe"
 git clone ${VIM_YOUCOMPLETEME_REPO} ${VIM_YOUCOMPLETEME_PATH}
+# Install the custom version of YouCompleteMe because the last required g++ 4.9
 (cd "${VIM_YOUCOMPLETEME_PATH}" && git reset --hard 89beeb518ef0a85346b6c65e13baab24dcaef37c && git submodule update --init --recursive && ./install.py)
 cat >> ~/.vimrc << EOF
 " Disable auto trigger for youcompleteme
@@ -243,7 +244,7 @@ EOF
 cat >> ~/.vimrc.before.local << EOF
 # Disabled 'youcompleteme' by default
 let g:spf13_bundle_groups = ['general', 'writing', 'odoovim', 'wakatime',
-                           \ 'programming', 'php', 'ruby',
+                           \ 'programming', 'youcompleteme', 'php', 'ruby',
                            \ 'python', 'javascript', 'html',
                            \ 'misc']
 EOF
