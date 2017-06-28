@@ -158,11 +158,6 @@ cat >> /etc/gitconfig << EOF
     diff = diff-highlight | less
 EOF
 
-# Install & configure zsh
-git_clone_execute "${OH_MY_ZSH_REPO}" "master" "tools/install.sh"
-git_clone_copy "${ZSH_THEME_REPO}" "master" "schminitz.zsh-theme" "${HOME}/.oh-my-zsh/themes/odoo-shippable.zsh-theme"
-sed -i 's/robbyrussell/odoo-shippable/g' ~/.zshrc
-
 # Upgrade & configure vim
 apt-get upgrade vim
 wget -q -O /usr/share/vim/vim74/spell/es.utf-8.spl http://ftp.vim.org/pub/vim/runtime/spell/es.utf-8.spl
@@ -378,6 +373,18 @@ cat >> /root/.zshrc << 'EOF'
 source ${REPO_REQUIREMENTS}/virtualenv/python2.7/bin/activate
 source ${REPO_REQUIREMENTS}/virtualenv/nodejs/bin/activate
 EOF
+
+# Install & configure zsh
+git_clone_execute "${OH_MY_ZSH_REPO}" "master" "tools/install.sh"
+git_clone_copy "${ZSH_THEME_REPO}" "master" "schminitz.zsh-theme" "${HOME}/.oh-my-zsh/themes/odoo-shippable.zsh-theme"
+sed -i 's/robbyrussell/odoo-shippable/g' ~/.zshrc
+
+#Copy zsh for odoo user
+cp -r ${HOME}/.oh-my-zsh /home/odoo
+chown -R odoo:odoo /home/odoo/.oh-my-zsh
+cp ${HOME}/.zshrc /home/odoo/.zshrc
+chown odoo:odoo /home/odoo/.zshrc
+sed -i 's/root/home\/odoo/g' /home/odoo/.zshrc
 
 # Set custom configuration of max connections, port and locks for postgresql
 sed -i 's/#max_pred_locks_per_transaction = 64/max_pred_locks_per_transaction = 100/g' /etc/postgresql/*/main*/postgresql.conf
