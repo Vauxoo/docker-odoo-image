@@ -45,7 +45,7 @@ feedparser==5.2.1
 cython
 pyusb==1.0.0
 pyserial==3.1.1
-psycopg2==2.6.2
+psycopg2==2.7.1
 validate_email
 sphinx-patchqueue==0.4.0
 psycogreen==1.0
