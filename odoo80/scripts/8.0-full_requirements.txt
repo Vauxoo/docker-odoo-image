@@ -38,7 +38,7 @@ lxml==3.3.5
 suds
 num2words
 xlrd>=1.0.0
-psycopg2==2.5.3
+psycopg2==2.7.1
 pyusb==1.0.0b2
 Pillow==2.5.1
 vobject==0.6.6

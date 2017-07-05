@@ -50,7 +50,7 @@ gdata==2.0.18
 six==1.9.0
 passlib==1.6.2
 pyopenssl==16.2.0
-psycopg2==2.5.4
+psycopg2==2.7.1
 pyPdf==1.13
 suds-jurko==0.6
 cfdilib==0.4.0
