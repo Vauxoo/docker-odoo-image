@@ -47,12 +47,12 @@ DPKG_DEPENDS="postgresql-9.3 postgresql-contrib-9.3 postgresql-9.5 postgresql-co
               lua50 liblua50-dev liblualib50-dev exuberant-ctags rake \
               python3.3 python3.3-dev python3.4 python3.4-dev python3.5 python3.5-dev python3.6 python3.6-dev \
               software-properties-common Xvfb libmagickwand-dev openjdk-7-jre \
-              dos2unix subversion"
+              dos2unix subversion python-sphinx"
 PIP_OPTS="--upgrade \
           --no-cache-dir"
 PIP_DEPENDS_EXTRA="line-profiler watchdog coveralls diff-highlight \
                    pg-activity virtualenv nodeenv setuptools==33.1.1 \
-                   html2text==2016.9.19 ofxparse==0.15"
+                   html2text==2016.9.19 ofxparse==0.15 python-sphinx==1.2"
 PIP_DPKG_BUILD_DEPENDS=""
 NPM_OPTS="-g"
 NPM_DEPENDS="localtunnel fs-extra eslint"
