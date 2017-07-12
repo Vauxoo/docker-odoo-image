@@ -63,6 +63,8 @@ PIP_OPTS="--upgrade \
 PIP_DEPENDS_EXTRA="requirements-parser==0.1.0 \
                    mercurial==3.2.2 \
                    setuptools==33.1.1 \
+                   git+https://github.com/vauxoo/pylint-odoo@master#egg=pylint-odoo \
+                   git+https://github.com/vauxoo/panama-dv@master#egg=ruc \
                    hg+https://bitbucket.org/birkenfeld/sphinx-contrib@default#egg=sphinxcontrib-youtube&subdirectory=youtube"
 
 PIP_DPKG_BUILD_DEPENDS=""
@@ -83,6 +85,9 @@ pip install --upgrade pip
 
 # Let's recursively find our pip dependencies
 collect_pip_dependencies "${ODOO_DEPENDENCIES}" "${PIP_DEPENDS_EXTRA}" "${DEPENDENCIES_FILE}"
+
+# Cleans incorrect dependency lines  
+clean_requirements ${DEPENDENCIES_FILE}
 
 # Install python dependencies
 pip install ${PIP_OPTS} -r ${DEPENDENCIES_FILE}
