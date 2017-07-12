@@ -14,7 +14,6 @@ requirements-parser==0.1.0
 setuptools==33.1.1
 pstats_print2list
 py2-ipaddress==3.4.1
-numexpr
 twilio==5.4.0
 validate_email
 yowsup2==2.3.185
