@@ -385,6 +385,8 @@ chown -R odoo:odoo /home/odoo/.oh-my-zsh
 cp ${HOME}/.zshrc /home/odoo/.zshrc
 chown odoo:odoo /home/odoo/.zshrc
 sed -i 's/root/home\/odoo/g' /home/odoo/.zshrc
+# Set default shell to the root user
+usermod -s /bin/bash root
 
 # Set custom configuration of max connections, port and locks for postgresql
 sed -i 's/#max_pred_locks_per_transaction = 64/max_pred_locks_per_transaction = 100/g' /etc/postgresql/*/main*/postgresql.conf
