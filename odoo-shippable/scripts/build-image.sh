@@ -394,8 +394,8 @@ sed -i 's/root/home\/odoo/g' /home/odoo/.zshrc
 usermod -s /bin/bash root
 
 # Install Tmux Plugin Manager
-git_clone_copy "${TMUX_PLUGINS_REPO}" "master" "" "~/.tmux/plugins/tpm"
-cat >> ~.tmux.conf << EOF
+git_clone_copy "${TMUX_PLUGINS_REPO}" "master" "" "${HOME}/.tmux/plugins/tpm"
+cat >> ~/.tmux.conf << EOF
 # List of plugins
 set -g @plugin 'tmux-plugins/tpm'
 set -g @plugin 'tmux-plugins/tmux-sensible'
