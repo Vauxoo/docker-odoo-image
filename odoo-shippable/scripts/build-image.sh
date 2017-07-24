@@ -20,6 +20,8 @@ PYTHON_PPA_REPO="deb http://ppa.launchpad.net/fkrull/deadsnakes/ubuntu trusty ma
 PYTHON_PPA_KEY="http://keyserver.ubuntu.com:11371/pks/lookup?op=get&search=0x5BB92C09DB82666C"
 VIM_PPA_REPO="deb http://ppa.launchpad.net/pkg-vim/vim-daily/ubuntu trusty main"
 VIM_PPA_KEY="http://keyserver.ubuntu.com:11371/pks/lookup?op=get&search=0xA7266A2DD31525A0"
+TMUX_PPA_REPO="deb http://ppa.launchpad.net/pi-rho/dev/ubuntu trusty main"
+TMUX_PPA_KEY="http://keyserver.ubuntu.com:11371/pks/lookup?op=get&search=0xCC892FC6779C27D7"
 
 # Extra software download URLs
 HUB_ARCHIVE="https://github.com/github/hub/releases/download/v2.2.3/hub-linux-${ARCH}-2.2.3.tgz"
@@ -40,6 +42,7 @@ ODOO_OCA_REPO="https://github.com/oca/ocb.git"
 MQT_REPO="https://github.com/vauxoo/maintainer-quality-tools.git"
 GIST_VAUXOO_REPO="https://github.com/vauxoo-dev/gist-vauxoo.git"
 PYLINT_REPO="https://github.com/vauxoo/pylint-conf.git"
+TMUX_PLUGINS_REPO="https://github.com/tmux-plugins/tpm"
 
 DPKG_DEPENDS="postgresql-9.3 postgresql-contrib-9.3 postgresql-9.5 postgresql-contrib-9.5 \
               pgbadger pgtune perl-modules make openssl p7zip-full expect-dev mosh bpython \
@@ -47,7 +50,7 @@ DPKG_DEPENDS="postgresql-9.3 postgresql-contrib-9.3 postgresql-9.5 postgresql-co
               lua50 liblua50-dev liblualib50-dev exuberant-ctags rake \
               python3.3 python3.3-dev python3.4 python3.4-dev python3.5 python3.5-dev python3.6 python3.6-dev \
               software-properties-common Xvfb libmagickwand-dev openjdk-7-jre \
-              dos2unix subversion"
+              dos2unix subversion tmux=2.0-1~ppa1~t"
 PIP_OPTS="--upgrade \
           --no-cache-dir"
 PIP_DEPENDS_EXTRA="line-profiler watchdog coveralls diff-highlight \
@@ -63,6 +66,8 @@ add_custom_aptsource "${GITCORE_PPA_REPO}" "${GITCORE_PPA_KEY}"
 add_custom_aptsource "${PYTHON_PPA_REPO}" "${PYTHON_PPA_KEY}"
 # Let's add the vim ppa for having a more up-to-date vim
 add_custom_aptsource "${VIM_PPA_REPO}" "${VIM_PPA_KEY}"
+# Let's add the tmux ppa for having a more up-to-date vim
+add_custom_aptsource "${TMUX_PPA_REPO}" "${TMUX_PPA_KEY}"
 
 # Release the apt monster!
 apt-get update
@@ -160,7 +165,7 @@ EOF
 
 # Upgrade & configure vim
 apt-get upgrade vim
-wget -q -O /usr/share/vim/vim74/spell/es.utf-8.spl http://ftp.vim.org/pub/vim/runtime/spell/es.utf-8.spl
+wget -q -O /usr/share/vim/vim80/spell/es.utf-8.spl http://ftp.vim.org/pub/vim/runtime/spell/es.utf-8.spl
 git_clone_execute "${SPF13_REPO}" "3.0" "bootstrap.sh"
 git_clone_copy "${VIM_OPENERP_REPO}" "master" "vim/" "${HOME}/.vim/bundle/vim-openerp"
 
@@ -387,6 +392,26 @@ chown odoo:odoo /home/odoo/.zshrc
 sed -i 's/root/home\/odoo/g' /home/odoo/.zshrc
 # Set default shell to the root user
 usermod -s /bin/bash root
+
+# Install Tmux Plugin Manager
+git_clone_copy "${TMUX_PLUGINS_REPO}" "master" "" "${HOME}/.tmux/plugins/tpm"
+cat >> ~/.tmux.conf << EOF
+# List of plugins
+set -g @plugin 'tmux-plugins/tpm'
+set -g @plugin 'tmux-plugins/tmux-sensible'
+set -g @plugin 'tmux-plugins/tmux-resurrect'
+set -g @plugin 'tmux-plugins/tmux-continuum'
+
+# Initialize TMUX plugin manager (keep this line at the very bottom of tmux.conf)
+run '~/.tmux/plugins/tpm/tpm'
+EOF
+cp -r ${HOME}/.tmux /home/odoo
+chown -R odoo:odoo /home/odoo/.tmux
+cp -r ${HOME}/.tmux.conf /home/odoo
+chown -R odoo:odoo /home/odoo/.tmux.conf
+# Install all plugin for all user
+${HOME}/.tmux/plugins/tpm/scripts/install_plugins.sh
+/home/odoo/.tmux/plugins/tpm/scripts/install_plugins.sh
 
 # Set custom configuration of max connections, port and locks for postgresql
 sed -i 's/#max_pred_locks_per_transaction = 64/max_pred_locks_per_transaction = 100/g' /etc/postgresql/*/main*/postgresql.conf
