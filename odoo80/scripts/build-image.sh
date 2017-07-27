@@ -52,7 +52,8 @@ DPKG_DEPENDS="nodejs \
               postgresql-${PSQL_VERSION} \
               postgresql-client-${PSQL_VERSION} \
               postgresql-contrib-${PSQL_VERSION} \
-              pgbadger"
+              pgbadger \
+              python-cups"
 DPKG_UNNECESSARY=""
 NPM_OPTS="-g"
 NPM_DEPENDS="less \
