@@ -28,6 +28,3 @@ validate_email
 sphinx-patchqueue==0.4.0
 sphinx==1.2.3
 unidecode
-git+https://github.com/savoirfairelinux/num2words.git@0.5.4
-git+https://github.com/vauxoo/pylint-odoo@master#egg=pylint-odoo
-git+https://github.com/vauxoo/panama-dv@master#egg=ruc

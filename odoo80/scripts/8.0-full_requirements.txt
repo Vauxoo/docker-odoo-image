@@ -10,14 +10,10 @@ mygengo
 recaptcha-client
 egenix-mx-base
 branchesv
-git+https://github.com/vauxoo/pylint-odoo@master#egg=pylint-odoo
-git+https://github.com/vauxoo/panama-dv@master#egg=ruc
 requirements-parser==0.1.0
 setuptools==33.1.1
 pstats_print2list
 py2-ipaddress==3.4.1
-git+https://github.com/vauxoo/panama-dv.git
-numexpr
 twilio==5.4.0
 validate_email
 yowsup2==2.3.185

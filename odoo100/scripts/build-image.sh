@@ -61,6 +61,9 @@ PIP_OPTS="--upgrade \
 
 PIP_DEPENDS_EXTRA="requirements-parser==0.1.0 \
                    mercurial==3.2.2 \
+                   setuptools==33.1.1 \
+                   git+https://github.com/vauxoo/pylint-odoo@master#egg=pylint-odoo \
+                   git+https://github.com/vauxoo/panama-dv@master#egg=ruc \
                    hg+https://bitbucket.org/birkenfeld/sphinx-contrib@default#egg=sphinxcontrib-youtube&subdirectory=youtube"
 
 PIP_DPKG_BUILD_DEPENDS=""
