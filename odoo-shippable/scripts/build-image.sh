@@ -148,7 +148,7 @@ ln -sfv ${REPO_REQUIREMENTS}/virtualenv/python2.7/bin/coverage /usr/local/bin/co
 
 # Execute travis_install_nightly
 LINT_CHECK=1 TESTS=0 ${REPO_REQUIREMENTS}/linit_hook/travis/travis_install_nightly
-pip install --no-binary pycparser -r ${REPO_REQUIREMENTS}/linit_hook/travis/requirements.txt
+pip install --no-binary pycparser -r ${REPO_REQUIREMENTS}/linit_hook/requirements.txt
 
 # Install hub & ngrok
 targz_download_execute "${HUB_ARCHIVE}" "install"
