@@ -248,14 +248,6 @@ let g:spf13_bundle_groups = ['general', 'writing', 'odoovim', 'wakatime',
                            \ 'misc']
 EOF
 
-cat >> /etc/bash.bashrc << EOF
-PYTHONPATH=${PYTHONPATH}:/.repo_requirements/odoo
-EOF
-
-cat >> ~/.zshrc << EOF
-PYTHONPATH=${PYTHONPATH}:/.repo_requirements/odoo
-EOF
-
 # Configure shell, shell colors & shell completion
 chsh --shell /bin/bash root
 git_clone_copy "${HUB_REPO}" "master" "etc/hub.bash_completion.sh" "/etc/bash_completion.d/"
@@ -392,6 +384,21 @@ chown odoo:odoo /home/odoo/.zshrc
 sed -i 's/root/home\/odoo/g' /home/odoo/.zshrc
 # Set default shell to the root user
 usermod -s /bin/bash root
+
+# Export another PYTHONPATH
+cat >> ${HOME}/.bashrc << EOF
+PYTHONPATH=${PYTHONPATH}:${REPO_REQUIREMENTS}/odoo
+EOF
+cat >> /home/odoo/.bashrc << EOF
+PYTHONPATH=${PYTHONPATH}:${REPO_REQUIREMENTS}/odoo
+EOF
+
+cat >> ${HOME}/.zshrc << EOF
+PYTHONPATH=${PYTHONPATH}:${REPO_REQUIREMENTS}/odoo
+EOF
+cat >> /home/odoo/.zshrc << EOF
+PYTHONPATH=${PYTHONPATH}:${REPO_REQUIREMENTS}/odoo
+EOF
 
 # Install Tmux Plugin Manager
 git_clone_copy "${TMUX_PLUGINS_REPO}" "master" "" "${HOME}/.tmux/plugins/tpm"
