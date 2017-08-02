@@ -226,6 +226,9 @@ let g:SuperTabDefaultCompletionType = '<C-n>'
 let g:UltiSnipsExpandTrigger = "<tab>"
 let g:UltiSnipsJumpForwardTrigger = "<tab>"
 let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
+
+" Convert all files to unix format on open
+au BufRead,BufNewFile * set ff=unix
 EOF
 
 cat >> ~/.vimrc.bundles.local << EOF
