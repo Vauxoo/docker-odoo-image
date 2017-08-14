@@ -139,6 +139,13 @@ virtualenv -p /usr/bin/python2 --system-site-packages ${REPO_REQUIREMENTS}/virtu
 nodeenv ${REPO_REQUIREMENTS}/virtualenv/nodejs
 echo "REPO_REQUIREMENTS=${REPO_REQUIREMENTS}" >> /etc/bash.bashrc
 
+# Install coverage in the virtual environment
+source ${REPO_REQUIREMENTS}/virtualenv/python2.7/bin/activate
+pip install --force-reinstall --upgrade coverage --src .
+deactivate
+
+ln -sfv ${REPO_REQUIREMENTS}/virtualenv/python2.7/bin/coverage /usr/local/bin/coverage
+
 # Execute travis_install_nightly
 LINT_CHECK=1 TESTS=0 ${REPO_REQUIREMENTS}/linit_hook/travis/travis_install_nightly
 pip install --no-binary pycparser -r ${REPO_REQUIREMENTS}/linit_hook/requirements.txt
