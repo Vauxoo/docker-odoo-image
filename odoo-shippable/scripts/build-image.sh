@@ -140,6 +140,7 @@ nodeenv ${REPO_REQUIREMENTS}/virtualenv/nodejs
 echo "REPO_REQUIREMENTS=${REPO_REQUIREMENTS}" >> /etc/bash.bashrc
 
 # Install coverage in the virtual environment
+# Please don't remove it because emit errors from other environments
 source ${REPO_REQUIREMENTS}/virtualenv/python2.7/bin/activate
 pip install --force-reinstall --upgrade coverage --src .
 deactivate
