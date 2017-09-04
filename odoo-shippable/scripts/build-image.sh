@@ -365,26 +365,6 @@ createuser_custom "shippable"
 chown -R odoo:odoo ${REPO_REQUIREMENTS}
 ln -s "${REPO_REQUIREMENTS}/tools" "/home/odoo/tools"
 
-cat >> /home/odoo/.bashrc << 'EOF'
-source ${REPO_REQUIREMENTS}/virtualenv/python2.7/bin/activate
-source ${REPO_REQUIREMENTS}/virtualenv/nodejs/bin/activate
-EOF
-
-cat >> /home/odoo/.zshrc << 'EOF'
-source ${REPO_REQUIREMENTS}/virtualenv/python2.7/bin/activate
-source ${REPO_REQUIREMENTS}/virtualenv/nodejs/bin/activate
-EOF
-
-cat >> /root/.bashrc << 'EOF'
-source ${REPO_REQUIREMENTS}/virtualenv/python2.7/bin/activate
-source ${REPO_REQUIREMENTS}/virtualenv/nodejs/bin/activate
-EOF
-
-cat >> /root/.zshrc << 'EOF'
-source ${REPO_REQUIREMENTS}/virtualenv/python2.7/bin/activate
-source ${REPO_REQUIREMENTS}/virtualenv/nodejs/bin/activate
-EOF
-
 # Install & configure zsh
 git_clone_execute "${OH_MY_ZSH_REPO}" "master" "tools/install.sh"
 git_clone_copy "${ZSH_THEME_REPO}" "master" "schminitz.zsh-theme" "${HOME}/.oh-my-zsh/themes/odoo-shippable.zsh-theme"
@@ -399,18 +379,26 @@ sed -i 's/root/home\/odoo/g' /home/odoo/.zshrc
 # Set default shell to the root user
 usermod -s /bin/bash root
 
-# Export another PYTHONPATH
+# Export another PYTHONPATH and activate the virtualenvironment
 cat >> ${HOME}/.bashrc << EOF
+source ${REPO_REQUIREMENTS}/virtualenv/python2.7/bin/activate
+source ${REPO_REQUIREMENTS}/virtualenv/nodejs/bin/activate
 PYTHONPATH=${PYTHONPATH}:${REPO_REQUIREMENTS}/odoo
 EOF
 cat >> /home/odoo/.bashrc << EOF
+source ${REPO_REQUIREMENTS}/virtualenv/python2.7/bin/activate
+source ${REPO_REQUIREMENTS}/virtualenv/nodejs/bin/activate
 PYTHONPATH=${PYTHONPATH}:${REPO_REQUIREMENTS}/odoo
 EOF
 
 cat >> ${HOME}/.zshrc << EOF
+source ${REPO_REQUIREMENTS}/virtualenv/python2.7/bin/activate
+source ${REPO_REQUIREMENTS}/virtualenv/nodejs/bin/activate
 PYTHONPATH=${PYTHONPATH}:${REPO_REQUIREMENTS}/odoo
 EOF
 cat >> /home/odoo/.zshrc << EOF
+source ${REPO_REQUIREMENTS}/virtualenv/python2.7/bin/activate
+source ${REPO_REQUIREMENTS}/virtualenv/nodejs/bin/activate
 PYTHONPATH=${PYTHONPATH}:${REPO_REQUIREMENTS}/odoo
 EOF
 
