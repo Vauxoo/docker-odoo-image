@@ -420,7 +420,7 @@ cp -r ${HOME}/.tmux.conf /home/odoo
 chown -R odoo:odoo /home/odoo/.tmux.conf
 # Install all plugin for all user
 ${HOME}/.tmux/plugins/tpm/scripts/install_plugins.sh
-/home/odoo/.tmux/plugins/tpm/scripts/install_plugins.sh
+su odoo /home/odoo/.tmux/plugins/tpm/scripts/install_plugins.sh
 
 # Set custom configuration of max connections, port and locks for postgresql
 sed -i 's/#max_pred_locks_per_transaction = 64/max_pred_locks_per_transaction = 100/g' /etc/postgresql/*/main*/postgresql.conf
