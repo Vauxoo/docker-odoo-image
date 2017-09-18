@@ -145,7 +145,8 @@ git_clone_copy "${PYLINT_REPO}" "master" "conf/.jslintrc" "${REPO_REQUIREMENTS}/
 ln -sf ${REPO_REQUIREMENTS}/linit_hook/git/* /usr/share/git-core/templates/hooks/
 
 # Creating virtual environments for all version installed of python
-for version in '2.7' '3.2' '3.3' '3.4' '3.5' '3.6'
+# TODO Fix the version 3.2
+for version in '2.7' '3.3' '3.4' '3.5' '3.6'
 do
     python${version} -m virtualenv -p /usr/bin/python${version} --system-site-packages ${REPO_REQUIREMENTS}/virtualenv/python${version}
 done
