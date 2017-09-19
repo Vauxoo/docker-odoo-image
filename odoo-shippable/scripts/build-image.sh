@@ -145,9 +145,13 @@ git_clone_copy "${PYLINT_REPO}" "master" "conf/.jslintrc" "${REPO_REQUIREMENTS}/
 ln -sf ${REPO_REQUIREMENTS}/linit_hook/git/* /usr/share/git-core/templates/hooks/
 
 # Creating virtual environments for all version installed of python
-# TODO Fix the version 3.2
+echo "Create the virtualenv using python3.2"
+python3.2 -m pip uninstall -y virtualenv
+python3.2 -m pip install virtualenv==13.1.2
+python3.2 -m virtualenv -p /usr/bin/python3.2 --system-site-packages ${REPO_REQUIREMENTS}/virtualenv/python3.2
 for version in '2.7' '3.3' '3.4' '3.5' '3.6'
 do
+    echo "Create the virtualenv using python${version}"
     python${version} -m virtualenv -p /usr/bin/python${version} --system-site-packages ${REPO_REQUIREMENTS}/virtualenv/python${version}
 done
 export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python2.7
