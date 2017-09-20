@@ -59,11 +59,14 @@ PIP_DEPENDS_EXTRA="line-profiler watchdog coveralls diff-highlight \
                    html2text==2016.9.19 ofxparse==0.15"
 PIP_DPKG_BUILD_DEPENDS=""
 
-ODOO_DEPENDENCIES="git+https://github.com/vauxoo/odoo@10.0 \
-                   git+https://github.com/vauxoo/odoo@saas-15 \
-                   git+https://github.com/vauxoo/odoo@saas-17"
+ODOO_DEPENDENCIES_PY2="git+https://github.com/vauxoo/odoo@10.0 \
+                       git+https://github.com/vauxoo/odoo@saas-15"
 
-DEPENDENCIES_FILE="/tmp/full_requirements.txt"
+ODOO_DEPENDENCIES_PY3="git+https://github.com/vauxoo/odoo@saas-17"
+
+DEPENDENCIES_FILE_PY2="/tmp/full_requirements_2.txt"
+DEPENDENCIES_FILE_PY3="/tmp/full_requirements_3.txt"
+
 NPM_OPTS="-g"
 NPM_DEPENDS="localtunnel fs-extra eslint"
 
@@ -106,9 +109,20 @@ sed -i 's/graceful-fs/fs-extra/g;s/fs.rename/fs.move/g' $(npm root -g)/npm/lib/u
 # Install python dependencies
 #pip install ${PIP_OPTS} ${PIP_DEPENDS_EXTRA}
 
-collect_pip_dependencies "${ODOO_DEPENDENCIES}" "${PIP_DEPENDS_EXTRA}" "${DEPENDENCIES_FILE}"
-clean_requirements ${DEPENDENCIES_FILE}
-pip install ${PIP_OPTS} -r ${DEPENDENCIES_FILE}
+echo "Install all pip dependencies for python2.7"
+collect_pip_dependencies "${ODOO_DEPENDENCIES_PY2}" "${PIP_DEPENDS_EXTRA}" "${DEPENDENCIES_FILE_PY2}"
+clean_requirements ${DEPENDENCIES_FILE_PY2}
+python2.7 -m pip install ${PIP_OPTS} -r ${DEPENDENCIES_FILE_PY2}
+
+# TODO fix 3.2
+for version in '3.3' '3.4' '3.5' '3.6'
+do
+    echo "Install all pip dependencies for python${version}"
+    collect_pip_dependencies "${ODOO_DEPENDENCIES_PY3}" "${PIP_DEPENDS_EXTRA}" "${DEPENDENCIES_FILE_PY3}"
+    clean_requirements ${DEPENDENCIES_FILE_PY3}
+    python"$version" -m pip install ${PIP_OPTS} -r ${DEPENDENCIES_FILE_PY3}
+done
+exit 0
 
 # Install xvfb daemon
 wget https://raw.githubusercontent.com/travis-ci/travis-cookbooks/master/cookbooks/travis_build_environment/files/default/etc-init.d-xvfb.sh -O /etc/init.d/xvfb
