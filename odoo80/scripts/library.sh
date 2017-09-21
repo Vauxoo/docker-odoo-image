@@ -93,9 +93,9 @@ function collect_pip_dependencies(){
 
     pip install ${PIP_OPTS} ${DEPENDENCIES}
 
-    #for REQ in $( find ${TEMPDIR} -maxdepth 1 -type f -iname "requirements.txt" ); do
-    /usr/share/vx-docker-internal/odoo80/gen_pip_deps "${TEMPDIR}/requirements.txt" ${DEPENDENCIES_FILE}
-    #done
+    for REQ in $( find ${TEMPDIR} -maxdepth 1 -type f -iname "requirements.txt" ); do
+        /usr/share/vx-docker-internal/odoo80/gen_pip_deps ${REQ} ${DEPENDENCIES_FILE}
+    done
 }
 
 function wkhtmltox_install(){

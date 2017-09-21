@@ -64,8 +64,7 @@ ODOO_DEPENDENCIES_PY2="git+https://github.com/vauxoo/odoo@10.0 \
 
 ODOO_DEPENDENCIES_PY3="git+https://github.com/vauxoo/odoo@saas-17"
 
-DEPENDENCIES_FILE_PY2="/tmp/full_requirements_2.txt"
-DEPENDENCIES_FILE_PY3="/tmp/full_requirements_3.txt"
+DEPENDENCIES_FILE="/tmp/full_requirements_2.txt"
 
 NPM_OPTS="-g"
 NPM_DEPENDS="localtunnel fs-extra eslint"
@@ -110,17 +109,18 @@ sed -i 's/graceful-fs/fs-extra/g;s/fs.rename/fs.move/g' $(npm root -g)/npm/lib/u
 #pip install ${PIP_OPTS} ${PIP_DEPENDS_EXTRA}
 
 echo "Install all pip dependencies for python2.7"
-collect_pip_dependencies "${ODOO_DEPENDENCIES_PY2}" "${PIP_DEPENDS_EXTRA}" "${DEPENDENCIES_FILE_PY2}"
-clean_requirements ${DEPENDENCIES_FILE_PY2}
-python2.7 -m pip install ${PIP_OPTS} -r ${DEPENDENCIES_FILE_PY2}
+collect_pip_dependencies "${ODOO_DEPENDENCIES_PY2}" "${PIP_DEPENDS_EXTRA}" "${DEPENDENCIES_FILE}"
+clean_requirements ${DEPENDENCIES_FILE}
+python2.7 -m pip install ${PIP_OPTS} -r ${DEPENDENCIES_FILE}
 
 # TODO fix 3.2
+DEPENDENCIES_FILE="/tmp/full_requirements_3.txt"
 for version in '3.3' '3.4' '3.5' '3.6'
 do
     echo "Install all pip dependencies for python${version}"
-    collect_pip_dependencies "${ODOO_DEPENDENCIES_PY3}" "${PIP_DEPENDS_EXTRA}" "${DEPENDENCIES_FILE_PY3}"
-    clean_requirements ${DEPENDENCIES_FILE_PY3}
-    python"$version" -m pip install ${PIP_OPTS} -r ${DEPENDENCIES_FILE_PY3}
+    collect_pip_dependencies "${ODOO_DEPENDENCIES_PY3}" "${PIP_DEPENDS_EXTRA}" "${DEPENDENCIES_FILE}"
+    clean_requirements ${DEPENDENCIES_FILE}
+    python"$version" -m pip install ${PIP_OPTS} -r ${DEPENDENCIES_FILE}
 done
 exit 0
 
