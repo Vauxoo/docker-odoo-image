@@ -407,27 +407,17 @@ sed -i 's/root/home\/odoo/g' /home/odoo/.zshrc
 usermod -s /bin/bash root
 
 # Export another PYTHONPATH and activate the virtualenvironment
-cat >> ${HOME}/.bashrc << EOF
-source ${REPO_REQUIREMENTS}/virtualenv/python2.7/bin/activate
+for $_FILE in '${HOME}/.bashrc' '/home/odoo/.bashrc' '${HOME}/.zshrc' '/home/odoo/.zshrc'
+do
+    cat >> ${_FILE} << EOF
+if [ "x\${TRAVIS_PYTHON_VERSION}" == "x" ] ; then
+    TRAVIS_PYTHON_VERSION="2.7"
+fi
+source ${REPO_REQUIREMENTS}/virtualenv/python\${TRAVIS_PYTHON_VERSION}/bin/activate
 source ${REPO_REQUIREMENTS}/virtualenv/nodejs/bin/activate
 PYTHONPATH=${PYTHONPATH}:${REPO_REQUIREMENTS}/odoo
 EOF
-cat >> /home/odoo/.bashrc << EOF
-source ${REPO_REQUIREMENTS}/virtualenv/python2.7/bin/activate
-source ${REPO_REQUIREMENTS}/virtualenv/nodejs/bin/activate
-PYTHONPATH=${PYTHONPATH}:${REPO_REQUIREMENTS}/odoo
-EOF
-
-cat >> ${HOME}/.zshrc << EOF
-source ${REPO_REQUIREMENTS}/virtualenv/python2.7/bin/activate
-source ${REPO_REQUIREMENTS}/virtualenv/nodejs/bin/activate
-PYTHONPATH=${PYTHONPATH}:${REPO_REQUIREMENTS}/odoo
-EOF
-cat >> /home/odoo/.zshrc << EOF
-source ${REPO_REQUIREMENTS}/virtualenv/python2.7/bin/activate
-source ${REPO_REQUIREMENTS}/virtualenv/nodejs/bin/activate
-PYTHONPATH=${PYTHONPATH}:${REPO_REQUIREMENTS}/odoo
-EOF
+done
 
 # Install Tmux Plugin Manager
 git_clone_copy "${TMUX_PLUGINS_REPO}" "master" "" "${HOME}/.tmux/plugins/tpm"
