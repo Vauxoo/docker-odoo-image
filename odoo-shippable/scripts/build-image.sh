@@ -123,7 +123,6 @@ do
     clean_requirements ${DEPENDENCIES_FILE}
     python"$version" -m pip install ${PIP_OPTS} -r ${DEPENDENCIES_FILE}
 done
-exit 0
 
 # Install xvfb daemon
 wget https://raw.githubusercontent.com/travis-ci/travis-cookbooks/master/cookbooks/travis_build_environment/files/default/etc-init.d-xvfb.sh -O /etc/init.d/xvfb
