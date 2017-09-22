@@ -406,9 +406,10 @@ sed -i 's/root/home\/odoo/g' /home/odoo/.zshrc
 usermod -s /bin/bash root
 
 # Export another PYTHONPATH and activate the virtualenvironment
-for $_FILE in '${HOME}/.bashrc' '/home/odoo/.bashrc' '${HOME}/.zshrc' '/home/odoo/.zshrc'
+for BASHRC in ${HOME}/.bashrc /home/odoo/.bashrc ${HOME}/.zshrc /home/odoo/.zshrc
 do
-    cat >> ${_FILE} << EOF
+    echo "Export the PYTHONPATH IN ${BASHRC}"
+    cat >> $BASHRC << EOF
 if [ "x\${TRAVIS_PYTHON_VERSION}" == "x" ] ; then
     TRAVIS_PYTHON_VERSION="2.7"
 fi
