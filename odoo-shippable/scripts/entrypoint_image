@@ -82,7 +82,7 @@ def docker_entrypoint():
             stderr=subprocess.PIPE)
         psql_subprocess.wait()
         psql_out = psql_subprocess.stderr.read()
-        if 'rol' in psql_out and 'does not exist' in psql_out:
+        if b'rol' in psql_out and b'does not exist' in psql_out:
             psql_error = False
         elif psql_out:
             psql_error = True
