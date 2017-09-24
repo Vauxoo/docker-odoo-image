@@ -59,11 +59,13 @@ PIP_DEPENDS_EXTRA="line-profiler watchdog coveralls diff-highlight \
                    html2text==2016.9.19 ofxparse==0.15"
 PIP_DPKG_BUILD_DEPENDS=""
 
-ODOO_DEPENDENCIES="git+https://github.com/vauxoo/odoo@10.0 \
-                   git+https://github.com/vauxoo/odoo@saas-15 \
-                   git+https://github.com/vauxoo/odoo@saas-17"
+ODOO_DEPENDENCIES_PY2="git+https://github.com/vauxoo/odoo@10.0 \
+                       git+https://github.com/vauxoo/odoo@saas-15"
+
+ODOO_DEPENDENCIES_PY3="git+https://github.com/vauxoo/odoo@saas-17"
 
 DEPENDENCIES_FILE="/tmp/full_requirements.txt"
+
 NPM_OPTS="-g"
 NPM_DEPENDS="localtunnel fs-extra eslint"
 
@@ -106,9 +108,21 @@ sed -i 's/graceful-fs/fs-extra/g;s/fs.rename/fs.move/g' $(npm root -g)/npm/lib/u
 # Install python dependencies
 #pip install ${PIP_OPTS} ${PIP_DEPENDS_EXTRA}
 
-collect_pip_dependencies "${ODOO_DEPENDENCIES}" "${PIP_DEPENDS_EXTRA}" "${DEPENDENCIES_FILE}"
+echo "Install all pip dependencies for python2.7"
+echo "" > ${DEPENDENCIES_FILE}
+collect_pip_dependencies "${ODOO_DEPENDENCIES_PY2}" "${PIP_DEPENDS_EXTRA}" "${DEPENDENCIES_FILE}"
 clean_requirements ${DEPENDENCIES_FILE}
-pip install ${PIP_OPTS} -r ${DEPENDENCIES_FILE}
+python2.7 -m pip install ${PIP_OPTS} -r ${DEPENDENCIES_FILE}
+
+# TODO fix 3.2
+for version in '3.3' '3.4' '3.5' '3.6'
+do
+    echo "" > ${DEPENDENCIES_FILE}
+    echo "Install all pip dependencies for python${version}"
+    collect_pip_dependencies "${ODOO_DEPENDENCIES_PY3}" "${PIP_DEPENDS_EXTRA}" "${DEPENDENCIES_FILE}"
+    clean_requirements ${DEPENDENCIES_FILE}
+    python"$version" -m pip install ${PIP_OPTS} -r ${DEPENDENCIES_FILE}
+done
 
 # Install xvfb daemon
 wget https://raw.githubusercontent.com/travis-ci/travis-cookbooks/master/cookbooks/travis_build_environment/files/default/etc-init.d-xvfb.sh -O /etc/init.d/xvfb
@@ -144,10 +158,20 @@ git_clone_copy "${PYLINT_REPO}" "master" "conf/pylint_vauxoo_light_vim.cfg" "${R
 git_clone_copy "${PYLINT_REPO}" "master" "conf/.jslintrc" "${REPO_REQUIREMENTS}/linit_hook/travis/cfg/.jslintrc"
 ln -sf ${REPO_REQUIREMENTS}/linit_hook/git/* /usr/share/git-core/templates/hooks/
 
-# Creating virtual environments for python and node js
+# Creating virtual environments for all version installed of python
+echo "Create the virtualenv using python3.2"
+python3.2 -m pip uninstall -y virtualenv
+python3.2 -m pip install virtualenv==13.1.2
+python3.2 -m virtualenv -p /usr/bin/python3.2 --system-site-packages ${REPO_REQUIREMENTS}/virtualenv/python3.2
+for version in '2.7' '3.3' '3.4' '3.5' '3.6'
+do
+    echo "Create the virtualenv using python${version}"
+    python${version} -m virtualenv -p /usr/bin/python${version} --system-site-packages ${REPO_REQUIREMENTS}/virtualenv/python${version}
+done
 export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python2.7
 echo "VIRTUALENVWRAPPER_PYTHON=/usr/bin/python2.7" >> /etc/bash.bashrc
-virtualenv -p /usr/bin/python2 --system-site-packages ${REPO_REQUIREMENTS}/virtualenv/python2.7
+
+# Creating virtual environments node js
 nodeenv ${REPO_REQUIREMENTS}/virtualenv/nodejs
 echo "REPO_REQUIREMENTS=${REPO_REQUIREMENTS}" >> /etc/bash.bashrc
 
@@ -382,27 +406,18 @@ sed -i 's/root/home\/odoo/g' /home/odoo/.zshrc
 usermod -s /bin/bash root
 
 # Export another PYTHONPATH and activate the virtualenvironment
-cat >> ${HOME}/.bashrc << EOF
-source ${REPO_REQUIREMENTS}/virtualenv/python2.7/bin/activate
+for BASHRC in ${HOME}/.bashrc /home/odoo/.bashrc ${HOME}/.zshrc /home/odoo/.zshrc
+do
+    echo "Export the PYTHONPATH IN ${BASHRC}"
+    cat >> $BASHRC << EOF
+if [ "x\${TRAVIS_PYTHON_VERSION}" == "x" ] ; then
+    TRAVIS_PYTHON_VERSION="2.7"
+fi
+source ${REPO_REQUIREMENTS}/virtualenv/python\${TRAVIS_PYTHON_VERSION}/bin/activate
 source ${REPO_REQUIREMENTS}/virtualenv/nodejs/bin/activate
 PYTHONPATH=${PYTHONPATH}:${REPO_REQUIREMENTS}/odoo
 EOF
-cat >> /home/odoo/.bashrc << EOF
-source ${REPO_REQUIREMENTS}/virtualenv/python2.7/bin/activate
-source ${REPO_REQUIREMENTS}/virtualenv/nodejs/bin/activate
-PYTHONPATH=${PYTHONPATH}:${REPO_REQUIREMENTS}/odoo
-EOF
-
-cat >> ${HOME}/.zshrc << EOF
-source ${REPO_REQUIREMENTS}/virtualenv/python2.7/bin/activate
-source ${REPO_REQUIREMENTS}/virtualenv/nodejs/bin/activate
-PYTHONPATH=${PYTHONPATH}:${REPO_REQUIREMENTS}/odoo
-EOF
-cat >> /home/odoo/.zshrc << EOF
-source ${REPO_REQUIREMENTS}/virtualenv/python2.7/bin/activate
-source ${REPO_REQUIREMENTS}/virtualenv/nodejs/bin/activate
-PYTHONPATH=${PYTHONPATH}:${REPO_REQUIREMENTS}/odoo
-EOF
+done
 
 # Install Tmux Plugin Manager
 git_clone_copy "${TMUX_PLUGINS_REPO}" "master" "" "${HOME}/.tmux/plugins/tpm"
