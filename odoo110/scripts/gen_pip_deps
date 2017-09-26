@@ -1,0 +1,82 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+import os
+import requirements
+import sys
+import urlparse
+
+
+def validate_url(uri):
+    uri_parse = urlparse.urlparse(uri)
+    name = uri_parse.fragment
+    if "&" in uri_parse.fragment:
+        uri = uri.split("&")[0]
+    if not name:
+        name = name.split("@")[0]
+    return {'uri': uri, 'name': name}
+
+
+def gt(first, second):
+    """
+    Compare two packages versions
+    :param first: The first requirement
+    :param second: Te second requirement
+    :return: True if the first one is greater than the second
+        or is the latest version
+    """
+    if not first.specs:
+        return True
+    if not second.specs:
+        return False
+    return first.specs[0][1] > second.specs[0][1]
+
+
+def load_deps(filename):
+    """
+    Reads all the dependencies from a requirements file
+    :param filename: The filename to load
+    :return: A dict with the requirement name and the requirement object
+    """
+    reqs = dict()
+    with open(filename, 'r') as req_file:
+        lines = req_file.readlines()
+        for line in lines:
+            validate = validate_url(line)
+            for req in requirements.parse(validate['uri']):
+                name = req.name
+                if not name:
+                    name = validate['name']
+                reqs.update({name.upper(): req})
+    return reqs
+
+
+def save_requirements(requirementstxt, filename):
+    """
+    Take the requirements in the first file and save them to the seccond if they are
+    newer or they're no present in the file
+    :param requirementstxt: The requirements.txt file to parse
+    :param filename: The file where all requirements will be saved
+    :return: None. Just generates the file
+    """
+    if os.path.isfile(filename):
+        fullreqs = load_deps(filename)
+    else:
+        fullreqs = dict()
+    reqs = load_deps(requirementstxt)
+    if not reqs:
+        return
+    for name, req in reqs.iteritems():
+        if name not in fullreqs or gt(req, fullreqs.get(name)):
+            fullreqs.update({name: req})
+
+    with open(filename, 'w') as req_file:
+        for req in fullreqs.values():
+            if req is not None:
+                req_file.write(req.line+'\n')
+
+
+if __name__ == '__main__':
+    reqfilename = sys.argv[1]
+    full_reqfilename = sys.argv[2]
+    save_requirements(reqfilename, full_reqfilename)
