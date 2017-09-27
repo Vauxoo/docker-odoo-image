@@ -168,7 +168,7 @@ do
     python${version} -m virtualenv -p /usr/bin/python${version} --system-site-packages ${REPO_REQUIREMENTS}/virtualenv/python${version}
     # Install coverage in the virtual environment
     # Please don't remove it because emit errors from other environments
-    source ${REPO_REQUIREMENTS}/virtualenv/python2.7/bin/activate
+    source ${REPO_REQUIREMENTS}/virtualenv/python${version}/bin/activate
     pip install --force-reinstall --upgrade coverage --src .
     deactivate
 done
