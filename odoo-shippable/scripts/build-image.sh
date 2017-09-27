@@ -160,13 +160,17 @@ ln -sf ${REPO_REQUIREMENTS}/linit_hook/git/* /usr/share/git-core/templates/hooks
 
 # Creating virtual environments for all version installed of python
 echo "Create the virtualenv using python3.2"
-python3.2 -m pip uninstall -y virtualenv
-python3.2 -m pip install virtualenv==13.1.2
+python3.2 -m pip install -U virtualenv==13.1.2
 python3.2 -m virtualenv -p /usr/bin/python3.2 --system-site-packages ${REPO_REQUIREMENTS}/virtualenv/python3.2
 for version in '2.7' '3.3' '3.4' '3.5' '3.6'
 do
     echo "Create the virtualenv using python${version}"
     python${version} -m virtualenv -p /usr/bin/python${version} --system-site-packages ${REPO_REQUIREMENTS}/virtualenv/python${version}
+    # Install coverage in the virtual environment
+    # Please don't remove it because emit errors from other environments
+    source ${REPO_REQUIREMENTS}/virtualenv/python2.7/bin/activate
+    pip install --force-reinstall --upgrade coverage --src .
+    deactivate
 done
 export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python2.7
 echo "VIRTUALENVWRAPPER_PYTHON=/usr/bin/python2.7" >> /etc/bash.bashrc
@@ -174,14 +178,6 @@ echo "VIRTUALENVWRAPPER_PYTHON=/usr/bin/python2.7" >> /etc/bash.bashrc
 # Creating virtual environments node js
 nodeenv ${REPO_REQUIREMENTS}/virtualenv/nodejs
 echo "REPO_REQUIREMENTS=${REPO_REQUIREMENTS}" >> /etc/bash.bashrc
-
-# Install coverage in the virtual environment
-# Please don't remove it because emit errors from other environments
-source ${REPO_REQUIREMENTS}/virtualenv/python2.7/bin/activate
-pip install --force-reinstall --upgrade coverage --src .
-deactivate
-
-ln -sfv ${REPO_REQUIREMENTS}/virtualenv/python2.7/bin/coverage /usr/local/bin/coverage
 
 # Execute travis_install_nightly
 LINT_CHECK=1 TESTS=0 ${REPO_REQUIREMENTS}/linit_hook/travis/travis_install_nightly
