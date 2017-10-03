@@ -143,6 +143,7 @@ git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" fetch odoo 8.0 --depth=10
 git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" fetch odoo 9.0 --depth=10
 git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" fetch odoo 10.0 --depth=10
 git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" fetch odoo master --depth=10
+git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" fetch oca 11.0 --depth=10
 
 # Clean
 git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" gc --aggressive
