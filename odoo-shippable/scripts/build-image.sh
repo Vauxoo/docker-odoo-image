@@ -187,8 +187,8 @@ pip install --no-binary pycparser -r ${REPO_REQUIREMENTS}/linit_hook/requirement
 # Keep alive the ssh server
 #   120 seconds * 720 = 86400 seconds = 24 hours
 # https://www.bjornjohansen.no/ssh-timeout
-echo "    ClientAliveInterval 120" >> /etc/ssh/ssh_config
-echo "    ClientAliveCountMax 720" >> /etc/ssh/ssh_config
+echo "ClientAliveInterval 120" >> /etc/ssh/sshd_config
+echo "ClientAliveCountMax 720" >> /etc/ssh/sshd_config
 
 # Install hub & ngrok
 targz_download_execute "${HUB_ARCHIVE}" "install"
