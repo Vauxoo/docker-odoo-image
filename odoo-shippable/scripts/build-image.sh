@@ -46,7 +46,7 @@ TMUX_PLUGINS_REPO="https://github.com/tmux-plugins/tpm"
 
 DPKG_DEPENDS="postgresql-9.3 postgresql-contrib-9.3 postgresql-9.5 postgresql-contrib-9.5 \
               pgbadger pgtune perl-modules make openssl p7zip-full expect-dev mosh bpython \
-              bsdtar rsync graphviz openssh-server cmake zsh tree \
+              bsdtar rsync graphviz openssh-server cmake zsh tree tig \
               lua50 liblua50-dev liblualib50-dev exuberant-ctags rake \
               python3.2 python3.2-dev python3.3 python3.3-dev python3.4 python3.4-dev \
               python3.5 python3.5-dev python3.6 python3.6-dev \
