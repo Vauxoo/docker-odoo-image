@@ -185,10 +185,10 @@ LINT_CHECK=1 TESTS=0 ${REPO_REQUIREMENTS}/linit_hook/travis/travis_install_night
 pip install --no-binary pycparser -r ${REPO_REQUIREMENTS}/linit_hook/requirements.txt
 
 # Keep alive the ssh server
-#   120 seconds * 720 = 86400 seconds = 24 hours
+#   60 seconds * 360 = 21600 seconds = 6 hours
 # https://www.bjornjohansen.no/ssh-timeout
-echo "ClientAliveInterval 120" >> /etc/ssh/sshd_config
-echo "ClientAliveCountMax 720" >> /etc/ssh/sshd_config
+echo "ClientAliveInterval 60" >> /etc/ssh/sshd_config
+echo "ClientAliveCountMax 360" >> /etc/ssh/sshd_config
 
 # Install hub & ngrok
 targz_download_execute "${HUB_ARCHIVE}" "install"
