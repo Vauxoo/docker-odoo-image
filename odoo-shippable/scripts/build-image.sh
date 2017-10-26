@@ -412,14 +412,12 @@ usermod -s /bin/bash root
 for BASHRC in ${HOME}/.bashrc /home/odoo/.bashrc ${HOME}/.zshrc /home/odoo/.zshrc
 do
     echo "Export the PYTHONPATH IN ${BASHRC}"
-    cat >> $BASHRC << EOF
-if [ "x\${TRAVIS_PYTHON_VERSION}" == "x" ] ; then
-    TRAVIS_PYTHON_VERSION="2.7"
-fi
-source ${REPO_REQUIREMENTS}/virtualenv/python\${TRAVIS_PYTHON_VERSION}/bin/activate
-source ${REPO_REQUIREMENTS}/virtualenv/nodejs/bin/activate
-PYTHONPATH=${PYTHONPATH}:${REPO_REQUIREMENTS}/odoo
-EOF
+    sed -i '1 i\if [ "x${TRAVIS_PYTHON_VERSION}" == "x"  ] ; then\n
+                    \tTRAVIS_PYTHON_VERSION="2.7"\n
+                fi\n
+                source /.repo_requirements/virtualenv/python${TRAVIS_PYTHON_VERSION}/bin/activate\n
+                source /.repo_requirements/virtualenv/nodejs/bin/activate\n
+                PYTHONPATH=:/.repo_requirements/odoo\n\n' $BASHRC
 done
 
 # Install Tmux Plugin Manager
