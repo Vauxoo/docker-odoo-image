@@ -176,6 +176,12 @@ done
 export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python2.7
 echo "VIRTUALENVWRAPPER_PYTHON=/usr/bin/python2.7" >> /etc/bash.bashrc
 
+# Change default python and pip 3 version from 3.4 to 3.5 and
+rm /usr/bin/python3
+ln -s /usr/bin/python3.5 /usr/bin/python3
+rm /usr/local/bin/pip3
+ln -s /usr/local/bin/pip3.5 /usr/local/bin/pip3
+
 # Creating virtual environments node js
 nodeenv ${REPO_REQUIREMENTS}/virtualenv/nodejs
 echo "REPO_REQUIREMENTS=${REPO_REQUIREMENTS}" >> /etc/bash.bashrc
