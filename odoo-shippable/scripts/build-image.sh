@@ -474,6 +474,13 @@ psql_create_role "root" "aeK5NWNr2"
 PSQL_VERSION="9.3" /entrypoint_image
 psql_create_role "shippable" "aeK5NWNr2"
 psql_create_role "root" "aeK5NWNr2"
+/etc/init.d/postgresql stop
+
+PSQL_VERSION="9.6" /entrypoint_image
+psql_create_role "shippable" "aeK5NWNr2"
+psql_create_role "root" "aeK5NWNr2"
+/etc/init.d/postgresql stop
+
 
 # Enable PG LOGS AND NON DURABILITY
 PG_NON_DURABILITY=1 PG_LOGS_ENABLE=1 python ${REPO_REQUIREMENTS}/linit_hook/travis/psql_log.py
