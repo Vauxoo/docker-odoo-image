@@ -181,6 +181,7 @@ rm /usr/bin/python3
 ln -s /usr/bin/python3.5 /usr/bin/python3
 rm /usr/local/bin/pip3
 ln -s /usr/local/bin/pip3.5 /usr/local/bin/pip3
+cp /usr/lib/python3/dist-packages/apt_pkg.cpython-34m-x86_64-linux-gnu.so /usr/lib/python3/dist-packages/apt_pkg.cpython-35m-x86_64-linux-gnu.so
 
 # Creating virtual environments node js
 nodeenv ${REPO_REQUIREMENTS}/virtualenv/nodejs
