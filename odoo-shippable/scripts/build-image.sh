@@ -419,16 +419,13 @@ usermod -s /bin/bash root
 for BASHRC in ${HOME}/.bashrc /home/odoo/.bashrc ${HOME}/.zshrc /home/odoo/.zshrc
 do
     echo "Export the PYTHONPATH IN ${BASHRC}"
-    sed -i '1 i\# Python path \
-if [ "x${TRAVIS_PYTHON_VERSION}" == "x"  ] ; then \
-    TRAVIS_PYTHON_VERSION="2.7" \
-fi \
-source /.repo_requirements/virtualenv/python${TRAVIS_PYTHON_VERSION}/bin/activate \
-source /.repo_requirements/virtualenv/nodejs/bin/activate \
-PYTHONPATH=${PYTHONPATH}:${REPO_REQUIREMENTS}/odoo\n\n' $BASHRC
 	cat >> $BASHRC << EOF
-source ${REPO_REQUIREMENTS}/virtualenv/python\${TRAVIS_PYTHON_VERSION}/bin/activate
+if [ "x\${TRAVIS_PYTHON_VERSION}" == "x"  ] ; then
+	TRAVIS_PYTHON_VERSION="2.7"
+fi
+source ${REPO_REQUIREMENTS}/virtualenv/python${TRAVIS_PYTHON_VERSION}/bin/activate
 source ${REPO_REQUIREMENTS}/virtualenv/nodejs/bin/activate
+PYTHONPATH=${PYTHONPATH}:${REPO_REQUIREMENTS}/odoo
 EOF
 done
 
