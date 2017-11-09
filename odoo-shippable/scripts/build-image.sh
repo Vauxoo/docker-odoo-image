@@ -423,7 +423,7 @@ do
 if [ "x\${TRAVIS_PYTHON_VERSION}" == "x"  ] ; then
 	TRAVIS_PYTHON_VERSION="2.7"
 fi
-source ${REPO_REQUIREMENTS}/virtualenv/python${TRAVIS_PYTHON_VERSION}/bin/activate
+source ${REPO_REQUIREMENTS}/virtualenv/python\${TRAVIS_PYTHON_VERSION}/bin/activate
 source ${REPO_REQUIREMENTS}/virtualenv/nodejs/bin/activate
 PYTHONPATH=${PYTHONPATH}:${REPO_REQUIREMENTS}/odoo
 EOF
