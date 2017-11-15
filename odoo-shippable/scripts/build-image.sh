@@ -34,6 +34,7 @@ SPF13_REPO="https://github.com/spf13/spf13-vim.git"
 VIM_OPENERP_REPO="https://github.com/vauxoo/vim-openerp.git"
 VIM_WAKATIME_REPO="https://github.com/wakatime/vim-wakatime.git"
 VIM_YOUCOMPLETEME_REPO="https://github.com/Valloric/YouCompleteMe.git"
+VIM_JEDI_REPO="https://github.com/davidhalter/jedi-vim.git"
 HUB_REPO="https://github.com/github/hub.git"
 ODOO_VAUXOO_REPO="https://github.com/vauxoo/odoo.git"
 ODOO_VAUXOO_DEV_REPO="https://github.com/vauxoo-dev/odoo.git"
@@ -215,6 +216,7 @@ apt-get upgrade vim
 wget -q -O /usr/share/vim/vim80/spell/es.utf-8.spl http://ftp.vim.org/pub/vim/runtime/spell/es.utf-8.spl
 git_clone_execute "${SPF13_REPO}" "3.0" "bootstrap.sh"
 git_clone_copy "${VIM_OPENERP_REPO}" "master" "vim/" "${HOME}/.vim/bundle/vim-openerp"
+git_clone_copy "${VIM_JEDI_REPO}" "master" "." "${HOME}/.vim/bundle/jedi-vim"
 
 sed -i 's/ set mouse\=a/\"set mouse\=a/g' ~/.vimrc
 sed -i "s/let g:neocomplete#enable_at_startup = 1/let g:neocomplete#enable_at_startup = 0/g" ~/.vimrc
