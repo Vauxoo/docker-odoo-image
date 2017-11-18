@@ -425,7 +425,7 @@ for BASHRC in ${HOME}/.bashrc /home/odoo/.bashrc ${HOME}/.zshrc /home/odoo/.zshr
 do
     echo "Export the PYTHONPATH IN ${BASHRC}"
     cat >> $BASHRC << EOF
-if [ "x\${TRAVIS_PYTHON_VERSION}" == "x" ] ; then
+if [[ "x\${TRAVIS_PYTHON_VERSION}" == "x" ]] ; then
     TRAVIS_PYTHON_VERSION="2.7"
 fi
 source ${REPO_REQUIREMENTS}/virtualenv/python\${TRAVIS_PYTHON_VERSION}/bin/activate
