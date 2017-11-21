@@ -48,7 +48,7 @@ TMUX_PLUGINS_REPO="https://github.com/tmux-plugins/tpm"
 DPKG_DEPENDS="postgresql-9.3 postgresql-contrib-9.3 postgresql-9.5 postgresql-contrib-9.5 \
               postgresql-10 postgresql-contrib-10 \
               pgbadger pgtune perl-modules make openssl p7zip-full expect-dev mosh bpython \
-              bsdtar rsync graphviz openssh-server cmake zsh tree tig \
+              bsdtar rsync graphviz openssh-server cmake zsh tree tig libffi-dev \
               lua50 liblua50-dev liblualib50-dev exuberant-ctags rake \
               python3.2 python3.2-dev python3.3 python3.3-dev python3.4 python3.4-dev \
               python3.5 python3.5-dev python3.6 python3.6-dev \
@@ -176,6 +176,7 @@ do
     pip install --force-reinstall --upgrade coverage --src .
 
     # Execute travis_install_nightly
+    echo "Install the linit pip requirements using python${version}"
     LINT_CHECK=1 TESTS=0 ${REPO_REQUIREMENTS}/linit_hook/travis/travis_install_nightly
     pip install --no-binary pycparser -r ${REPO_REQUIREMENTS}/linit_hook/requirements.txt
 
