@@ -81,6 +81,7 @@ add_custom_aptsource "${VIM_PPA_REPO}" "${VIM_PPA_KEY}"
 add_custom_aptsource "${TMUX_PPA_REPO}" "${TMUX_PPA_KEY}"
 
 # Release the apt monster!
+echo "resolvconf resolvconf/linkify-resolvconf boolean false" | debconf-set-selections
 apt-get update
 apt-get upgrade
 apt-get install ${DPKG_DEPENDS} ${PIP_DPKG_BUILD_DEPENDS}
