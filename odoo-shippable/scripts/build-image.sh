@@ -173,6 +173,11 @@ do
     # Please don't remove it because emit errors from other environments
     source ${REPO_REQUIREMENTS}/virtualenv/python${version}/bin/activate
     pip install --force-reinstall --upgrade coverage --src .
+
+    # Execute travis_install_nightly
+    LINT_CHECK=1 TESTS=0 ${REPO_REQUIREMENTS}/linit_hook/travis/travis_install_nightly
+    pip install --no-binary pycparser -r ${REPO_REQUIREMENTS}/linit_hook/requirements.txt
+
     deactivate
 done
 export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python2.7
@@ -188,10 +193,6 @@ cp /usr/lib/python3/dist-packages/apt_pkg.cpython-34m-x86_64-linux-gnu.so /usr/l
 # Creating virtual environments node js
 nodeenv ${REPO_REQUIREMENTS}/virtualenv/nodejs
 echo "REPO_REQUIREMENTS=${REPO_REQUIREMENTS}" >> /etc/bash.bashrc
-
-# Execute travis_install_nightly
-LINT_CHECK=1 TESTS=0 ${REPO_REQUIREMENTS}/linit_hook/travis/travis_install_nightly
-pip install --no-binary pycparser -r ${REPO_REQUIREMENTS}/linit_hook/requirements.txt
 
 # Keep alive the ssh server
 #   60 seconds * 360 = 21600 seconds = 6 hours
