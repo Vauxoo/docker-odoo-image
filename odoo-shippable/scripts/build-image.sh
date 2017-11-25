@@ -48,7 +48,7 @@ TMUX_PLUGINS_REPO="https://github.com/tmux-plugins/tpm"
 DPKG_DEPENDS="postgresql-9.3 postgresql-contrib-9.3 postgresql-9.5 postgresql-contrib-9.5 \
               postgresql-10 postgresql-contrib-10 \
               pgbadger pgtune perl-modules make openssl p7zip-full expect-dev mosh bpython \
-              bsdtar rsync graphviz openssh-server cmake zsh tree tig \
+              bsdtar rsync graphviz openssh-server cmake zsh tree tig libffi-dev \
               lua50 liblua50-dev liblualib50-dev exuberant-ctags rake \
               python3.2 python3.2-dev python3.3 python3.3-dev python3.4 python3.4-dev \
               python3.5 python3.5-dev python3.6 python3.6-dev \
@@ -81,6 +81,7 @@ add_custom_aptsource "${VIM_PPA_REPO}" "${VIM_PPA_KEY}"
 add_custom_aptsource "${TMUX_PPA_REPO}" "${TMUX_PPA_KEY}"
 
 # Release the apt monster!
+echo "resolvconf resolvconf/linkify-resolvconf boolean false" | debconf-set-selections
 apt-get update
 apt-get upgrade
 apt-get install ${DPKG_DEPENDS} ${PIP_DPKG_BUILD_DEPENDS}
@@ -173,6 +174,12 @@ do
     # Please don't remove it because emit errors from other environments
     source ${REPO_REQUIREMENTS}/virtualenv/python${version}/bin/activate
     pip install --force-reinstall --upgrade coverage --src .
+
+    # Execute travis_install_nightly
+    echo "Install the linit pip requirements using python${version}"
+    LINT_CHECK=1 TESTS=0 ${REPO_REQUIREMENTS}/linit_hook/travis/travis_install_nightly
+    pip install --no-binary pycparser -r ${REPO_REQUIREMENTS}/linit_hook/requirements.txt
+
     deactivate
 done
 export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python2.7
@@ -188,10 +195,6 @@ cp /usr/lib/python3/dist-packages/apt_pkg.cpython-34m-x86_64-linux-gnu.so /usr/l
 # Creating virtual environments node js
 nodeenv ${REPO_REQUIREMENTS}/virtualenv/nodejs
 echo "REPO_REQUIREMENTS=${REPO_REQUIREMENTS}" >> /etc/bash.bashrc
-
-# Execute travis_install_nightly
-LINT_CHECK=1 TESTS=0 ${REPO_REQUIREMENTS}/linit_hook/travis/travis_install_nightly
-pip install --no-binary pycparser -r ${REPO_REQUIREMENTS}/linit_hook/requirements.txt
 
 # Keep alive the ssh server
 #   60 seconds * 360 = 21600 seconds = 6 hours
