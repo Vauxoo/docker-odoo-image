@@ -407,7 +407,6 @@ ln -s "${REPO_REQUIREMENTS}/tools" "/home/odoo/tools"
 # Install & configure zsh
 git_clone_execute "${OH_MY_ZSH_REPO}" "master" "tools/install.sh"
 git_clone_copy "${ZSH_THEME_REPO}" "master" "schminitz.zsh-theme" "${HOME}/.oh-my-zsh/themes/odoo-shippable.zsh-theme"
-sed -i 's/robbyrussell/odoo-shippable/g' ~/.zshrc
 
 #Copy zsh for odoo user
 cp -r ${HOME}/.oh-my-zsh /home/odoo
@@ -415,6 +414,9 @@ chown -R odoo:odoo /home/odoo/.oh-my-zsh
 cp ${HOME}/.zshrc /home/odoo/.zshrc
 chown odoo:odoo /home/odoo/.zshrc
 sed -i 's/root/home\/odoo/g' /home/odoo/.zshrc
+sed -i 's/robbyrussell/odoo-shippable/g' /home/odoo/.zshrc
+sed -i 's/^plugins=(/plugins=(\n  virtualenv/' /home/odoo/.zshrc
+
 # Set default shell to the root user
 usermod -s /bin/bash root
 
@@ -423,7 +425,7 @@ for BASHRC in ${HOME}/.bashrc /home/odoo/.bashrc ${HOME}/.zshrc /home/odoo/.zshr
 do
     echo "Export the PYTHONPATH IN ${BASHRC}"
     cat >> $BASHRC << EOF
-if [ "x\${TRAVIS_PYTHON_VERSION}" == "x" ] ; then
+if [[ "x\${TRAVIS_PYTHON_VERSION}" == "x" ]] ; then
     TRAVIS_PYTHON_VERSION="2.7"
 fi
 source ${REPO_REQUIREMENTS}/virtualenv/python\${TRAVIS_PYTHON_VERSION}/bin/activate
