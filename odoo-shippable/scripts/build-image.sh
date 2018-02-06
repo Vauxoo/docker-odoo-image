@@ -58,7 +58,7 @@ PIP_OPTS="--upgrade \
           --no-cache-dir"
 PIP_DEPENDS_EXTRA="line-profiler watchdog coveralls diff-highlight \
                    pg-activity virtualenv nodeenv setuptools==33.1.1 \
-                   html2text==2016.9.19 ofxparse==0.15"
+                   html2text==2016.9.19 ofxparse==0.15 pgcli"
 PIP_DPKG_BUILD_DEPENDS=""
 
 ODOO_DEPENDENCIES_PY2="git+https://github.com/vauxoo/odoo@10.0 \
