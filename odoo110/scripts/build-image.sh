@@ -50,7 +50,13 @@ DPKG_DEPENDS="nodejs \
               postgresql-${PSQL_VERSION} \
               postgresql-client-${PSQL_VERSION} \
               postgresql-contrib-${PSQL_VERSION} \
-              pgbadger"
+              pgbadger \
+              ruby-dev \
+              ruby-compass \
+              autoconf \
+              automake \
+              libtool \
+              libltdl-dev"
 DPKG_UNNECESSARY=""
 NPM_OPTS="-g"
 NPM_DEPENDS="less \
@@ -66,6 +72,9 @@ PIP_DEPENDS_EXTRA="reqgen \
                    hg+https://bitbucket.org/birkenfeld/sphinx-contrib@default#egg=sphinxcontrib-youtube&subdirectory=youtube"
 
 PIP_DPKG_BUILD_DEPENDS=""
+
+RUBY_DEPENDS="compass \
+              bootstrap-sass"
 
 # Let's add the NodeJS upstream repo to install a newer version
 add_custom_aptsource "${NODE_UPSTREAM_REPO}" "${NODE_UPSTREAM_KEY}"
@@ -92,6 +101,9 @@ pip3 install ${PIP_OPTS} -r ${DEPENDENCIES_FILE}
 
 # Install qt patched version of wkhtmltopdf because of maintainer nonsense
 wkhtmltox_install "${WKHTMLTOX_URL}"
+
+# Install ruby dependencies
+gem install ${RUBY_DEPENDS}
 
 # Remove build depends for pip
 apt-get purge ${PIP_DPKG_BUILD_DEPENDS} ${DPKG_UNNECESSARY}
