@@ -185,8 +185,9 @@ do
     then
         for odoo_version in '8.0' '9.0' '10.0'
         do
+            echo "Installing virtualenv for python${version} for odoo${odoo_version}"
             cp -r ${REPO_REQUIREMENTS}/virtualenv/python${version} ${REPO_REQUIREMENTS}/virtualenv/python${version}${odoo_version}
-            source ${REPO_REQUIREMENTS}/virtualenv/python${version}${odoo_version}
+            source ${REPO_REQUIREMENTS}/virtualenv/python${version}${odoo_version}/bin/activate
             wget https://raw.githubusercontent.com/odoo/odoo/${odoo_version}/requirements.txt -O /tmp/req_${odoo_version}
             pip install --no-binary pycparser -r /tmp/req_${odoo_version}
             deactivate
@@ -197,8 +198,9 @@ do
     then
         for odoo_version in '11.0'
         do
+            echo "Installing virtualenv for python${version} for odoo${odoo_version}"
             cp -r ${REPO_REQUIREMENTS}/virtualenv/python${version} ${REPO_REQUIREMENTS}/virtualenv/python${version}${odoo_version}
-            source ${REPO_REQUIREMENTS}/virtualenv/python${version}${odoo_version}
+            source ${REPO_REQUIREMENTS}/virtualenv/python${version}${odoo_version}/bin/activate
             wget https://raw.githubusercontent.com/odoo/odoo/${odoo_version}/requirements.txt -O /tmp/req_${odoo_version}
             pip install --no-binary pycparser -Ur /tmp/req_${odoo_version}
             deactivate
