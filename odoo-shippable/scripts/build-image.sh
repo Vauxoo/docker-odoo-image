@@ -181,6 +181,28 @@ do
     pip install --no-binary pycparser -r ${REPO_REQUIREMENTS}/linit_hook/requirements.txt
 
     deactivate
+    if [[ ${version} == '2.7' ]]
+    then
+        for odoo_version in '8.0' '9.0' '10.0'
+        do
+            cp -r ${REPO_REQUIREMENTS}/virtualenv/python${version} ${REPO_REQUIREMENTS}/virtualenv/python${version}_${odoo_version}
+            source ${REPO_REQUIREMENTS}/virtualenv/python${version}_${odoo_version}
+            wget https://raw.githubusercontent.com/odoo/odoo/${odoo_version}/requirements.txt -O /tmp/req_${odoo_version}
+            pip install --no-binary pycparser -r /tmp/req_${odoo_version}
+            deactivate
+        done
+    elif [[ ${version} == '3.5' ]]
+    then
+        for odoo_version in '11.0'
+        do
+            cp -r ${REPO_REQUIREMENTS}/virtualenv/python${version} ${REPO_REQUIREMENTS}/virtualenv/python${version}_${odoo_version}
+            source ${REPO_REQUIREMENTS}/virtualenv/python${version}_${odoo_version}
+            wget https://raw.githubusercontent.com/odoo/odoo/${odoo_version}/requirements.txt -O /tmp/req_${odoo_version}
+            pip install --no-binary pycparser -Ur /tmp/req_${odoo_version}
+            deactivate
+        done
+    fi
+
 done
 export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python2.7
 echo "VIRTUALENVWRAPPER_PYTHON=/usr/bin/python2.7" >> /etc/bash.bashrc
