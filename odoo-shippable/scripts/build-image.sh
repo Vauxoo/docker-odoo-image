@@ -116,6 +116,8 @@ echo "" > ${DEPENDENCIES_FILE}
 collect_pip_dependencies "${ODOO_DEPENDENCIES_PY2}" "${PIP_DEPENDS_EXTRA}" "${DEPENDENCIES_FILE}"
 clean_requirements ${DEPENDENCIES_FILE}
 python2.7 -m pip install ${PIP_OPTS} -r ${DEPENDENCIES_FILE}
+python2.7 -m pip install virtualenv-clone
+
 
 # TODO fix 3.2
 for version in '3.3' '3.4' '3.5' '3.6'
@@ -125,6 +127,7 @@ do
     collect_pip_dependencies "${ODOO_DEPENDENCIES_PY3}" "${PIP_DEPENDS_EXTRA}" "${DEPENDENCIES_FILE}"
     clean_requirements ${DEPENDENCIES_FILE}
     python"$version" -m pip install ${PIP_OPTS} -r ${DEPENDENCIES_FILE}
+    python"$version" -m pip install virtualenv-clone
 done
 
 # Install xvfb daemon
@@ -186,7 +189,7 @@ do
         for odoo_version in '8.0' '9.0' '10.0'
         do
             echo "Installing virtualenv for python${version} for odoo${odoo_version}"
-            cp -r ${REPO_REQUIREMENTS}/virtualenv/python${version} ${REPO_REQUIREMENTS}/virtualenv/python${version}${odoo_version}
+            python${version} -m clonevirtualenv ${REPO_REQUIREMENTS}/virtualenv/python${version} ${REPO_REQUIREMENTS}/virtualenv/python${version}${odoo_version}
             source ${REPO_REQUIREMENTS}/virtualenv/python${version}${odoo_version}/bin/activate
             wget https://raw.githubusercontent.com/odoo/odoo/${odoo_version}/requirements.txt -O /tmp/req_${odoo_version}
             pip install --no-binary pycparser -r /tmp/req_${odoo_version}
@@ -199,7 +202,7 @@ do
         for odoo_version in '11.0'
         do
             echo "Installing virtualenv for python${version} for odoo${odoo_version}"
-            cp -r ${REPO_REQUIREMENTS}/virtualenv/python${version} ${REPO_REQUIREMENTS}/virtualenv/python${version}${odoo_version}
+            python${version} -m clonevirtualenv ${REPO_REQUIREMENTS}/virtualenv/python${version} ${REPO_REQUIREMENTS}/virtualenv/python${version}${odoo_version}
             source ${REPO_REQUIREMENTS}/virtualenv/python${version}${odoo_version}/bin/activate
             wget https://raw.githubusercontent.com/odoo/odoo/${odoo_version}/requirements.txt -O /tmp/req_${odoo_version}
             pip install --no-binary pycparser -Ur /tmp/req_${odoo_version}
