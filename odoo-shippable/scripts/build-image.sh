@@ -192,7 +192,7 @@ do
             python${version} -m clonevirtualenv ${REPO_REQUIREMENTS}/virtualenv/python${version} ${REPO_REQUIREMENTS}/virtualenv/python${version}${odoo_version}
             source ${REPO_REQUIREMENTS}/virtualenv/python${version}${odoo_version}/bin/activate
             wget https://raw.githubusercontent.com/odoo/odoo/${odoo_version}/requirements.txt -O /tmp/req_${odoo_version}
-            pip install --no-binary pycparser -r /tmp/req_${odoo_version}
+            pip install --no-binary pycparser --force-reinstall -r /tmp/req_${odoo_version}
             deactivate
         done
         # odoo 7.0 don't have requirements.txt file then using 8.0 by default
@@ -205,7 +205,7 @@ do
             python${version} -m clonevirtualenv ${REPO_REQUIREMENTS}/virtualenv/python${version} ${REPO_REQUIREMENTS}/virtualenv/python${version}${odoo_version}
             source ${REPO_REQUIREMENTS}/virtualenv/python${version}${odoo_version}/bin/activate
             wget https://raw.githubusercontent.com/odoo/odoo/${odoo_version}/requirements.txt -O /tmp/req_${odoo_version}
-            pip install --no-binary pycparser -Ur /tmp/req_${odoo_version}
+            pip install --no-binary pycparser --force-reinstall -Ur /tmp/req_${odoo_version}
             deactivate
         done
     fi
