@@ -53,13 +53,15 @@ DPKG_DEPENDS="postgresql-9.3 postgresql-contrib-9.3 postgresql-9.5 postgresql-co
               python3.2 python3.2-dev python3.3 python3.3-dev python3.4 python3.4-dev \
               python3.5 python3.5-dev python3.6 python3.6-dev \
               software-properties-common Xvfb libmagickwand-dev openjdk-7-jre \
-              dos2unix subversion tmux=2.0-1~ppa1~t"
+              dos2unix subversion tmux=2.0-1~ppa1~t \
+              swig xmlstarlet xsltproc poppler-utils antiword"
 PIP_OPTS="--upgrade \
           --no-cache-dir"
 PIP_DEPENDS_EXTRA="line-profiler watchdog coveralls diff-highlight \
                    pg-activity virtualenv nodeenv setuptools==33.1.1 \
                    html2text==2016.9.19 ofxparse==0.15 pgcli"
-PIP_DPKG_BUILD_DEPENDS=""
+PIP_DPKG_BUILD_DEPENDS="python-lxml python-serial python-simplejson python-yaml python-m2crypto \
+                        python3-lxml python3-serial python3-simplejson python3-yaml"
 
 ODOO_DEPENDENCIES_PY2="git+https://github.com/vauxoo/odoo@10.0 \
                        git+https://github.com/vauxoo/odoo@saas-15"
@@ -116,6 +118,8 @@ echo "" > ${DEPENDENCIES_FILE}
 collect_pip_dependencies "${ODOO_DEPENDENCIES_PY2}" "${PIP_DEPENDS_EXTRA}" "${DEPENDENCIES_FILE}"
 clean_requirements ${DEPENDENCIES_FILE}
 python2.7 -m pip install ${PIP_OPTS} -r ${DEPENDENCIES_FILE}
+python2.7 -m pip install virtualenv-clone
+
 
 # TODO fix 3.2
 for version in '3.3' '3.4' '3.5' '3.6'
@@ -125,6 +129,7 @@ do
     collect_pip_dependencies "${ODOO_DEPENDENCIES_PY3}" "${PIP_DEPENDS_EXTRA}" "${DEPENDENCIES_FILE}"
     clean_requirements ${DEPENDENCIES_FILE}
     python"$version" -m pip install ${PIP_OPTS} -r ${DEPENDENCIES_FILE}
+    python"$version" -m pip install virtualenv-clone
 done
 
 # Install xvfb daemon
@@ -181,6 +186,32 @@ do
     pip install --no-binary pycparser -r ${REPO_REQUIREMENTS}/linit_hook/requirements.txt
 
     deactivate
+    if [[ ${version} == '2.7' ]]
+    then
+        for odoo_version in '8.0' '9.0' '10.0'
+        do
+            echo "Installing virtualenv for python${version} for odoo${odoo_version}"
+            python${version} -m clonevirtualenv ${REPO_REQUIREMENTS}/virtualenv/python${version} ${REPO_REQUIREMENTS}/virtualenv/python${version}${odoo_version}
+            source ${REPO_REQUIREMENTS}/virtualenv/python${version}${odoo_version}/bin/activate
+            wget https://raw.githubusercontent.com/odoo/odoo/${odoo_version}/requirements.txt -O /tmp/req_${odoo_version}
+            pip install --no-binary pycparser --force-reinstall -r /tmp/req_${odoo_version}
+            deactivate
+        done
+        # odoo 7.0 don't have requirements.txt file then using 8.0 by default
+        cp -r ${REPO_REQUIREMENTS}/virtualenv/python${version}8.0 ${REPO_REQUIREMENTS}/virtualenv/python${version}7.0
+    elif [[ ${version} == '3.5' ]]
+    then
+        for odoo_version in '11.0'
+        do
+            echo "Installing virtualenv for python${version} for odoo${odoo_version}"
+            python${version} -m clonevirtualenv ${REPO_REQUIREMENTS}/virtualenv/python${version} ${REPO_REQUIREMENTS}/virtualenv/python${version}${odoo_version}
+            source ${REPO_REQUIREMENTS}/virtualenv/python${version}${odoo_version}/bin/activate
+            wget https://raw.githubusercontent.com/odoo/odoo/${odoo_version}/requirements.txt -O /tmp/req_${odoo_version}
+            pip install --no-binary pycparser --force-reinstall -Ur /tmp/req_${odoo_version}
+            deactivate
+        done
+    fi
+
 done
 export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python2.7
 echo "VIRTUALENVWRAPPER_PYTHON=/usr/bin/python2.7" >> /etc/bash.bashrc
