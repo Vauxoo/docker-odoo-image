@@ -60,7 +60,7 @@ PIP_OPTS="--upgrade \
 PIP_DEPENDS_EXTRA="line-profiler watchdog coveralls diff-highlight \
                    pg-activity virtualenv nodeenv setuptools==33.1.1 \
                    html2text==2016.9.19 ofxparse==0.15 pgcli"
-PIP_DPKG_BUILD_DEPENDS="python-lxml python-serial python-simplejson python-yaml \
+PIP_DPKG_BUILD_DEPENDS="python-lxml python-serial python-simplejson python-yaml python-m2crypto \
                         python3-lxml python3-serial python3-simplejson python3-yaml"
 
 ODOO_DEPENDENCIES_PY2="git+https://github.com/vauxoo/odoo@10.0 \
