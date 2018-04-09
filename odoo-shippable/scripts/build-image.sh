@@ -53,13 +53,15 @@ DPKG_DEPENDS="postgresql-9.3 postgresql-contrib-9.3 postgresql-9.5 postgresql-co
               python3.2 python3.2-dev python3.3 python3.3-dev python3.4 python3.4-dev \
               python3.5 python3.5-dev python3.6 python3.6-dev \
               software-properties-common Xvfb libmagickwand-dev openjdk-7-jre \
-              dos2unix subversion tmux=2.0-1~ppa1~t"
+              dos2unix subversion tmux=2.0-1~ppa1~t \
+              swig xmlstarlet xsltproc poppler-utils antiword"
 PIP_OPTS="--upgrade \
           --no-cache-dir"
 PIP_DEPENDS_EXTRA="line-profiler watchdog coveralls diff-highlight \
                    pg-activity virtualenv nodeenv setuptools==33.1.1 \
                    html2text==2016.9.19 ofxparse==0.15 pgcli"
-PIP_DPKG_BUILD_DEPENDS=""
+PIP_DPKG_BUILD_DEPENDS="python-lxml python-serial python-simplejson python-yaml python-m2crypto \
+                        python3-lxml python3-serial python3-simplejson python3-yaml"
 
 ODOO_DEPENDENCIES_PY2="git+https://github.com/vauxoo/odoo@10.0 \
                        git+https://github.com/vauxoo/odoo@saas-15"
