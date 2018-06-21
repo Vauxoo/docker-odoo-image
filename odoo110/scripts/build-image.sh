@@ -56,7 +56,8 @@ DPKG_DEPENDS="nodejs \
               autoconf \
               automake \
               libtool \
-              libltdl-dev"
+              libltdl-dev \
+              libcups2-dev"
 DPKG_UNNECESSARY=""
 NPM_OPTS="-g"
 NPM_DEPENDS="less \
