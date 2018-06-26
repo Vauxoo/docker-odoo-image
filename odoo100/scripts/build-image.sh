@@ -50,6 +50,7 @@ DPKG_DEPENDS="nodejs \
               postgresql-${PSQL_VERSION} \
               postgresql-client-${PSQL_VERSION} \
               postgresql-contrib-${PSQL_VERSION} \
+              postgis \
               pgbadger"
 DPKG_UNNECESSARY=""
 NPM_OPTS="-g"
