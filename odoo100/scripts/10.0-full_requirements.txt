@@ -28,3 +28,10 @@ validate_email
 sphinx-patchqueue==0.4.0
 sphinx==1.2.3
 unidecode
+geojson
+geopy
+geographiclib
+Shapely
+sodapy
+pyproj
+pyopenssl
