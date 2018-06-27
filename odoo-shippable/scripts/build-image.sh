@@ -54,7 +54,17 @@ DPKG_DEPENDS="postgresql-9.3 postgresql-contrib-9.3 postgresql-9.5 postgresql-co
               python3.5 python3.5-dev python3.6 python3.6-dev \
               software-properties-common Xvfb libmagickwand-dev openjdk-7-jre \
               dos2unix subversion tmux=2.0-1~ppa1~t \
-              aspell aspell-en aspell-es"
+              aspell aspell-en aspell-es \
+              ruby-dev \
+              ruby-compass \
+              autoconf \
+              automake \
+              libtool \
+              libltdl-dev"
+
+RUBY_DEPENDS="compass \
+              bootstrap-sass"
+
 PIP_OPTS="--upgrade \
           --no-cache-dir"
 PIP_DEPENDS_EXTRA="line-profiler watchdog coveralls diff-highlight \
@@ -89,6 +99,9 @@ apt-get install ${DPKG_DEPENDS} ${PIP_DPKG_BUILD_DEPENDS}
 
 # Install node dependencies
 npm install ${NPM_OPTS} ${NPM_DEPENDS}
+
+# Install ruby dependencies
+gem install ${RUBY_DEPENDS}
 
 # Upgrade pip for python3
 curl "https://bootstrap.pypa.io/3.2/get-pip.py" -o "get-pip.py"
