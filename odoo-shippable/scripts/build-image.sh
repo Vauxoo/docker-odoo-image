@@ -473,11 +473,6 @@ if [ -f ~/.bash_aliases ]; then
 fi
 EOF
 
-# Set custom configuration of max connections, port and locks for postgresql
-sed -i 's/#max_pred_locks_per_transaction = 64/max_pred_locks_per_transaction = 100/g' /etc/postgresql/*/main*/postgresql.conf
-sed -i 's/max_connections = 100/max_connections = 200/g' /etc/postgresql/*/main*/postgresql.conf
-sed -i 's/^port = .*/port = 5432/g' /etc/postgresql/*/main*/postgresql.conf
-
 # Overwrite get_versions function to avoid overwriting the init script
 # See https://github.com/vauxoo/docker-odoo-image/issues/114 for details
 cat >> /usr/share/postgresql-common/init.d-functions << 'EOF'
@@ -516,10 +511,6 @@ PSQL_VERSION="10" /entrypoint_image
 psql_create_role "shippable" "aeK5NWNr2"
 psql_create_role "root" "aeK5NWNr2"
 /etc/init.d/postgresql stop
-
-
-# Enable PG LOGS AND NON DURABILITY
-PG_NON_DURABILITY=1 PG_LOGS_ENABLE=1 python ${REPO_REQUIREMENTS}/linit_hook/travis/psql_log.py
 
 # Install & Configure RVM
 curl -sSL https://rvm.io/mpapis.asc | gpg --import -
