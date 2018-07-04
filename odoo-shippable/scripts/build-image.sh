@@ -98,9 +98,15 @@ do
     python"$version" get-pip.py
 done
 
-# Install virtualenv for each version of python
-for version in '2.7' '3.2' '3.3' '3.4' '3.5' '3.6'
+# Install virtualenv for each Python version
+# Support for Python 3.2 & 3.3 has been dropped, so they require specific versions
+echo "Installing pip for Python3.2"
+python3.2 -m pip install virtualenv==13.1.2
+echo "Installing pip for Python3.3"
+python3.3 -m pip install "virtualenv<16.0"
+for version in '2.7' '3.4' '3.5' '3.6'
 do
+    echo "Installing pip for Python${version}"
     python"$version" -m pip install virtualenv
 done
 cp /usr/local/bin/pip2 /usr/local/bin/pip
@@ -140,13 +146,10 @@ git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" remote add odoo "${ODOO_ODOO_REPO
 git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" remote add oca "${ODOO_OCA_REPO}"
 
 # Download the cached branches to avoid the download by each build
-git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" fetch vauxoo 8.0 --depth=10
-git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" fetch vauxoo 9.0 --depth=10
-git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" fetch vauxoo 10.0 --depth=10
-git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" fetch odoo 8.0 --depth=10
-git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" fetch odoo 9.0 --depth=10
-git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" fetch odoo 10.0 --depth=10
-git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" fetch odoo master --depth=10
+for version in '8.0' '9.0' '10.0' '11.0' 'master'; do
+    git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" fetch vauxoo ${version} --depth=10
+    git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" fetch odoo ${version} --depth=10
+done
 git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" fetch oca 11.0 --depth=10
 
 # Clean
@@ -163,14 +166,15 @@ git_clone_copy "${PYLINT_REPO}" "master" "conf/pylint_vauxoo_light_vim.cfg" "${R
 git_clone_copy "${PYLINT_REPO}" "master" "conf/.jslintrc" "${REPO_REQUIREMENTS}/linit_hook/travis/cfg/.jslintrc"
 ln -sf ${REPO_REQUIREMENTS}/linit_hook/git/* /usr/share/git-core/templates/hooks/
 
-# Creating virtual environments for all version installed of python
-echo "Create the virtualenv using python3.2"
-python3.2 -m pip install -U virtualenv==13.1.2
-python3.2 -m virtualenv -p /usr/bin/python3.2 --system-site-packages ${REPO_REQUIREMENTS}/virtualenv/python3.2
-for version in '2.7' '3.3' '3.4' '3.5' '3.6'
+# Create virtual environments for all installed Python versions
+for version in '2.7' '3.2' '3.3' '3.4' '3.5' '3.6'
 do
-    echo "Create the virtualenv using python${version}"
-    python${version} -m virtualenv -p /usr/bin/python${version} --system-site-packages ${REPO_REQUIREMENTS}/virtualenv/python${version}
+    echo "Creating a virtualenv using python${version}"
+    python${version} -m virtualenv --system-site-packages ${REPO_REQUIREMENTS}/virtualenv/python${version}
+    case ${version} in 3.2|3.3)
+        # linit pip requirements may not be installed on these versions
+        continue;;
+    esac
     # Install coverage in the virtual environment
     # Please don't remove it because emit errors from other environments
     source ${REPO_REQUIREMENTS}/virtualenv/python${version}/bin/activate
