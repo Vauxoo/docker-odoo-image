@@ -67,7 +67,7 @@ service_postgres_without_sudo(){
     adduser ${USER} postgres
     chown -R ${USER}:postgres /var/run/postgresql
     for version in $VERSIONS; do
-        pg_createcluster -u ${USER} -g postgres -s /var/run/postgresql -p 15432 --lc-collate=C --start-conf auto --start $version main
+        pg_createcluster -u ${USER} -g postgres -s /var/run/postgresql -p 15432 --lc-collate=${LC_COLLATE} --start-conf auto --start $version main
         echo "include = '/etc/postgresql-common/common-vauxoo.conf'" >> /etc/postgresql/$version/main/postgresql.conf
         su - ${USER} -c "psql -p 15432 -d postgres -c  \"ALTER ROLE ${USER} WITH PASSWORD 'aeK5NWNr2';\""
         su - ${USER} -c "psql -p 15432 -d postgres -c  \"CREATE ROLE postgres LOGIN SUPERUSER INHERIT CREATEDB CREATEROLE;\""
