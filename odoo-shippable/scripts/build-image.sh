@@ -234,6 +234,9 @@ sed -i "s/let g:neocomplete#enable_at_startup = 1/let g:neocomplete#enable_at_st
 cat >> ~/.vimrc << EOF
 " Disable virtualenv in Pymode 
 let g:pymode_virtualenv = 0 
+" Disable pymode init and lint because of https://github.com/python-mode/python-mode/issues/897
+let g:pymode_init = 0
+let g:pymode_lint = 0
 EOF
 
 # Disable vim-signify 
