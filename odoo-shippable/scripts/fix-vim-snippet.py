@@ -110,6 +110,12 @@ class FixVimSnippet(object):
                      original['end_line'])
                 output+="\n+++++"
                 for key, duplicate in enumerate(snippet):
+                    if duplicate['name_snippet'] in [
+                            '#!', 'attr', 'cmp', 'contain', 'context', 'deff',
+                            'desc', 'numeric', 'repr',
+                            ]:
+                        # Valid duplicated cases
+                        continue
                     if (duplicate['line_snippet'].replace(' ', '') ==
                             original['line_snippet'].replace(' ', '') and
                             index != key):
