@@ -489,7 +489,7 @@ get_versions() {
         if [ -n "${PSQL_VERSION}" ]; then
             versions="${PSQL_VERSION}"
         else
-            versions="9.3"
+            versions="9.6"
         fi
     fi
 }
