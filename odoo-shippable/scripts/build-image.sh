@@ -140,6 +140,8 @@ chmod +x /etc/init.d/xvfb
 
 # Init without download to add odoo remotes
 git init ${REPO_REQUIREMENTS}/odoo
+if [ ${IS_TRAVIS} != "true" ]; then
+
 git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" remote add vauxoo "${ODOO_VAUXOO_REPO}"
 git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" remote add vauxoo-dev "${ODOO_VAUXOO_DEV_REPO}"
 git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" remote add odoo "${ODOO_ODOO_REPO}"
@@ -154,6 +156,7 @@ git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" fetch oca 11.0 --depth=10
 
 # Clean
 git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" gc --aggressive
+fi
 
 # Clone tools
 git_clone_copy "${GIST_VAUXOO_REPO}" "master" "" "${REPO_REQUIREMENTS}/tools/gist-vauxoo"
