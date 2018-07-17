@@ -96,7 +96,7 @@ do
     echo "Install pip for python$version"
     curl "https://bootstrap.pypa.io/get-pip.py" -o "get-pip.py"
     # If there is a custom version then overwrite the generic one.
-    curl -f "https://bootstrap.pypa.io/$version/get-pip.py" -o "get-pip.py"
+    curl -f "https://bootstrap.pypa.io/$version/get-pip.py" -o "get-pip.py" || true
     python"$version" get-pip.py
 done
 
