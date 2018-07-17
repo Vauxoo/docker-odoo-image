@@ -91,7 +91,7 @@ apt-get install ${DPKG_DEPENDS} ${PIP_DPKG_BUILD_DEPENDS}
 npm install ${NPM_OPTS} ${NPM_DEPENDS}
 
 # Upgrade pip for python3
-curl "https://bootstrap.pypa.io/3.2/get-pip.py" -o "get-pip.py"
+curl "https://bootstrap.pypa.io/get-pip.py" -o "get-pip.py"
 for version in '3.2' '3.3' '3.4' '3.5' '3.6' '3.7'
 do
     echo "Install pip for python$version"
