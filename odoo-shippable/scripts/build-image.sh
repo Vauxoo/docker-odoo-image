@@ -16,8 +16,8 @@ GITCORE_PPA_REPO="deb http://ppa.launchpad.net/git-core/ppa/ubuntu trusty main"
 GITCORE_PPA_KEY="http://keyserver.ubuntu.com:11371/pks/lookup?op=get&search=0xA1715D88E1DF1F24"
 
 # ppa sources
-PYTHON_PPA_REPO="deb http://ppa.launchpad.net/fkrull/deadsnakes/ubuntu trusty main"
-PYTHON_PPA_KEY="http://keyserver.ubuntu.com:11371/pks/lookup?op=get&search=0x5BB92C09DB82666C"
+PYTHON_PPA_REPO="deb http://ppa.launchpad.net/deadsnakes/ppa/ubuntu trusty main"
+PYTHON_PPA_KEY="http://keyserver.ubuntu.com:11371/pks/lookup?op=get&search=0xF23C5A6CF475977595C89F51BA6932366A755776"
 VIM_PPA_REPO="deb http://ppa.launchpad.net/pkg-vim/vim-daily/ubuntu trusty main"
 VIM_PPA_KEY="http://keyserver.ubuntu.com:11371/pks/lookup?op=get&search=0xA7266A2DD31525A0"
 TMUX_PPA_REPO="deb http://ppa.launchpad.net/pi-rho/dev/ubuntu trusty main"
@@ -51,7 +51,7 @@ DPKG_DEPENDS="postgresql-9.3 postgresql-contrib-9.3 postgresql-9.5 postgresql-co
               bsdtar rsync graphviz openssh-server cmake zsh tree tig libffi-dev \
               lua50 liblua50-dev liblualib50-dev exuberant-ctags rake \
               python3.2 python3.2-dev python3.3 python3.3-dev python3.4 python3.4-dev \
-              python3.5 python3.5-dev python3.6 python3.6-dev \
+              python3.5 python3.5-dev python3.6 python3.6-dev python3.7 python3.7-dev \
               software-properties-common Xvfb libmagickwand-dev openjdk-7-jre \
               dos2unix subversion tmux=2.0-1~ppa1~t \
               aspell aspell-en aspell-es gettext"
@@ -92,7 +92,7 @@ npm install ${NPM_OPTS} ${NPM_DEPENDS}
 
 # Upgrade pip for python3
 curl "https://bootstrap.pypa.io/3.2/get-pip.py" -o "get-pip.py"
-for version in '3.2' '3.3' '3.4' '3.5' '3.6'
+for version in '3.2' '3.3' '3.4' '3.5' '3.6' '3.7'
 do
     echo "Install pip for python$version"
     python"$version" get-pip.py
@@ -104,7 +104,7 @@ echo "Installing pip for Python3.2"
 python3.2 -m pip install virtualenv==13.1.2
 echo "Installing pip for Python3.3"
 python3.3 -m pip install "virtualenv<16.0"
-for version in '2.7' '3.4' '3.5' '3.6'
+for version in '2.7' '3.4' '3.5' '3.6' '3.7'
 do
     echo "Installing pip for Python${version}"
     python"$version" -m pip install virtualenv
@@ -125,7 +125,7 @@ clean_requirements ${DEPENDENCIES_FILE}
 python2.7 -m pip install ${PIP_OPTS} -r ${DEPENDENCIES_FILE}
 
 # TODO fix 3.2
-for version in '3.3' '3.4' '3.5' '3.6'
+for version in '3.3' '3.4' '3.5' '3.6' '3.7'
 do
     echo "" > ${DEPENDENCIES_FILE}
     echo "Install all pip dependencies for python${version}"
@@ -167,7 +167,7 @@ git_clone_copy "${PYLINT_REPO}" "master" "conf/.jslintrc" "${REPO_REQUIREMENTS}/
 ln -sf ${REPO_REQUIREMENTS}/linit_hook/git/* /usr/share/git-core/templates/hooks/
 
 # Create virtual environments for all installed Python versions
-for version in '2.7' '3.2' '3.3' '3.4' '3.5' '3.6'
+for version in '2.7' '3.2' '3.3' '3.4' '3.5' '3.6' '3.7'
 do
     echo "Creating a virtualenv using python${version}"
     python${version} -m virtualenv --system-site-packages ${REPO_REQUIREMENTS}/virtualenv/python${version}
