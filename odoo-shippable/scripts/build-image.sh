@@ -87,14 +87,12 @@ apt-get update
 apt-get upgrade
 apt-get install ${DPKG_DEPENDS} ${PIP_DPKG_BUILD_DEPENDS}
 
-install_python_37
-
 # Install node dependencies
 npm install ${NPM_OPTS} ${NPM_DEPENDS}
 
 # Upgrade pip for python3
 curl "https://bootstrap.pypa.io/3.2/get-pip.py" -o "get-pip.py"
-for version in '3.2' '3.3' '3.4' '3.5' '3.6' '3.7'
+for version in '3.2' '3.3' '3.4' '3.5' '3.6'
 do
     echo "Install pip for python$version"
     python"$version" get-pip.py
@@ -106,7 +104,7 @@ echo "Installing pip for Python3.2"
 python3.2 -m pip install virtualenv==13.1.2
 echo "Installing pip for Python3.3"
 python3.3 -m pip install "virtualenv<16.0"
-for version in '2.7' '3.4' '3.5' '3.6' '3.7'
+for version in '2.7' '3.4' '3.5' '3.6'
 do
     echo "Installing pip for Python${version}"
     python"$version" -m pip install virtualenv
@@ -127,7 +125,7 @@ clean_requirements ${DEPENDENCIES_FILE}
 python2.7 -m pip install ${PIP_OPTS} -r ${DEPENDENCIES_FILE}
 
 # TODO fix 3.2
-for version in '3.3' '3.4' '3.5' '3.6' '3.7'
+for version in '3.3' '3.4' '3.5' '3.6'
 do
     echo "" > ${DEPENDENCIES_FILE}
     echo "Install all pip dependencies for python${version}"
@@ -169,7 +167,7 @@ git_clone_copy "${PYLINT_REPO}" "master" "conf/.jslintrc" "${REPO_REQUIREMENTS}/
 ln -sf ${REPO_REQUIREMENTS}/linit_hook/git/* /usr/share/git-core/templates/hooks/
 
 # Create virtual environments for all installed Python versions
-for version in '2.7' '3.2' '3.3' '3.4' '3.5' '3.6' '3.7'
+for version in '2.7' '3.2' '3.3' '3.4' '3.5' '3.6'
 do
     echo "Creating a virtualenv using python${version}"
     python${version} -m virtualenv --system-site-packages ${REPO_REQUIREMENTS}/virtualenv/python${version}
