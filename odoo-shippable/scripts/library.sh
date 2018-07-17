@@ -76,3 +76,13 @@ service_postgres_without_sudo(){
     done
 
 }
+
+install_python_37(){
+    PY37_VERSION="Python-3.7.0"
+    echo "Downloading $PY37_VERSION"
+    wget https://www.python.org/ftp/python/3.7.0/$PY37_VERSION.tgz -O /tmp/$PY37_VERSION.tgz
+    tar xzf /tmp/$PY37_VERSION.tgz -C /usr/src
+    echo "Installing $PY37_VERSION"
+    $(cd /usr/src/$PY37_VERSION && ./configure --enable-optimizations && make altinstall)
+    python3.7 --version
+}
