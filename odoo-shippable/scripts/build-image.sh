@@ -65,7 +65,8 @@ PIP_DPKG_BUILD_DEPENDS=""
 ODOO_DEPENDENCIES_PY2="git+https://github.com/vauxoo/odoo@10.0 \
                        git+https://github.com/vauxoo/odoo@saas-15"
 
-ODOO_DEPENDENCIES_PY3="git+https://github.com/vauxoo/odoo@saas-17"
+ODOO_DEPENDENCIES_PY3="git+https://github.com/vauxoo/odoo@11.0 \
+                       git+https://github.com/vauxoo/odoo@saas-17"
 
 DEPENDENCIES_FILE="/tmp/full_requirements.txt"
 
