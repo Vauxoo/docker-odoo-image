@@ -51,7 +51,7 @@ DPKG_DEPENDS="postgresql-9.3 postgresql-contrib-9.3 postgresql-9.5 postgresql-co
               bsdtar rsync graphviz openssh-server cmake zsh tree tig libffi-dev \
               lua50 liblua50-dev liblualib50-dev exuberant-ctags rake \
               python3.2 python3.2-dev python3.3 python3.3-dev python3.4 python3.4-dev \
-              python3.5 python3.5-dev python3.6 python3.6-dev \
+              python3.5 python3.5-dev python3.6 python3.6-dev python3.7 python3.7-dev \
               software-properties-common Xvfb libmagickwand-dev openjdk-7-jre \
               dos2unix subversion tmux=2.0-1~ppa1~t \
               aspell aspell-en aspell-es gettext"
@@ -87,7 +87,7 @@ apt-get update
 apt-get upgrade
 apt-get install ${DPKG_DEPENDS} ${PIP_DPKG_BUILD_DEPENDS}
 
-install_py37
+# install_py37
 
 # Install node dependencies
 npm install ${NPM_OPTS} ${NPM_DEPENDS}
