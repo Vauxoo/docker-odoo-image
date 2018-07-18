@@ -101,7 +101,6 @@ install_py37(){
         --with-system-expat \
         --with-system-ffi \
         --without-ensurepip \
-        --without-ensurepip \
     && make -j "$(nproc)" \
     && make install \
     && ldconfig \
