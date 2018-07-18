@@ -540,7 +540,6 @@ psql_create_role "shippable" "aeK5NWNr2"
 psql_create_role "root" "aeK5NWNr2"
 /etc/init.d/postgresql stop
 
-if [ ${IS_TRAVIS} != "true" ]; then
 # Install & Configure RVM
 curl -sSL https://rvm.io/mpapis.asc | gpg --import -
 \curl -sSL https://raw.githubusercontent.com/wayneeseguin/rvm/stable/binscripts/rvm-installer | /bin/bash -s stable --ruby
@@ -552,7 +551,6 @@ cat >> /etc/bash.bashrc << EOF
 source "/usr/local/rvm/scripts/rvm"
 
 EOF
-fi
 
 # Final cleaning
 rm -rf /tmp/*
