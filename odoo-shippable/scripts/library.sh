@@ -101,8 +101,9 @@ install_py37(){
         --with-system-expat \
         --with-system-ffi \
         --without-ensurepip \
+        --silent \
     && make -j "$(nproc)" \
-    && make install \
+    && make install --silent \
     && ldconfig \
     \
     && find /usr/local -depth \
