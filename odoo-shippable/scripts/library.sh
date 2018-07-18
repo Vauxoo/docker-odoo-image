@@ -76,3 +76,41 @@ service_postgres_without_sudo(){
     done
 
 }
+
+install_py37(){
+    # Based on https://github.com/docker-library/python/blob/7a794688c7246e7eff898f5288716a3e7dc08484/3.7/stretch/Dockerfile
+    export GPG_KEY=0D96DF4D4110E5C43FBFB17F2D347EA6AA65421D
+    wget -O python.tar.xz "https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYTHON_VERSION.tar.xz" \
+    && wget -O python.tar.xz.asc "https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYTHON_VERSION.tar.xz.asc" \
+    && export GNUPGHOME="$(mktemp -d)" \
+    && gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$GPG_KEY" \
+    && gpg --batch --verify python.tar.xz.asc python.tar.xz \
+    && { command -v gpgconf > /dev/null && gpgconf --kill all || :; } \
+    && rm -rf "$GNUPGHOME" python.tar.xz.asc \
+    && mkdir -p /usr/src/python \
+    && tar -xJC /usr/src/python --strip-components=1 -f python.tar.xz \
+    && rm python.tar.xz \
+    \
+    && cd /usr/src/python \
+    && gnuArch="$(dpkg-architecture -qDEB_BUILD_GNU_TYPE)" \
+    && ./configure \
+        --build="$gnuArch" \
+        --enable-loadable-sqlite-extensions \
+        --enable-shared \
+        --with-system-expat \
+        --with-system-ffi \
+        --without-ensurepip \
+    && make -j "$(nproc)" \
+    && make install \
+    && ldconfig \
+    \
+    && find /usr/local -depth \
+        \( \
+            \( -type d -a \( -name test -o -name tests \) \) \
+            -o \
+            \( -type f -a \( -name '*.pyc' -o -name '*.pyo' \) \) \
+        \) -exec rm -rf '{}' + \
+    && rm -rf /usr/src/python \
+    \
+    && python3 --version
+}
