@@ -94,22 +94,6 @@ wget http://mirrors.edge.kernel.org/ubuntu/pool/main/o/openssl/libssl-dev_1.1.0g
     && dpkg -i /tmp/libssl-dev1.1.0.deb
 wget http://mirrors.edge.kernel.org/ubuntu/pool/main/o/openssl/openssl_1.1.0g-2ubuntu4.1_amd64.deb -O /tmp/openssl_1.1.0.deb \
     && dpkg -i /tmp/openssl_1.1.0.deb
-# Get gcc-6 before to isntall py37 based on
-#   https://github.com/paritytech/parity/issues/7792
-apt-get install build-essential software-properties-common && \
-add-apt-repository ppa:ubuntu-toolchain-r/test -y && \
-add-apt-repository ppa:george-edison55/cmake-3.x -y && \
-apt-get update && \
-apt-get install gcc-snapshot && \
-apt-get update && \
-apt-get install gcc-6 g++-6 && \
-update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-6 60 --slave /usr/bin/g++ g++ /usr/bin/g++-6 && \
-apt-get install gcc-4.8 g++-4.8 -y && \
-update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 40 --slave /usr/bin/g++ g++ /usr/bin/g++-4.8 && \
-update-alternatives --config gcc && \
-apt-get update && \
-apt-get install cmake
-
 install_py37
 
 # Install node dependencies
