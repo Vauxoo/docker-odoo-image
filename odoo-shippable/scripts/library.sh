@@ -102,7 +102,7 @@ install_py37(){
         --with-system-ffi \
         --without-ensurepip \
         --without-ensurepip \
-        --with-ssl-default-suites=/usr/lib/ssl \
+        --with-openssl=/usr/lib/ssl \
     && make -j "$(nproc)" \
     && make install \
     && ldconfig \
