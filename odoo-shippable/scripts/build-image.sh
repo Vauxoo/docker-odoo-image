@@ -16,8 +16,8 @@ GITCORE_PPA_REPO="deb http://ppa.launchpad.net/git-core/ppa/ubuntu trusty main"
 GITCORE_PPA_KEY="http://keyserver.ubuntu.com:11371/pks/lookup?op=get&search=0xA1715D88E1DF1F24"
 
 # ppa sources
-PYTHON_PPA_REPO="deb http://ppa.launchpad.net/deadsnakes/ppa/ubuntu trusty main"
-PYTHON_PPA_KEY="http://keyserver.ubuntu.com:11371/pks/lookup?op=get&search=0xF23C5A6CF475977595C89F51BA6932366A755776"
+PYTHON_PPA_REPO="deb http://ppa.launchpad.net/fkrull/deadsnakes/ubuntu trusty main"
+PYTHON_PPA_KEY="http://keyserver.ubuntu.com:11371/pks/lookup?op=get&search=0x5BB92C09DB82666C"
 VIM_PPA_REPO="deb http://ppa.launchpad.net/pkg-vim/vim-daily/ubuntu trusty main"
 VIM_PPA_KEY="http://keyserver.ubuntu.com:11371/pks/lookup?op=get&search=0xA7266A2DD31525A0"
 TMUX_PPA_REPO="deb http://ppa.launchpad.net/pi-rho/dev/ubuntu trusty main"
