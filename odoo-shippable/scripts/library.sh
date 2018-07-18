@@ -92,7 +92,7 @@ install_py37(){
     && tar -xJC /usr/src/python --strip-components=1 -f python.tar.xz \
     && rm python.tar.xz \
     \
-    && cd /usr/src/python \
+    && (cd /usr/src/python \
     && gnuArch="$(dpkg-architecture -qDEB_BUILD_GNU_TYPE)" \
     && ./configure \
         --build="$gnuArch" \
@@ -102,9 +102,9 @@ install_py37(){
         --with-system-ffi \
         --without-ensurepip \
         --silent \
-    && make -j "$(nproc)" \
+    && make -j "$(nproc)" --silent \
     && make install --silent \
-    && ldconfig \
+    && ldconfig) \
     \
     && find /usr/local -depth \
         \( \
