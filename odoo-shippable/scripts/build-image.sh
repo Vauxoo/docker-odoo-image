@@ -144,9 +144,8 @@ do
         # Use compatible versions with py37
         sed -i "/greenlet/d" ${DEPENDENCIES_FILE}
         sed -i "/lxml/d" ${DEPENDENCIES_FILE}
-        sed -i "/PyYAML/d" ${DEPENDENCIES_FILE}
         sed -i "/gevent/d" ${DEPENDENCIES_FILE}
-        echo -e "greenlet==0.4.13\nlxml==4.1.1\nPyYAML==3.13\ngevent==1.3.5" >> ${DEPENDENCIES_FILE}
+        echo -e "greenlet==0.4.13\nlxml==4.1.1\ngevent==1.3.5" >> ${DEPENDENCIES_FILE}
     fi
     python"$version" -m pip install ${PIP_OPTS} -r ${DEPENDENCIES_FILE}
 done
