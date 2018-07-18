@@ -97,7 +97,7 @@ wget http://mirrors.edge.kernel.org/ubuntu/pool/main/o/openssl/openssl_1.1.0g-2u
 install_py37
 
 # Install node dependencies
-npm install ${NPM_OPTS} ${NPM_DEPENDS}
+# npm install ${NPM_OPTS} ${NPM_DEPENDS}
 
 # Upgrade pip for python3
 for version in '3.2' '3.3' '3.4' '3.5' '3.6' '3.7'
