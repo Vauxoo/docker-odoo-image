@@ -57,7 +57,7 @@ class DockerOdooImages(object):
                    "--build-arg", "IS_TRAVIS=%s" % is_travis,
                    "--rm", "-t", self._docker_image, self._folder]
             print " ".join(cmd)
-            subprocess.call(cmd)
+            return subprocess.call(cmd)
         return 0
 
 
