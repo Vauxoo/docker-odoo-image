@@ -96,9 +96,6 @@ wget http://mirrors.edge.kernel.org/ubuntu/pool/main/o/openssl/openssl_1.1.0g-2u
     && dpkg -i /tmp/openssl_1.1.0.deb
 install_py37
 
-# Install node dependencies
-# npm install ${NPM_OPTS} ${NPM_DEPENDS}
-
 # Upgrade pip for python3
 for version in '3.2' '3.3' '3.4' '3.5' '3.6' '3.7'
 do
@@ -220,6 +217,8 @@ cp /usr/lib/python3/dist-packages/apt_pkg.cpython-34m-x86_64-linux-gnu.so /usr/l
 
 # Creating virtual environments node js
 nodeenv ${REPO_REQUIREMENTS}/virtualenv/nodejs
+# Install node dependencies
+(source ${REPO_REQUIREMENTS}/virtualenv/nodejs && npm install ${NPM_OPTS} ${NPM_DEPENDS})
 echo "REPO_REQUIREMENTS=${REPO_REQUIREMENTS}" >> /etc/bash.bashrc
 
 # Keep alive the ssh server
