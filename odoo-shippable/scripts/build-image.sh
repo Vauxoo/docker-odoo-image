@@ -220,7 +220,7 @@ cp /usr/lib/python3/dist-packages/apt_pkg.cpython-34m-x86_64-linux-gnu.so /usr/l
 # Creating virtual environments node js
 nodeenv ${REPO_REQUIREMENTS}/virtualenv/nodejs
 # Install node dependencies
-(source ${REPO_REQUIREMENTS}/virtualenv/nodejs && npm install ${NPM_OPTS} ${NPM_DEPENDS})
+(source ${REPO_REQUIREMENTS}/virtualenv/nodejs/bin/activate && npm install ${NPM_OPTS} ${NPM_DEPENDS})
 echo "REPO_REQUIREMENTS=${REPO_REQUIREMENTS}" >> /etc/bash.bashrc
 
 # Keep alive the ssh server
