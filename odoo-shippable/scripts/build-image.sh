@@ -101,10 +101,10 @@ install_py37
 for version in '3.2' '3.3' '3.4' '3.5' '3.6' '3.7'
 do
     echo "Install pip for python$version"
-    curl "https://bootstrap.pypa.io/get-pip.py" -o "get-pip.py"
+    curl "https://bootstrap.pypa.io/get-pip.py" -o "/tmp/get-pip.py"
     # If there is a custom version then overwrite the generic one.
-    curl -f "https://bootstrap.pypa.io/$version/get-pip.py" -o "get-pip.py" || true
-    python"$version" get-pip.py
+    (curl -f "https://bootstrap.pypa.io/$version/get-pip.py" -o "/tmp/get-pip.py" || true)
+    python"$version" /tmp/get-pip.py
 done
 
 # Install virtualenv for each Python version
