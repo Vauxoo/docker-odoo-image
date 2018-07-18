@@ -81,6 +81,10 @@ install_py37(){
     # Based on https://github.com/docker-library/python/blob/7a794688c7246e7eff898f5288716a3e7dc08484/3.7/stretch/Dockerfile
     export GPG_KEY=0D96DF4D4110E5C43FBFB17F2D347EA6AA65421D
     export PYTHON_VERSION=3.7.0
+    # Get libssl.so.1.1 libraries
+    wget http://mirrors.edge.kernel.org/ubuntu/pool/main/o/openssl/libssl1.1_1.1.0g-2ubuntu4.1_amd64.deb -O /tmp/libssl1.1_1.1.deb \
+    && dpkg -i libssl1.1_1.1.deb
+
     wget -O python.tar.xz "https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYTHON_VERSION.tar.xz" \
     && wget -O python.tar.xz.asc "https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYTHON_VERSION.tar.xz.asc" \
     && export GNUPGHOME="$(mktemp -d)" \
