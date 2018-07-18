@@ -80,6 +80,7 @@ service_postgres_without_sudo(){
 install_py37(){
     # Based on https://github.com/docker-library/python/blob/7a794688c7246e7eff898f5288716a3e7dc08484/3.7/stretch/Dockerfile
     export GPG_KEY=0D96DF4D4110E5C43FBFB17F2D347EA6AA65421D
+    export PYTHON_VERSION=3.7.0
     wget -O python.tar.xz "https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYTHON_VERSION.tar.xz" \
     && wget -O python.tar.xz.asc "https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYTHON_VERSION.tar.xz.asc" \
     && export GNUPGHOME="$(mktemp -d)" \
@@ -100,6 +101,8 @@ install_py37(){
         --with-system-expat \
         --with-system-ffi \
         --without-ensurepip \
+        --without-ensurepip \
+        --with-ssl-default-suites=PROTOCOL_SSLv2 \
     && make -j "$(nproc)" \
     && make install \
     && ldconfig \
@@ -112,5 +115,5 @@ install_py37(){
         \) -exec rm -rf '{}' + \
     && rm -rf /usr/src/python \
     \
-    && python3 --version
+    && python3.7 --version
 }
