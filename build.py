@@ -52,8 +52,10 @@ class DockerOdooImages(object):
             if not differences:
                 can_be_build = False
         if can_be_build:
-            cmd = ["docker", "build", "--rm", "-t", self._docker_image,
-                   self._folder]
+            is_travis = os.environ.get("TRAVIS", "false")
+            cmd = ["docker", "build",
+                   "--build-arg", "IS_TRAVIS=%s" % is_travis,
+                   "--rm", "-t", self._docker_image, self._folder]
             print " ".join(cmd)
             subprocess.call(cmd)
         return 0

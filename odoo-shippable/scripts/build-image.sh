@@ -54,7 +54,7 @@ DPKG_DEPENDS="postgresql-9.3 postgresql-contrib-9.3 postgresql-9.5 postgresql-co
               python3.5 python3.5-dev python3.6 python3.6-dev \
               software-properties-common Xvfb libmagickwand-dev openjdk-7-jre \
               dos2unix subversion tmux=2.0-1~ppa1~t \
-              aspell aspell-en aspell-es gettext"
+              aspell aspell-en aspell-es gettext tk-dev"
 PIP_OPTS="--upgrade \
           --no-cache-dir"
 PIP_DEPENDS_EXTRA="line-profiler watchdog coveralls diff-highlight \
@@ -65,7 +65,8 @@ PIP_DPKG_BUILD_DEPENDS=""
 ODOO_DEPENDENCIES_PY2="git+https://github.com/vauxoo/odoo@10.0 \
                        git+https://github.com/vauxoo/odoo@saas-15"
 
-ODOO_DEPENDENCIES_PY3="git+https://github.com/vauxoo/odoo@saas-17"
+ODOO_DEPENDENCIES_PY3="git+https://github.com/vauxoo/odoo@11.0 \
+                       git+https://github.com/vauxoo/odoo@saas-17"
 
 DEPENDENCIES_FILE="/tmp/full_requirements.txt"
 
@@ -87,15 +88,23 @@ apt-get update
 apt-get upgrade
 apt-get install ${DPKG_DEPENDS} ${PIP_DPKG_BUILD_DEPENDS}
 
-# Install node dependencies
-npm install ${NPM_OPTS} ${NPM_DEPENDS}
+# Get ssl libraries before to install py37
+wget http://mirrors.edge.kernel.org/ubuntu/pool/main/o/openssl/libssl1.1_1.1.0g-2ubuntu4.1_amd64.deb -O /tmp/libssl1.1_1.1.deb \
+    && dpkg -i /tmp/libssl1.1_1.1.deb
+wget http://mirrors.edge.kernel.org/ubuntu/pool/main/o/openssl/libssl-dev_1.1.0g-2ubuntu4.1_amd64.deb -O /tmp/libssl-dev1.1.0.deb \
+    && dpkg -i /tmp/libssl-dev1.1.0.deb
+wget http://mirrors.edge.kernel.org/ubuntu/pool/main/o/openssl/openssl_1.1.0g-2ubuntu4.1_amd64.deb -O /tmp/openssl_1.1.0.deb \
+    && dpkg -i /tmp/openssl_1.1.0.deb
+install_py37
 
 # Upgrade pip for python3
-curl "https://bootstrap.pypa.io/3.2/get-pip.py" -o "get-pip.py"
-for version in '3.2' '3.3' '3.4' '3.5' '3.6'
+for version in '3.2' '3.3' '3.4' '3.5' '3.6' '3.7'
 do
     echo "Install pip for python$version"
-    python"$version" get-pip.py
+    curl "https://bootstrap.pypa.io/get-pip.py" -o "/tmp/get-pip.py"
+    # If there is a custom version then overwrite the generic one.
+    (curl -f "https://bootstrap.pypa.io/$version/get-pip.py" -o "/tmp/get-pip.py" || true)
+    python"$version" /tmp/get-pip.py
 done
 
 # Install virtualenv for each Python version
@@ -104,7 +113,7 @@ echo "Installing pip for Python3.2"
 python3.2 -m pip install virtualenv==13.1.2
 echo "Installing pip for Python3.3"
 python3.3 -m pip install "virtualenv<16.0"
-for version in '2.7' '3.4' '3.5' '3.6'
+for version in '2.7' '3.4' '3.5' '3.6' '3.7'
 do
     echo "Installing pip for Python${version}"
     python"$version" -m pip install virtualenv
@@ -125,12 +134,19 @@ clean_requirements ${DEPENDENCIES_FILE}
 python2.7 -m pip install ${PIP_OPTS} -r ${DEPENDENCIES_FILE}
 
 # TODO fix 3.2
-for version in '3.3' '3.4' '3.5' '3.6'
+for version in '3.3' '3.4' '3.5' '3.6' '3.7'
 do
     echo "" > ${DEPENDENCIES_FILE}
     echo "Install all pip dependencies for python${version}"
     collect_pip_dependencies "${ODOO_DEPENDENCIES_PY3}" "${PIP_DEPENDS_EXTRA}" "${DEPENDENCIES_FILE}"
     clean_requirements ${DEPENDENCIES_FILE}
+    if [ $version == "3.7" ]; then
+        # Use compatible versions with py37
+        sed -i "/greenlet/d" ${DEPENDENCIES_FILE}
+        sed -i "/lxml/d" ${DEPENDENCIES_FILE}
+        sed -i "/gevent/d" ${DEPENDENCIES_FILE}
+        echo -e "greenlet==0.4.13\nlxml==4.1.1\ngevent==1.3.5" >> ${DEPENDENCIES_FILE}
+    fi
     python"$version" -m pip install ${PIP_OPTS} -r ${DEPENDENCIES_FILE}
 done
 
@@ -140,6 +156,8 @@ chmod +x /etc/init.d/xvfb
 
 # Init without download to add odoo remotes
 git init ${REPO_REQUIREMENTS}/odoo
+if [ ${IS_TRAVIS} != "true" ]; then
+
 git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" remote add vauxoo "${ODOO_VAUXOO_REPO}"
 git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" remote add vauxoo-dev "${ODOO_VAUXOO_DEV_REPO}"
 git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" remote add odoo "${ODOO_ODOO_REPO}"
@@ -154,6 +172,7 @@ git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" fetch oca 11.0 --depth=10
 
 # Clean
 git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" gc --aggressive
+fi
 
 # Clone tools
 git_clone_copy "${GIST_VAUXOO_REPO}" "master" "" "${REPO_REQUIREMENTS}/tools/gist-vauxoo"
@@ -167,7 +186,7 @@ git_clone_copy "${PYLINT_REPO}" "master" "conf/.jslintrc" "${REPO_REQUIREMENTS}/
 ln -sf ${REPO_REQUIREMENTS}/linit_hook/git/* /usr/share/git-core/templates/hooks/
 
 # Create virtual environments for all installed Python versions
-for version in '2.7' '3.2' '3.3' '3.4' '3.5' '3.6'
+for version in '2.7' '3.2' '3.3' '3.4' '3.5' '3.6' '3.7'
 do
     echo "Creating a virtualenv using python${version}"
     python${version} -m virtualenv --system-site-packages ${REPO_REQUIREMENTS}/virtualenv/python${version}
@@ -199,6 +218,8 @@ cp /usr/lib/python3/dist-packages/apt_pkg.cpython-34m-x86_64-linux-gnu.so /usr/l
 
 # Creating virtual environments node js
 nodeenv ${REPO_REQUIREMENTS}/virtualenv/nodejs
+# Install node dependencies
+(source ${REPO_REQUIREMENTS}/virtualenv/nodejs/bin/activate && npm install ${NPM_OPTS} ${NPM_DEPENDS})
 echo "REPO_REQUIREMENTS=${REPO_REQUIREMENTS}" >> /etc/bash.bashrc
 
 # Keep alive the ssh server
