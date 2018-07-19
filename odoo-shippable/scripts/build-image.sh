@@ -98,13 +98,14 @@ wget http://mirrors.edge.kernel.org/ubuntu/pool/main/o/openssl/openssl_1.1.0g-2u
 install_py37
 
 # Upgrade pip for python3
+curl "https://bootstrap.pypa.io/get-pip.py" -o "/tmp/get-pip.py"
 for version in '3.2' '3.3' '3.4' '3.5' '3.6' '3.7'
 do
     echo "Install pip for python$version"
-    curl "https://bootstrap.pypa.io/get-pip.py" -o "/tmp/get-pip.py"
     # If there is a custom version then overwrite the generic one.
-    (curl -f "https://bootstrap.pypa.io/$version/get-pip.py" -o "/tmp/get-pip.py" || true)
-    python"$version" /tmp/get-pip.py
+    (curl -f "https://bootstrap.pypa.io/$version/get-pip.py" -o "/tmp/get-pip${version}.py" || true)
+    cp -n /tmp/get-pip.py /tmp/get-pip${version}.py
+    python"$version" /tmp/get-pip${version}.py
 done
 
 # Install virtualenv for each Python version
