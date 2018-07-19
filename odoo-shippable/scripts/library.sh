@@ -115,4 +115,5 @@ install_py37(){
     && rm -rf /usr/src/python \
     \
     && python3.7 --version
+    unset GPG_KEY PYTHON_VERSION GNUPGHOME
 }

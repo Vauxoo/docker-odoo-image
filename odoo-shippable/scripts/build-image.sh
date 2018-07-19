@@ -541,8 +541,29 @@ psql_create_role "root" "aeK5NWNr2"
 /etc/init.d/postgresql stop
 
 # Install & Configure RVM
-curl -sSL https://rvm.io/mpapis.asc | gpg --import -
-\curl -sSL https://raw.githubusercontent.com/wayneeseguin/rvm/stable/binscripts/rvm-installer | /bin/bash -s stable --ruby
+imported_gpg=""
+for i in `seq 3`; do
+    echo "Downloading mpapis.asc, try #${i}"
+    curl -sSL https://rvm.io/mpapis.asc -o /tmp/mpapis.asc || true
+    echo "Importing GPG mpapis.asc"
+    if gpg --import --lock-never /tmp/mpapis.asc ; then
+        imported_gpg="true"
+        break
+    fi
+    echo "Error importing GPG. GPG file content:"
+    cat /tmp/mpapis.asc || true
+    sleep 5
+done
+if [ ! $imported_gpg ]; then
+    echo "Could not import downloaded GPG key after ${i} tries, falling back to cached file"
+    gpg --import --lock-never /tmp/odoo-shippable/keys/mpapis.asc
+fi
+
+echo "Downloading rvm-installer"
+curl -sSL https://raw.githubusercontent.com/wayneeseguin/rvm/stable/binscripts/rvm-installer -o /tmp/rvm-installer
+echo "Running rvm-installer"
+bash /tmp/rvm-installer stable --ruby
+echo "Usermod rvm odoo"
 usermod -a -G rvm odoo
 
 cat >> /etc/bash.bashrc << EOF
