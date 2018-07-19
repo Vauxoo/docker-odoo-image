@@ -98,13 +98,14 @@ wget http://mirrors.edge.kernel.org/ubuntu/pool/main/o/openssl/openssl_1.1.0g-2u
 install_py37
 
 # Upgrade pip for python3
+curl "https://bootstrap.pypa.io/get-pip.py" -o "/tmp/get-pip.py"
 for version in '3.2' '3.3' '3.4' '3.5' '3.6' '3.7'
 do
     echo "Install pip for python$version"
-    curl "https://bootstrap.pypa.io/get-pip.py" -o "/tmp/get-pip.py"
     # If there is a custom version then overwrite the generic one.
-    (curl -f "https://bootstrap.pypa.io/$version/get-pip.py" -o "/tmp/get-pip.py" || true)
-    python"$version" /tmp/get-pip.py
+    (curl -f "https://bootstrap.pypa.io/$version/get-pip.py" -o "/tmp/get-pip${version}.py" || true)
+    cp -n /tmp/get-pip.py /tmp/get-pip${version}.py
+    python"$version" /tmp/get-pip${version}.py
 done
 
 # Install virtualenv for each Python version
@@ -156,22 +157,23 @@ chmod +x /etc/init.d/xvfb
 
 # Init without download to add odoo remotes
 git init ${REPO_REQUIREMENTS}/odoo
+# The following section is not run on Travis because it takes too much time,
+# which sometimes results in a timeout error
 if [ ${IS_TRAVIS} != "true" ]; then
+    git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" remote add vauxoo "${ODOO_VAUXOO_REPO}"
+    git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" remote add vauxoo-dev "${ODOO_VAUXOO_DEV_REPO}"
+    git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" remote add odoo "${ODOO_ODOO_REPO}"
+    git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" remote add oca "${ODOO_OCA_REPO}"
 
-git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" remote add vauxoo "${ODOO_VAUXOO_REPO}"
-git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" remote add vauxoo-dev "${ODOO_VAUXOO_DEV_REPO}"
-git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" remote add odoo "${ODOO_ODOO_REPO}"
-git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" remote add oca "${ODOO_OCA_REPO}"
+    # Download the cached branches to avoid the download by each build
+    for version in '8.0' '9.0' '10.0' '11.0' 'master'; do
+        git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" fetch vauxoo ${version} --depth=10
+        git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" fetch odoo ${version} --depth=10
+    done
+    git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" fetch oca 11.0 --depth=10
 
-# Download the cached branches to avoid the download by each build
-for version in '8.0' '9.0' '10.0' '11.0' 'master'; do
-    git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" fetch vauxoo ${version} --depth=10
-    git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" fetch odoo ${version} --depth=10
-done
-git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" fetch oca 11.0 --depth=10
-
-# Clean
-git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" gc --aggressive
+    # Clean
+    git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" gc --aggressive
 fi
 
 # Clone tools
