@@ -157,22 +157,23 @@ chmod +x /etc/init.d/xvfb
 
 # Init without download to add odoo remotes
 git init ${REPO_REQUIREMENTS}/odoo
+# The following section is not run on Travis because it takes too much time,
+# which sometimes results in a timeout error
 if [ ${IS_TRAVIS} != "true" ]; then
+    git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" remote add vauxoo "${ODOO_VAUXOO_REPO}"
+    git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" remote add vauxoo-dev "${ODOO_VAUXOO_DEV_REPO}"
+    git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" remote add odoo "${ODOO_ODOO_REPO}"
+    git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" remote add oca "${ODOO_OCA_REPO}"
 
-git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" remote add vauxoo "${ODOO_VAUXOO_REPO}"
-git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" remote add vauxoo-dev "${ODOO_VAUXOO_DEV_REPO}"
-git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" remote add odoo "${ODOO_ODOO_REPO}"
-git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" remote add oca "${ODOO_OCA_REPO}"
+    # Download the cached branches to avoid the download by each build
+    for version in '8.0' '9.0' '10.0' '11.0' 'master'; do
+        git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" fetch vauxoo ${version} --depth=10
+        git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" fetch odoo ${version} --depth=10
+    done
+    git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" fetch oca 11.0 --depth=10
 
-# Download the cached branches to avoid the download by each build
-for version in '8.0' '9.0' '10.0' '11.0' 'master'; do
-    git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" fetch vauxoo ${version} --depth=10
-    git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" fetch odoo ${version} --depth=10
-done
-git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" fetch oca 11.0 --depth=10
-
-# Clean
-git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" gc --aggressive
+    # Clean
+    git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" gc --aggressive
 fi
 
 # Clone tools
