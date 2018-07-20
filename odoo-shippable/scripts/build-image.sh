@@ -208,6 +208,10 @@ do
 
     deactivate
 done
+
+# Add python3.7-dev for compatibility with travis.yml
+ln -s ${REPO_REQUIREMENTS}/virtualenv/python3.7 ${REPO_REQUIREMENTS}/virtualenv/python3.7-dev
+
 export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python2.7
 echo "VIRTUALENVWRAPPER_PYTHON=/usr/bin/python2.7" >> /etc/bash.bashrc
 
