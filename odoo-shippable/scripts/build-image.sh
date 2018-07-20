@@ -141,13 +141,6 @@ do
     echo "Install all pip dependencies for python${version}"
     collect_pip_dependencies "${ODOO_DEPENDENCIES_PY3}" "${PIP_DEPENDS_EXTRA}" "${DEPENDENCIES_FILE}"
     clean_requirements ${DEPENDENCIES_FILE}
-    if [ $version == "3.7" ]; then
-        # Use compatible versions with py37
-        sed -i "/greenlet/d" ${DEPENDENCIES_FILE}
-        sed -i "/lxml/d" ${DEPENDENCIES_FILE}
-        sed -i "/gevent/d" ${DEPENDENCIES_FILE}
-        echo -e "greenlet==0.4.13\nlxml==4.1.1\ngevent==1.3.5" >> ${DEPENDENCIES_FILE}
-    fi
     python"$version" -m pip install ${PIP_OPTS} -r ${DEPENDENCIES_FILE}
 done
 
