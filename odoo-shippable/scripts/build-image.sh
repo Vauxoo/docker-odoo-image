@@ -399,8 +399,8 @@ EOF
 cat >> /etc/bash.bashrc << EOF
 alias psql_logs_enable='export PGOPTIONS="$PGOPTIONS -c client_min_messages=notice -c log_min_messages=warning -c log_min_error_statement=error -c log_min_duration_statement=0 -c log_connections=on -c log_disconnections=on -c log_duration=off -c log_error_verbosity=verbose -c log_lock_waits=on -c log_statement=none -c log_temp_files=0"'
 alias psql_logs_disable='unset PGOPTIONS'
-alias psql_logs_clean='echo "" | tee /var/lib/postgresql/*/main/pg_log/postgresql.log'
-alias psql_logs_tail='tail -f /var/lib/postgresql/*/main/pg_log/postgresql.log'
+alias psql_logs_clean='echo -n "" | tee /var/log/pg_log/postgresql.log'
+alias psql_logs_tail='tail -f /var/log/pg_log/postgresql.log'
 EOF
 
 cat >> /etc/bash.bashrc << EOF
