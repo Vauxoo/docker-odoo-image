@@ -10,7 +10,7 @@ set -e
 . /etc/lsb-release
 # Let's set some defaults here
 ARCH="$( dpkg --print-architecture )"
-WKHTMLTOX_URL="https://downloads.wkhtmltopdf.org/0.12/0.12.4/wkhtmltox-0.12.4_linux-generic-${ARCH}.tar.xz"
+WKHTMLTOX_URL="https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.${DISTRIB_CODENAME}_${ARCH}.deb"
 DPKG_DEPENDS="nodejs \
               npm \
               antiword \
@@ -50,7 +50,9 @@ DPKG_DEPENDS="nodejs \
               automake \
               libtool \
               libltdl-dev \
-              libcups2-dev"
+              libcups2-dev \
+              xfonts-75dpi \
+              xfonts-base"
 DPKG_UNNECESSARY=""
 NPM_OPTS="-g"
 NPM_DEPENDS="phantomjs-prebuilt \
