@@ -159,7 +159,7 @@ if [ ${IS_TRAVIS} != "true" ]; then
     git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" remote add oca "${ODOO_OCA_REPO}"
 
     # Download the cached branches to avoid the download by each build
-    for version in '8.0' '9.0' '10.0' '11.0' 'master'; do
+    for version in '8.0' '9.0' '10.0' '11.0' '12.0' 'master'; do
         git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" fetch vauxoo ${version} --depth=10
         git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" fetch odoo ${version} --depth=10
     done
