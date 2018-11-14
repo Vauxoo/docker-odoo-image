@@ -54,3 +54,14 @@ function wkhtmltox_install(){
     dpkg -i "${DIR}/wkhtmltox.deb"
     rm -rf "${DIR}"
 }
+
+function phantomjs_install(){
+    URL="${1}"
+    DIR="$( mktemp -d )"
+    wget -qO "${DIR}/phantomjs.tar.bz2" "${URL}"
+    mkdir -p "${DIR}/phantomjs"
+    tar xvjf "${DIR}/phantomjs.tar.bz2" -C "${DIR}/phantomjs/" --strip-components=1
+    mv "${DIR}/phantomjs/" /usr/local/share
+    ln -sf /usr/local/share/phantomjs/bin/phantomjs /usr/local/bin
+    rm -rf "${DIR}"
+}

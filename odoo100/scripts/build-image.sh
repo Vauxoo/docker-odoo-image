@@ -42,7 +42,6 @@ DPKG_DEPENDS="nodejs \
               libxml2-dev \
               libxslt1-dev \
               libgeoip-dev \
-              cython \
               fontconfig \
               ghostscript \
               cloc \
@@ -60,7 +59,6 @@ PIP_OPTS="--upgrade \
           --no-cache-dir"
 
 PIP_DEPENDS_EXTRA="requirements-parser==0.1.0 \
-                   mercurial==3.2.2 \
                    setuptools==33.1.1 \
                    git+https://github.com/vauxoo/pylint-odoo@master#egg=pylint-odoo \
                    git+https://github.com/vauxoo/panama-dv@master#egg=ruc \
