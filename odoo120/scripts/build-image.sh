@@ -10,9 +10,11 @@ set -e
 . /etc/lsb-release
 # Let's set some defaults here
 ARCH="$( dpkg --print-architecture )"
+NODE_UPSTREAM_REPO="deb http://deb.nodesource.com/node_8.x trusty main"
+NODE_UPSTREAM_KEY="https://deb.nodesource.com/gpgkey/nodesource.gpg.key"
 WKHTMLTOX_URL="https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.${DISTRIB_CODENAME}_${ARCH}.deb"
+PHANTOMJS_VERSION="2.1.1"
 DPKG_DEPENDS="nodejs \
-              npm \
               antiword \
               python3-dev \
               poppler-utils \
@@ -55,8 +57,7 @@ DPKG_DEPENDS="nodejs \
               xfonts-base"
 DPKG_UNNECESSARY=""
 NPM_OPTS="-g"
-NPM_DEPENDS="phantomjs-prebuilt \
-             less \
+NPM_DEPENDS="less \
              less-plugin-clean-css \
              jshint"
 PIP_OPTS="--upgrade \
@@ -73,7 +74,7 @@ RUBY_DEPENDS="compass \
               bootstrap-sass"
 
 # Let's add the NodeJS upstream repo to install a newer version
-#add_custom_aptsource "${NODE_UPSTREAM_REPO}" "${NODE_UPSTREAM_KEY}"
+add_custom_aptsource "${NODE_UPSTREAM_REPO}" "${NODE_UPSTREAM_KEY}"
 
 # Release the apt monster!
 apt-get update
@@ -92,6 +93,8 @@ pip3 install ${PIP_OPTS} ${PIP_DEPENDS_EXTRA}
 
 # Install qt patched version of wkhtmltopdf because of maintainer nonsense
 wkhtmltox_install "${WKHTMLTOX_URL}"
+
+phantomjs_install "https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-${PHANTOMJS_VERSION}-linux-x86_64.tar.bz2"
 
 # Install ruby dependencies
 gem install ${RUBY_DEPENDS}
