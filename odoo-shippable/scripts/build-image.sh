@@ -323,6 +323,7 @@ if filereadable(expand("~/.wakatime.cfg")) && count(g:spf13_bundle_groups, 'waka
     Bundle 'vim-wakatime'
 endif
 " }
+Bundle 'airblade/vim-gitgutter'
 EOF
 
 cat >> ~/.vimrc.before.local << EOF
