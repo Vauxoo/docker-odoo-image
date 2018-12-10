@@ -18,6 +18,7 @@ ODOO_DEPENDENCIES="git+https://github.com/vauxoo/odoo@11.0 \
                    git+https://github.com/vauxoo/addons-vauxoo@11.0 \
                    git+https://github.com/vauxoo/pylint-odoo@master"
 DEPENDENCIES_FILE="/usr/share/vx-docker-internal/odoo110/11.0-full_requirements.txt"
+GEOIP_DB_URL="http://geolite.maxmind.com/download/geoip/database/GeoLite2-City.tar.gz"
 DPKG_DEPENDS="nodejs \
               phantomjs \
               antiword \
@@ -102,6 +103,9 @@ pip3 install ${PIP_OPTS} -r ${DEPENDENCIES_FILE}
 
 # Install qt patched version of wkhtmltopdf because of maintainer nonsense
 wkhtmltox_install "${WKHTMLTOX_URL}"
+
+# Install GeoIP database
+geoip_install "${GEOIP_DB_URL}"
 
 # Install ruby dependencies
 gem install ${RUBY_DEPENDS}
