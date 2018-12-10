@@ -104,3 +104,11 @@ function wkhtmltox_install(){
     mv "${DIR}/wkhtmltox/bin/wkhtmltopdf" "/usr/local/bin/wkhtmltopdf"
     rm -rf "${DIR}"
 }
+
+function geoip_install(){
+    URL="${1}"
+    DIR="$( mktemp -d )"
+    wget -qO- "${URL}" | tar -xz -C "${DIR}/"
+    mv "$(find ${DIR} -name "GeoLite2-City.mmdb")" "/usr/share/GeoIP/GeoLite2-City.mmdb"
+    rm -rf "${DIR}"
+}
