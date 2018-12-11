@@ -47,6 +47,7 @@ TMUX_PLUGINS_REPO="https://github.com/tmux-plugins/tpm"
 
 DPKG_DEPENDS="postgresql-9.3 postgresql-contrib-9.3 postgresql-9.5 postgresql-contrib-9.5 \
               postgresql-10 postgresql-contrib-10 \
+              postgresql-11 postgresql-contrib-11 \
               pgbadger pgtune perl-modules make openssl p7zip-full expect-dev mosh bpython \
               bsdtar rsync graphviz openssh-server cmake zsh tree tig libffi-dev \
               lua50 liblua50-dev liblualib50-dev exuberant-ctags rake \
@@ -535,6 +536,11 @@ psql_create_role "root" "aeK5NWNr2"
 /etc/init.d/postgresql stop
 
 PSQL_VERSION="10" /entrypoint_image
+psql_create_role "shippable" "aeK5NWNr2"
+psql_create_role "root" "aeK5NWNr2"
+/etc/init.d/postgresql stop
+
+PSQL_VERSION="11" /entrypoint_image
 psql_create_role "shippable" "aeK5NWNr2"
 psql_create_role "root" "aeK5NWNr2"
 /etc/init.d/postgresql stop
