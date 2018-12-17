@@ -58,7 +58,7 @@ DPKG_DEPENDS="postgresql-9.3 postgresql-contrib-9.3 postgresql-9.5 postgresql-co
               aspell aspell-en aspell-es gettext tk-dev libssl-dev"
 PIP_OPTS="--upgrade \
           --no-cache-dir"
-PIP_DEPENDS_EXTRA="line-profiler watchdog coveralls diff-highlight \
+PIP_DEPENDS_EXTRA="watchdog coveralls diff-highlight \
                    pg-activity virtualenv nodeenv setuptools==33.1.1 \
                    html2text==2016.9.19 ofxparse==0.15 pgcli"
 PIP_DPKG_BUILD_DEPENDS=""
