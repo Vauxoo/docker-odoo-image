@@ -55,7 +55,7 @@ DPKG_DEPENDS="postgresql-9.3 postgresql-contrib-9.3 postgresql-9.5 postgresql-co
               python3.5 python3.5-dev python3.6 python3.6-dev \
               software-properties-common Xvfb libmagickwand-dev openjdk-7-jre \
               dos2unix subversion tmux=2.0-1~ppa1~t \
-              aspell aspell-en aspell-es gettext tk-dev"
+              aspell aspell-en aspell-es gettext tk-dev libssl-dev"
 PIP_OPTS="--upgrade \
           --no-cache-dir"
 PIP_DEPENDS_EXTRA="line-profiler watchdog coveralls diff-highlight \
@@ -90,12 +90,9 @@ apt-get upgrade
 apt-get install ${DPKG_DEPENDS} ${PIP_DPKG_BUILD_DEPENDS}
 
 # Get ssl libraries before to install py37
-wget http://mirrors.edge.kernel.org/ubuntu/pool/main/o/openssl/libssl1.1_1.1.0g-2ubuntu4.1_amd64.deb -O /tmp/libssl1.1_1.1.deb \
-    && dpkg -i /tmp/libssl1.1_1.1.deb
-wget http://mirrors.edge.kernel.org/ubuntu/pool/main/o/openssl/libssl-dev_1.1.0g-2ubuntu4.1_amd64.deb -O /tmp/libssl-dev1.1.0.deb \
-    && dpkg -i /tmp/libssl-dev1.1.0.deb
-wget http://mirrors.edge.kernel.org/ubuntu/pool/main/o/openssl/openssl_1.1.0g-2ubuntu4.1_amd64.deb -O /tmp/openssl_1.1.0.deb \
-    && dpkg -i /tmp/openssl_1.1.0.deb
+cp /tmp/ssh_pylib/libcrypto.so.1.1 /usr/lib/x86_64-linux-gnu/
+cp /tmp/ssh_pylib/libssl.so.1.1 /usr/lib/x86_64-linux-gnu/
+cp /tmp/ssh_pylib/_ssl.cpython-37m-x86_64-linux-gnu.so /usr/local/lib/python3.7/lib-dynload/
 install_py37
 
 # Upgrade pip for python3
