@@ -89,11 +89,11 @@ apt-get update
 apt-get upgrade
 apt-get install ${DPKG_DEPENDS} ${PIP_DPKG_BUILD_DEPENDS}
 
-# Get ssl libraries before to install py37
+install_py37
+# Get ssl libraries for py37
 cp /tmp/ssh_pylib/libcrypto.so.1.1 /usr/lib/x86_64-linux-gnu/
 cp /tmp/ssh_pylib/libssl.so.1.1 /usr/lib/x86_64-linux-gnu/
 cp /tmp/ssh_pylib/_ssl.cpython-37m-x86_64-linux-gnu.so /usr/local/lib/python3.7/lib-dynload/
-install_py37
 
 # Upgrade pip for python3
 curl "https://bootstrap.pypa.io/get-pip.py" -o "/tmp/get-pip.py"
