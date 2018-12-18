@@ -47,6 +47,7 @@ TMUX_PLUGINS_REPO="https://github.com/tmux-plugins/tpm"
 
 DPKG_DEPENDS="postgresql-9.3 postgresql-contrib-9.3 postgresql-9.5 postgresql-contrib-9.5 \
               postgresql-10 postgresql-contrib-10 \
+              postgresql-11 postgresql-contrib-11 \
               pgbadger pgtune perl-modules make openssl p7zip-full expect-dev mosh bpython \
               bsdtar rsync graphviz openssh-server cmake zsh tree tig libffi-dev \
               lua50 liblua50-dev liblualib50-dev exuberant-ctags rake \
@@ -54,10 +55,10 @@ DPKG_DEPENDS="postgresql-9.3 postgresql-contrib-9.3 postgresql-9.5 postgresql-co
               python3.5 python3.5-dev python3.6 python3.6-dev \
               software-properties-common Xvfb libmagickwand-dev openjdk-7-jre \
               dos2unix subversion tmux=2.0-1~ppa1~t \
-              aspell aspell-en aspell-es gettext tk-dev"
+              aspell aspell-en aspell-es gettext tk-dev libssl-dev"
 PIP_OPTS="--upgrade \
           --no-cache-dir"
-PIP_DEPENDS_EXTRA="line-profiler watchdog coveralls diff-highlight \
+PIP_DEPENDS_EXTRA="watchdog coveralls diff-highlight \
                    pg-activity virtualenv nodeenv setuptools==33.1.1 \
                    html2text==2016.9.19 ofxparse==0.15 pgcli"
 PIP_DPKG_BUILD_DEPENDS=""
@@ -88,14 +89,13 @@ apt-get update
 apt-get upgrade
 apt-get install ${DPKG_DEPENDS} ${PIP_DPKG_BUILD_DEPENDS}
 
-# Get ssl libraries before to install py37
-wget http://mirrors.edge.kernel.org/ubuntu/pool/main/o/openssl/libssl1.1_1.1.0g-2ubuntu4.1_amd64.deb -O /tmp/libssl1.1_1.1.deb \
-    && dpkg -i /tmp/libssl1.1_1.1.deb
-wget http://mirrors.edge.kernel.org/ubuntu/pool/main/o/openssl/libssl-dev_1.1.0g-2ubuntu4.1_amd64.deb -O /tmp/libssl-dev1.1.0.deb \
-    && dpkg -i /tmp/libssl-dev1.1.0.deb
-wget http://mirrors.edge.kernel.org/ubuntu/pool/main/o/openssl/openssl_1.1.0g-2ubuntu4.1_amd64.deb -O /tmp/openssl_1.1.0.deb \
-    && dpkg -i /tmp/openssl_1.1.0.deb
+# Get ssl libraries for py37
+mkdir -p /usr/lib/x86_64-linux-gnu /usr/local/lib/python3.7/lib-dynload
+cp /tmp/ssh_pylib/libcrypto.so.1.1 /usr/lib/x86_64-linux-gnu/
+cp /tmp/ssh_pylib/libssl.so.1.1 /usr/lib/x86_64-linux-gnu/
+cp /tmp/ssh_pylib/_ssl.cpython-37m-x86_64-linux-gnu.so /usr/local/lib/python3.7/lib-dynload/
 install_py37
+python3.7 -c "import _ssl"
 
 # Upgrade pip for python3
 curl "https://bootstrap.pypa.io/get-pip.py" -o "/tmp/get-pip.py"
@@ -145,7 +145,7 @@ do
 done
 
 # Install xvfb daemon
-wget https://raw.githubusercontent.com/travis-ci/travis-cookbooks/master/cookbooks/travis_build_environment/files/default/etc-init.d-xvfb.sh -O /etc/init.d/xvfb
+wget https://raw.githubusercontent.com/travis-ci/travis-cookbooks/trusty-stable/cookbooks/travis_build_environment/files/default/etc-init.d-xvfb.sh -O /etc/init.d/xvfb
 chmod +x /etc/init.d/xvfb
 
 # Init without download to add odoo remotes
@@ -539,6 +539,11 @@ psql_create_role "shippable" "aeK5NWNr2"
 psql_create_role "root" "aeK5NWNr2"
 /etc/init.d/postgresql stop
 
+PSQL_VERSION="11" /entrypoint_image
+psql_create_role "shippable" "aeK5NWNr2"
+psql_create_role "root" "aeK5NWNr2"
+/etc/init.d/postgresql stop
+
 # Install & Configure RVM
 imported_gpg=""
 for i in `seq 3`; do
@@ -561,7 +566,7 @@ fi
 echo "Downloading rvm-installer"
 curl -sSL https://raw.githubusercontent.com/wayneeseguin/rvm/stable/binscripts/rvm-installer -o /tmp/rvm-installer
 echo "Running rvm-installer"
-bash /tmp/rvm-installer stable --ruby
+bash /tmp/rvm-installer 1.29.4 --ruby
 echo "Usermod rvm odoo"
 usermod -a -G rvm odoo
 
