@@ -145,7 +145,7 @@ do
 done
 
 # Install xvfb daemon
-wget https://raw.githubusercontent.com/travis-ci/travis-cookbooks/master/cookbooks/travis_build_environment/files/default/etc-init.d-xvfb.sh -O /etc/init.d/xvfb
+wget https://raw.githubusercontent.com/travis-ci/travis-cookbooks/trusty-stable/cookbooks/travis_build_environment/files/default/etc-init.d-xvfb.sh -O /etc/init.d/xvfb
 chmod +x /etc/init.d/xvfb
 
 # Init without download to add odoo remotes
