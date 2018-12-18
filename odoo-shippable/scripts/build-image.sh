@@ -55,7 +55,7 @@ DPKG_DEPENDS="postgresql-9.3 postgresql-contrib-9.3 postgresql-9.5 postgresql-co
               python3.5 python3.5-dev python3.6 python3.6-dev \
               software-properties-common Xvfb libmagickwand-dev openjdk-7-jre \
               dos2unix subversion tmux=2.0-1~ppa1~t \
-              aspell aspell-en aspell-es gettext tk-dev libssl-dev"
+              aspell aspell-en aspell-es gettext tk-dev libssl-dev gnupg2"
 PIP_OPTS="--upgrade \
           --no-cache-dir"
 PIP_DEPENDS_EXTRA="watchdog coveralls diff-highlight \
@@ -550,7 +550,7 @@ for i in `seq 3`; do
     echo "Downloading mpapis.asc, try #${i}"
     curl -sSL https://rvm.io/mpapis.asc -o /tmp/mpapis.asc || true
     echo "Importing GPG mpapis.asc"
-    if gpg --import --lock-never /tmp/mpapis.asc ; then
+    if gpg2 --import --lock-never /tmp/mpapis.asc ; then
         imported_gpg="true"
         break
     fi
@@ -560,7 +560,7 @@ for i in `seq 3`; do
 done
 if [ ! $imported_gpg ]; then
     echo "Could not import downloaded GPG key after ${i} tries, falling back to cached file"
-    gpg --import --lock-never /tmp/odoo-shippable/keys/mpapis.asc
+    gpg2 --import --lock-never /tmp/odoo-shippable/keys/mpapis.asc
 fi
 
 echo "Downloading rvm-installer"
