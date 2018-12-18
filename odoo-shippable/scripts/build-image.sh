@@ -566,7 +566,7 @@ fi
 echo "Downloading rvm-installer"
 curl -sSL https://raw.githubusercontent.com/wayneeseguin/rvm/stable/binscripts/rvm-installer -o /tmp/rvm-installer
 echo "Running rvm-installer"
-bash /tmp/rvm-installer stable --ruby
+bash /tmp/rvm-installer 1.29.4 --ruby
 echo "Usermod rvm odoo"
 usermod -a -G rvm odoo
 
