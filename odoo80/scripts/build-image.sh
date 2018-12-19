@@ -48,11 +48,6 @@ DPKG_DEPENDS="nodejs \
               fontconfig \
               ghostscript \
               cloc \
-              postgresql-common \
-              postgresql-${PSQL_VERSION} \
-              postgresql-client-${PSQL_VERSION} \
-              postgresql-contrib-${PSQL_VERSION} \
-              postgresql-server-dev-${PSQL_VERSION} \
               pgbadger \
               python-cups"
 DPKG_UNNECESSARY=""
@@ -104,5 +99,3 @@ rm -rf /tmp/*
 find /var/tmp -type f -print0 | xargs -0r rm -rf
 find /var/log -type f -print0 | xargs -0r rm -rf
 find /var/lib/apt/lists -type f -print0 | xargs -0r rm -rf
-echo "include = '/etc/postgresql-common/common-vauxoo.conf'" >> /etc/postgresql/${PSQL_VERSION}/main/postgresql.conf
-echo "host all  all    0.0.0.0/0  md5" >> /etc/postgresql/$PSQL_VERSION/main/pg_hba.conf
