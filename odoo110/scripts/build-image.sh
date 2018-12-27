@@ -13,6 +13,7 @@ ARCH="$( dpkg --print-architecture )"
 NODE_UPSTREAM_REPO="deb http://deb.nodesource.com/node_5.x trusty main"
 NODE_UPSTREAM_KEY="https://deb.nodesource.com/gpgkey/nodesource.gpg.key"
 WKHTMLTOX_URL="https://downloads.wkhtmltopdf.org/0.12/0.12.4/wkhtmltox-0.12.4_linux-generic-${ARCH}.tar.xz"
+RUBY_VERSION="2.5.3"
 ODOO_DEPENDENCIES="git+https://github.com/vauxoo/odoo@11.0 \
                    git+https://github.com/vauxoo/server-tools@11.0 \
                    git+https://github.com/vauxoo/addons-vauxoo@11.0 \
@@ -58,7 +59,14 @@ DPKG_DEPENDS="nodejs \
               automake \
               libtool \
               libltdl-dev \
-              libcups2-dev"
+              libcups2-dev \
+              libgdbm-dev \
+              libncurses5-dev \
+              bison \
+              libffi-dev \
+              gnupg2 \
+              dirmngr"
+
 DPKG_UNNECESSARY=""
 NPM_OPTS="-g"
 NPM_DEPENDS="less \
@@ -106,6 +114,12 @@ wkhtmltox_install "${WKHTMLTOX_URL}"
 
 # Install GeoIP database
 geoip_install "${GEOIP_DB_URL}"
+
+# Install Ruby
+update_ruby ${RUBY_VERSION}
+
+# Force install rake before dependencies
+gem install rake
 
 # Install ruby dependencies
 gem install ${RUBY_DEPENDS}
