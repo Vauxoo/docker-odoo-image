@@ -96,6 +96,9 @@ wkhtmltox_install "${WKHTMLTOX_URL}"
 
 phantomjs_install "https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-${PHANTOMJS_VERSION}-linux-x86_64.tar.bz2"
 
+# Force install rake before dependencies
+gem install rake
+
 # Install ruby dependencies
 gem install ${RUBY_DEPENDS}
 
