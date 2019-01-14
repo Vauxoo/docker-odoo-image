@@ -19,7 +19,9 @@ ODOO_DEPENDENCIES="git+https://github.com/vauxoo/odoo@11.0 \
                    git+https://github.com/vauxoo/addons-vauxoo@11.0 \
                    git+https://github.com/vauxoo/pylint-odoo@master"
 DEPENDENCIES_FILE="/usr/share/vx-docker-internal/odoo110/11.0-full_requirements.txt"
-GEOIP_DB_URL="http://geolite.maxmind.com/download/geoip/database/GeoLite2-City.tar.gz"
+GEOIP2_URLS="http://geolite.maxmind.com/download/geoip/database/GeoLite2-City.tar.gz \
+             https://geolite.maxmind.com/download/geoip/database/GeoLite2-Country.tar.gz \
+             https://geolite.maxmind.com/download/geoip/database/GeoLite2-ASN.tar.gz"
 DPKG_DEPENDS="nodejs \
               phantomjs \
               antiword \
@@ -29,7 +31,6 @@ DPKG_DEPENDS="nodejs \
               xsltproc \
               xz-utils \
               swig \
-              geoip-database-contrib \
               libpq-dev \
               libldap2-dev \
               libsasl2-dev \
@@ -113,7 +114,7 @@ pip3 install ${PIP_OPTS} -r ${DEPENDENCIES_FILE}
 wkhtmltox_install "${WKHTMLTOX_URL}"
 
 # Install GeoIP database
-geoip_install "${GEOIP_DB_URL}"
+geoip_install "${GEOIP2_URLS}"
 
 # Install Ruby
 update_ruby ${RUBY_VERSION}
