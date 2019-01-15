@@ -14,6 +14,9 @@ NODE_UPSTREAM_REPO="deb http://deb.nodesource.com/node_8.x trusty main"
 NODE_UPSTREAM_KEY="https://deb.nodesource.com/gpgkey/nodesource.gpg.key"
 WKHTMLTOX_URL="https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.${DISTRIB_CODENAME}_${ARCH}.deb"
 PHANTOMJS_VERSION="2.1.1"
+GEOIP2_URLS="http://geolite.maxmind.com/download/geoip/database/GeoLite2-City.tar.gz \
+             https://geolite.maxmind.com/download/geoip/database/GeoLite2-Country.tar.gz \
+             https://geolite.maxmind.com/download/geoip/database/GeoLite2-ASN.tar.gz"
 DPKG_DEPENDS="nodejs \
               antiword \
               python3-dev \
@@ -22,7 +25,6 @@ DPKG_DEPENDS="nodejs \
               xsltproc \
               xz-utils \
               swig \
-              geoip-database-contrib \
               libpq-dev \
               libldap2-dev \
               libsasl2-dev \
@@ -93,6 +95,9 @@ pip3 install ${PIP_OPTS} ${PIP_DEPENDS_EXTRA}
 
 # Install qt patched version of wkhtmltopdf because of maintainer nonsense
 wkhtmltox_install "${WKHTMLTOX_URL}"
+
+# Install GeoIP database
+geoip_install "${GEOIP2_URLS}"
 
 phantomjs_install "https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-${PHANTOMJS_VERSION}-linux-x86_64.tar.bz2"
 

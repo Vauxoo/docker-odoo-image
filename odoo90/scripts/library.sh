@@ -91,3 +91,14 @@ function wkhtmltox_install(){
     dpkg -i wkhtmltox.deb
     rm wkhtmltox.deb
 }
+
+function geoip_install(){
+    URLS="${1}"
+    DIR="$( mktemp -d )"
+    mkdir -p "/usr/share/GeoIP"
+    for URL in ${URLS}; do
+        wget -qO- "${URL}" | tar -xz -C "${DIR}/"
+        mv "$(find ${DIR} -name "GeoLite2*mmdb")" "/usr/share/GeoIP/"
+    done
+    rm -rf "${DIR}"
+}

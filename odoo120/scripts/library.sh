@@ -55,6 +55,17 @@ function wkhtmltox_install(){
     rm -rf "${DIR}"
 }
 
+function geoip_install(){
+    URLS="${1}"
+    DIR="$( mktemp -d )"
+    mkdir -p "/usr/share/GeoIP"
+    for URL in ${URLS}; do
+        wget -qO- "${URL}" | tar -xz -C "${DIR}/"
+        mv "$(find ${DIR} -name "GeoLite2*mmdb")" "/usr/share/GeoIP/"
+    done
+    rm -rf "${DIR}"
+}
+
 function phantomjs_install(){
     URL="${1}"
     DIR="$( mktemp -d )"

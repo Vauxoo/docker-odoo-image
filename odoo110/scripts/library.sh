@@ -106,10 +106,13 @@ function wkhtmltox_install(){
 }
 
 function geoip_install(){
-    URL="${1}"
+    URLS="${1}"
     DIR="$( mktemp -d )"
-    wget -qO- "${URL}" | tar -xz -C "${DIR}/"
-    mv "$(find ${DIR} -name "GeoLite2-City.mmdb")" "/usr/share/GeoIP/GeoLite2-City.mmdb"
+    mkdir -p "/usr/share/GeoIP"
+    for URL in ${URLS}; do
+        wget -qO- "${URL}" | tar -xz -C "${DIR}/"
+        mv "$(find ${DIR} -name "GeoLite2*mmdb")" "/usr/share/GeoIP/"
+    done
     rm -rf "${DIR}"
 }
 
