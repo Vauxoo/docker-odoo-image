@@ -20,8 +20,6 @@ PYTHON_PPA_REPO="deb http://ppa.launchpad.net/fkrull/deadsnakes/ubuntu trusty ma
 PYTHON_PPA_KEY="http://keyserver.ubuntu.com:11371/pks/lookup?op=get&search=0x5BB92C09DB82666C"
 VIM_PPA_REPO="deb http://ppa.launchpad.net/pkg-vim/vim-daily/ubuntu trusty main"
 VIM_PPA_KEY="http://keyserver.ubuntu.com:11371/pks/lookup?op=get&search=0xA7266A2DD31525A0"
-TMUX_PPA_REPO="deb http://ppa.launchpad.net/pi-rho/dev/ubuntu trusty main"
-TMUX_PPA_KEY="http://keyserver.ubuntu.com:11371/pks/lookup?op=get&search=0xCC892FC6779C27D7"
 
 # Extra software download URLs
 HUB_ARCHIVE="https://github.com/github/hub/releases/download/v2.2.3/hub-linux-${ARCH}-2.2.3.tgz"
@@ -43,7 +41,6 @@ ODOO_OCA_REPO="https://github.com/oca/ocb.git"
 MQT_REPO="https://github.com/vauxoo/maintainer-quality-tools.git"
 GIST_VAUXOO_REPO="https://github.com/vauxoo-dev/gist-vauxoo.git"
 PYLINT_REPO="https://github.com/vauxoo/pylint-conf.git"
-TMUX_PLUGINS_REPO="https://github.com/tmux-plugins/tpm"
 
 DPKG_DEPENDS="postgresql-9.3 postgresql-contrib-9.3 postgresql-9.5 postgresql-contrib-9.5 \
               postgresql-10 postgresql-contrib-10 \
@@ -54,7 +51,7 @@ DPKG_DEPENDS="postgresql-9.3 postgresql-contrib-9.3 postgresql-9.5 postgresql-co
               python3.2 python3.2-dev python3.3 python3.3-dev python3.4 python3.4-dev \
               python3.5 python3.5-dev python3.6 python3.6-dev \
               software-properties-common Xvfb libmagickwand-dev openjdk-7-jre \
-              dos2unix subversion tmux=2.0-1~ppa1~t \
+              dos2unix subversion \
               aspell aspell-en aspell-es gettext tk-dev libssl-dev"
 PIP_OPTS="--upgrade \
           --no-cache-dir"
@@ -80,8 +77,6 @@ add_custom_aptsource "${GITCORE_PPA_REPO}" "${GITCORE_PPA_KEY}"
 add_custom_aptsource "${PYTHON_PPA_REPO}" "${PYTHON_PPA_KEY}"
 # Let's add the vim ppa for having a more up-to-date vim
 add_custom_aptsource "${VIM_PPA_REPO}" "${VIM_PPA_KEY}"
-# Let's add the tmux ppa for having a more up-to-date vim
-add_custom_aptsource "${TMUX_PPA_REPO}" "${TMUX_PPA_KEY}"
 
 # Release the apt monster!
 echo "resolvconf resolvconf/linkify-resolvconf boolean false" | debconf-set-selections
@@ -464,26 +459,6 @@ source ${REPO_REQUIREMENTS}/virtualenv/nodejs/bin/activate
 PYTHONPATH=${PYTHONPATH}:${REPO_REQUIREMENTS}/odoo
 EOF
 done
-
-# Install Tmux Plugin Manager
-git_clone_copy "${TMUX_PLUGINS_REPO}" "master" "" "${HOME}/.tmux/plugins/tpm"
-cat >> ~/.tmux.conf << EOF
-# List of plugins
-set -g @plugin 'tmux-plugins/tpm'
-set -g @plugin 'tmux-plugins/tmux-sensible'
-set -g @plugin 'tmux-plugins/tmux-resurrect'
-set -g @plugin 'tmux-plugins/tmux-continuum'
-
-# Initialize TMUX plugin manager (keep this line at the very bottom of tmux.conf)
-run '~/.tmux/plugins/tpm/tpm'
-EOF
-cp -r ${HOME}/.tmux /home/odoo
-chown -R odoo:odoo /home/odoo/.tmux
-cp -r ${HOME}/.tmux.conf /home/odoo
-chown -R odoo:odoo /home/odoo/.tmux.conf
-# Install all plugin for all user
-${HOME}/.tmux/plugins/tpm/scripts/install_plugins.sh
-su odoo /home/odoo/.tmux/plugins/tpm/scripts/install_plugins.sh
 
 # Move inclusion of .bash_aliases to the end of .bashrc so it takes presedence
 sed -i '/^if \[ -f ~\/.bash_aliases \]; then/,+2d' /home/odoo/.bashrc
