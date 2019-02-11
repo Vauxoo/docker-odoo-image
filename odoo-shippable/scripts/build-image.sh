@@ -554,6 +554,10 @@ EOF
 
 install_pyflame
 install_tmux
+cat >> /etc/tmux.conf << EOF
+# tmux - Set lower history limit to save RAM memory
+set -g history-limit 500
+EOF
 
 # Final cleaning
 rm -rf /tmp/*
