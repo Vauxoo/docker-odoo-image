@@ -131,3 +131,14 @@ install_pyflame(){
     git clone --depth=1 --single-branch https://github.com/brendangregg/FlameGraph /tmp/flamegraph
     cp /tmp/flamegraph/flamegraph.pl /usr/local/bin/
 }
+
+install_tmux(){
+    git clone -b 2.8 --single-branch --depth=1 https://github.com/tmux/tmux.git /tmp/tmux
+    apt-get install -y libevent-dev
+    (cd /tmp/tmux && \
+        ./autogen.sh --silent && \
+        ./configure --silent && make --silent && \
+        make install
+    )
+    rm -rf /tmp/tmux
+}
