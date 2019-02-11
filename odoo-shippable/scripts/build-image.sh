@@ -577,6 +577,8 @@ source "/usr/local/rvm/scripts/rvm"
 
 EOF
 
+install_pyflame
+
 # Final cleaning
 rm -rf /tmp/*
 find /var/tmp -type f -print0 | xargs -0r rm -rf

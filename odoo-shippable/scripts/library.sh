@@ -117,3 +117,17 @@ install_py37(){
     && python3.7 --version
     unset GPG_KEY PYTHON_VERSION GNUPGHOME
 }
+
+install_pyflame(){
+    apt-get update
+    apt-get install autoconf automake autotools-dev g++ libtool pkg-config git -y
+    git clone --depth=1 --single-branch https://github.com/uber/pyflame.git /tmp/pyflame
+    (cd /tmp/pyflame && \
+        ./autogen.sh && \
+        ./configure && \
+        make && \
+        make install)
+    rm -rf /tmp/pyflame
+    git clone --depth=1 --single-branch https://github.com/brendangregg/FlameGraph /tmp/flamegraph
+    cp /tmp/flamegraph/flamegraph.pl /usr/local/bin/
+}
