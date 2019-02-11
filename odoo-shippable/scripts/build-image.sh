@@ -553,6 +553,7 @@ source "/usr/local/rvm/scripts/rvm"
 EOF
 
 install_pyflame
+install_tmux
 
 # Final cleaning
 rm -rf /tmp/*
