@@ -72,11 +72,13 @@ def docker_entrypoint():
 
     # Start postgresql service
     cmd = '/etc/init.d/postgresql start ' + os.environ.get('PSQL_VERSION', '')
-    subprocess.call(cmd, shell=True, env=os.environ)
-    print("Waiting to start psql service...")
+    subprocess.Popen(cmd, shell=True, env=os.environ,
+                     stdin=None, stdout=None, stderr=None)
+    print("Waiting to start psql service", end='')
     count = 0
-    max_count = 240
+    max_count = 250
     while True:
+        print(".", end='')
         psql_subprocess = subprocess.Popen(
             ["psql", '-l'], stdout=subprocess.PIPE,
             stderr=subprocess.PIPE)
@@ -90,12 +92,12 @@ def docker_entrypoint():
             psql_error = False
         if not psql_error or count > max_count:
             break
-        time.sleep(3)
+        time.sleep(4)
         count += 1
     if not psql_error:
         print("...psql service started.")
     else:
-        raise RuntimeError("PSQL not started.")
+        raise RuntimeError("PSQL %s not started." % os.environ.get('PSQL_VERSION', ''))
 
     # Fix flaky error when run instance to connect more info:
     # https://www.odoo.com/es_ES/forum/ayuda-1/question/internal-error-index-10107 # noqa
