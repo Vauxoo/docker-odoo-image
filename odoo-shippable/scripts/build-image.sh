@@ -235,7 +235,8 @@ cat >> /etc/gitconfig << EOF
     diff = diff-highlight | less
 EOF
 
-# Configure vim
+# Upgrade & configure vim
+apt install vim --only-upgrade
 wget -q -O /usr/share/vim/vim80/spell/es.utf-8.spl http://ftp.vim.org/pub/vim/runtime/spell/es.utf-8.spl
 git_clone_execute "${SPF13_REPO}" "3.0" "bootstrap.sh"
 git_clone_copy "${VIM_OPENERP_REPO}" "master" "vim/" "${HOME}/.vim/bundle/vim-openerp"
