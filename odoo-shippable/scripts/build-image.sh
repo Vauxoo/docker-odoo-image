@@ -42,7 +42,9 @@ MQT_REPO="https://github.com/vauxoo/maintainer-quality-tools.git"
 GIST_VAUXOO_REPO="https://github.com/vauxoo-dev/gist-vauxoo.git"
 PYLINT_REPO="https://github.com/vauxoo/pylint-conf.git"
 
-DPKG_DEPENDS="postgresql-9.3 postgresql-contrib-9.3 postgresql-9.5 postgresql-contrib-9.5 \
+DPKG_DEPENDS="postgresql-9.3 postgresql-contrib-9.3 \
+              postgresql-9.5 postgresql-contrib-9.5 \
+              postgresql-9.6 postgresql-contrib-9.6 \
               postgresql-10 postgresql-contrib-10 \
               postgresql-11 postgresql-contrib-11 \
               pgbadger pgtune perl-modules make openssl p7zip-full expect-dev mosh bpython \
