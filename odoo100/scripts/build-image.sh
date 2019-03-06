@@ -21,6 +21,7 @@ DEPENDENCIES_FILE="/usr/share/vx-docker-internal/odoo100/10.0-full_requirements.
 GEOIP2_URLS="http://geolite.maxmind.com/download/geoip/database/GeoLite2-City.tar.gz \
              https://geolite.maxmind.com/download/geoip/database/GeoLite2-Country.tar.gz \
              https://geolite.maxmind.com/download/geoip/database/GeoLite2-ASN.tar.gz"
+EGENIX_BASE_URL="https://files.pythonhosted.org/packages/66/e6/e0709aedeb4a5c92a1aeb8c47ab50e9506eafc865806801bd3f01d72b671/egenix-mx-base-3.2.9.zip"
 DPKG_DEPENDS="nodejs \
               phantomjs \
               antiword \
@@ -90,6 +91,8 @@ wkhtmltox_install "${WKHTMLTOX_URL}"
 
 # Install GeoIP database
 geoip_install "${GEOIP2_URLS}"
+
+egenixbase_install "${EGENIX_BASE_URL}"
 
 # Remove build depends for pip
 apt-get purge ${PIP_DPKG_BUILD_DEPENDS} ${DPKG_UNNECESSARY}

@@ -115,3 +115,12 @@ function geoip_install(){
     done
     rm -rf "${DIR}"
 }
+
+function egenixbase_install(){
+    URL="${1}"
+    DIR="$( mktemp -d )"
+    cd ${DIR}
+    wget -qO egenixbase.zip "${URL}"
+    ls -lah
+    unzip egenixbase.zip && cd "egenix-mx-base-3.2.9" && python setup.py install 
+}
