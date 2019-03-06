@@ -289,7 +289,7 @@ let g:syntastic_aggregate_errors = 1
 let g:syntastic_python_checkers = ['pylint', 'flake8']
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_python_pylint_args =
-    \ '--rcfile=/.repo_requirements/linit_hook/travis/cfg/travis_run_pylint_vim.cfg --load-plugins=pylint_odoo'
+    \ '--rcfile=/.repo_requirements/linit_hook/travis/cfg/travis_run_pylint_vim.cfg --load-plugins=pylint_odoo --valid_odoo_versions=12.0'
 let g:syntastic_python_flake8_args =
     \ '--config=/.repo_requirements/linit_hook/travis/cfg/travis_run_flake8.cfg'
 let g:syntastic_javascript_checkers = ['eslint']
