@@ -76,10 +76,13 @@ apt-get install ${DPKG_DEPENDS} ${PIP_DPKG_BUILD_DEPENDS}
 npm install ${NPM_OPTS} ${NPM_DEPENDS}
 
 # Update pip 
-pip install --upgrade pip
+pip install --upgrade pip setuptools
 
 # Let's recursively find our pip dependencies
 collect_pip_dependencies "${ODOO_DEPENDENCIES}" "${PIP_DEPENDS_EXTRA}" "${DEPENDENCIES_FILE}"
+
+# Install egenix-mx-base using easy_install because it doesn't play along with pip anymore
+easy_install egenix-mx-base
 
 # Cleans incorrect dependency lines  
 clean_requirements ${DEPENDENCIES_FILE}
