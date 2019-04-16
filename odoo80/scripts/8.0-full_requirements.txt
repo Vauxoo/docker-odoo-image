@@ -5,7 +5,6 @@ pylint-mccabe
 PyWebDAV
 mygengo
 recaptcha-client
-egenix-mx-base
 branchesv
 requirements-parser==0.1.0
 setuptools==33.1.1
