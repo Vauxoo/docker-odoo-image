@@ -254,6 +254,10 @@ let g:pymode_virtualenv = 0
 " Disable pymode init and lint because of https://github.com/python-mode/python-mode/issues/897
 let g:pymode_init = 0
 let g:pymode_lint = 0
+
+" Disable modelines: https://github.com/numirias/security/blob/master/doc/2019-06-04_ace-vim-neovim.md
+set modelines=0
+set nomodeline
 EOF
 
 # Disable vim-signify 
