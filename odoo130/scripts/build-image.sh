@@ -6,7 +6,7 @@ set -e
 
 # With a little help from my friends
 . /usr/share/vx-docker-internal/ubuntu-base/library.sh
-. /usr/share/vx-docker-internal/odoo120/library.sh
+. /usr/share/vx-docker-internal/odoo130/library.sh
 . /etc/lsb-release
 # Let's set some defaults here
 ARCH="$( dpkg --print-architecture )"
