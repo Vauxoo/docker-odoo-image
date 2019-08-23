@@ -54,7 +54,8 @@ DPKG_DEPENDS="postgresql-9.3 postgresql-contrib-9.3 \
               python3.5 python3.5-dev python3.6 python3.6-dev \
               software-properties-common Xvfb libmagickwand-dev openjdk-7-jre \
               dos2unix subversion \
-              aspell aspell-en aspell-es gettext tk-dev libssl-dev lftp"
+              aspell aspell-en aspell-es gettext tk-dev libssl-dev lftp \
+              libmysqlclient-dev"
 PIP_OPTS="--upgrade \
           --no-cache-dir"
 PIP_DEPENDS_EXTRA="watchdog coveralls diff-highlight \
