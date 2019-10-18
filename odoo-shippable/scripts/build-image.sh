@@ -60,7 +60,7 @@ PIP_OPTS="--upgrade \
           --no-cache-dir"
 PIP_DEPENDS_EXTRA="watchdog coveralls diff-highlight \
                    pg-activity virtualenv nodeenv setuptools==33.1.1 \
-                   html2text==2016.9.19 ofxparse==0.15 pgcli"
+                   html2text==2016.9.19 ofxparse==0.15 pgcli pre-commit"
 PIP_DPKG_BUILD_DEPENDS=""
 
 ODOO_DEPENDENCIES_PY2="git+https://github.com/vauxoo/odoo@10.0 \
@@ -141,6 +141,10 @@ do
     clean_requirements ${DEPENDENCIES_FILE}
     python"$version" -m pip install ${PIP_OPTS} -r ${DEPENDENCIES_FILE}
 done
+
+# Installing black for compatible python versions
+python3.6 -m pip install black
+python3.7 -m pip install black
 
 # Install xvfb daemon
 wget https://raw.githubusercontent.com/travis-ci/travis-cookbooks/trusty-stable/cookbooks/travis_build_environment/files/default/etc-init.d-xvfb.sh -O /etc/init.d/xvfb
