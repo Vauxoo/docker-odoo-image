@@ -55,7 +55,7 @@ DPKG_DEPENDS="postgresql-9.3 postgresql-contrib-9.3 \
               software-properties-common Xvfb libmagickwand-dev openjdk-7-jre \
               dos2unix subversion \
               aspell aspell-en aspell-es gettext tk-dev libssl-dev lftp \
-              libmysqlclient-dev libcups2-dev"
+              libmysqlclient-dev libcups2-dev emacs byobu"
 PIP_OPTS="--upgrade \
           --no-cache-dir"
 PIP_DEPENDS_EXTRA="watchdog coveralls diff-highlight \
@@ -444,6 +444,10 @@ ln -s "${REPO_REQUIREMENTS}/tools" "/home/odoo/tools"
 # Install & configure zsh
 git_clone_execute "${OH_MY_ZSH_REPO}" "master" "tools/install.sh"
 git_clone_copy "${ZSH_THEME_REPO}" "master" "schminitz.zsh-theme" "${HOME}/.oh-my-zsh/themes/odoo-shippable.zsh-theme"
+
+# Configure emacs for odoo user
+git clone -b master https://github.com/Vauxoo/emacs.d.git /home/odoo/.emacs.d
+chown -R odoo:odoo /home/odoo/.emacs.d
 
 #Copy zsh for odoo user
 cp -r ${HOME}/.oh-my-zsh /home/odoo
