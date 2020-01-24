@@ -38,7 +38,7 @@ ODOO_VAUXOO_REPO="https://github.com/vauxoo/odoo.git"
 ODOO_VAUXOO_DEV_REPO="https://github.com/vauxoo-dev/odoo.git"
 ODOO_ODOO_REPO="https://github.com/odoo/odoo.git"
 ODOO_OCA_REPO="https://github.com/oca/ocb.git"
-MQT_REPO="https://github.com/vauxoo/maintainer-quality-tools.git"
+MQT_REPO="https://github.com/vauxoo-dev/maintainer-quality-tools.git"
 GIST_VAUXOO_REPO="https://github.com/vauxoo-dev/gist-vauxoo.git"
 PYLINT_REPO="https://github.com/vauxoo/pylint-conf.git"
 
@@ -174,7 +174,7 @@ fi
 # Clone tools
 git_clone_copy "${GIST_VAUXOO_REPO}" "master" "" "${REPO_REQUIREMENTS}/tools/gist-vauxoo"
 ln -s "${REPO_REQUIREMENTS}/tools" "${HOME}/tools"
-git_clone_copy "${MQT_REPO}" "master" "" "${REPO_REQUIREMENTS}/linit_hook"
+git_clone_copy "${MQT_REPO}" "master-update_requirements-truiz" "" "${REPO_REQUIREMENTS}/linit_hook"
 git_clone_copy "${PYLINT_REPO}" "master" "conf/pylint_vauxoo_light.cfg" "${REPO_REQUIREMENTS}/linit_hook/travis/cfg/travis_run_pylint.cfg"
 git_clone_copy "${PYLINT_REPO}" "master" "conf/pylint_vauxoo_light_pr.cfg" "${REPO_REQUIREMENTS}/linit_hook/travis/cfg/travis_run_pylint_pr.cfg"
 git_clone_copy "${PYLINT_REPO}" "master" "conf/pylint_vauxoo_light_beta.cfg" "${REPO_REQUIREMENTS}/linit_hook/travis/cfg/travis_run_pylint_beta.cfg"
