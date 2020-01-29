@@ -14,9 +14,9 @@ NODE_UPSTREAM_REPO="deb http://deb.nodesource.com/node_8.x trusty main"
 NODE_UPSTREAM_KEY="https://deb.nodesource.com/gpgkey/nodesource.gpg.key"
 WKHTMLTOX_URL="https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.${DISTRIB_CODENAME}_${ARCH}.deb"
 PHANTOMJS_VERSION="2.1.1"
-GEOIP2_URLS="http://geolite.maxmind.com/download/geoip/database/GeoLite2-City.tar.gz \
-             https://geolite.maxmind.com/download/geoip/database/GeoLite2-Country.tar.gz \
-             https://geolite.maxmind.com/download/geoip/database/GeoLite2-ASN.tar.gz"
+GEOIP2_URLS="https://s3.vauxoo.com/GeoLite2-City_20191224.tar.gz \
+             https://s3.vauxoo.com/GeoLite2-Country_20191224.tar.gz \
+             https://s3.vauxoo.com/GeoLite2-ASN_20191224.tar.gz"
 DPKG_DEPENDS="nodejs \
               antiword \
               python3-dev \

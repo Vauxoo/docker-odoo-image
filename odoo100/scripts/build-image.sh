@@ -18,9 +18,9 @@ ODOO_DEPENDENCIES="git+https://github.com/vauxoo/odoo@10.0 \
                    git+https://github.com/vauxoo/addons-vauxoo@10.0 \
                    git+https://github.com/vauxoo/pylint-odoo@master"
 DEPENDENCIES_FILE="/usr/share/vx-docker-internal/odoo100/10.0-full_requirements.txt"
-GEOIP2_URLS="http://geolite.maxmind.com/download/geoip/database/GeoLite2-City.tar.gz \
-             https://geolite.maxmind.com/download/geoip/database/GeoLite2-Country.tar.gz \
-             https://geolite.maxmind.com/download/geoip/database/GeoLite2-ASN.tar.gz"
+GEOIP2_URLS="https://s3.vauxoo.com/GeoLite2-City_20191224.tar.gz \
+             https://s3.vauxoo.com/GeoLite2-Country_20191224.tar.gz \
+             https://s3.vauxoo.com/GeoLite2-ASN_20191224.tar.gz"
 EGENIX_BASE_URL="https://files.pythonhosted.org/packages/66/e6/e0709aedeb4a5c92a1aeb8c47ab50e9506eafc865806801bd3f01d72b671/egenix-mx-base-3.2.9.zip"
 DPKG_DEPENDS="nodejs \
               phantomjs \
