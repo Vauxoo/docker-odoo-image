@@ -58,7 +58,7 @@ DPKG_DEPENDS="postgresql-9.3 postgresql-contrib-9.3 \
               libmysqlclient-dev libcups2-dev emacs byobu"
 PIP_OPTS="--upgrade \
           --no-cache-dir"
-PIP_DEPENDS_EXTRA="watchdog coveralls diff-highlight \
+PIP_DEPENDS_EXTRA="watchdog==0.9.0;python_version<='3.3' watchdog;python_version>'3.3' coveralls diff-highlight \
                    pg-activity virtualenv nodeenv setuptools==33.1.1 \
                    html2text==2016.9.19 ofxparse==0.15 pgcli pre-commit"
 PIP_DPKG_BUILD_DEPENDS=""
@@ -244,7 +244,10 @@ EOF
 
 # Upgrade & configure vim
 apt install vim --only-upgrade
-wget -q -O /usr/share/vim/vim82/spell/es.utf-8.spl http://ftp.vim.org/pub/vim/runtime/spell/es.utf-8.spl
+# Get vim version
+VIM_VERSION=$(dpkg -s vim | grep Version | sed -n 's/.*\([0-9]\+.[0-9]\+\)\..*/\1/p' | sed -r 's/\.//g')
+
+wget -q -O /usr/share/vim/vim${VIM_VERSION}/spell/es.utf-8.spl http://ftp.vim.org/pub/vim/runtime/spell/es.utf-8.spl
 git_clone_execute "${SPF13_REPO}" "3.0" "bootstrap.sh"
 git_clone_copy "${VIM_OPENERP_REPO}" "master" "vim/" "${HOME}/.vim/bundle/vim-openerp"
 git_clone_copy "${VIM_JEDI_REPO}" "master" "." "${HOME}/.vim/bundle/jedi-vim"

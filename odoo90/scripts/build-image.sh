@@ -16,13 +16,11 @@ WKHTMLTOX_URL="https://downloads.wkhtmltopdf.org/0.12/0.12.1/wkhtmltox-0.12.1_li
 ODOO_DEPENDENCIES="git+https://github.com/vauxoo/odoo@8.0 \
                    git+https://github.com/vauxoo/server-tools@8.0 \
                    git+https://github.com/vauxoo/addons-vauxoo@8.0 \
-                   git+https://github.com/vauxoo/odoo-venezuela@8.0 \
-                   git+https://github.com/vauxoo/pylint-odoo@master"
-                   # git+https://github.com/vauxoo/odoo-mexico-v2@8.0 \
+                   git+https://github.com/vauxoo/odoo-venezuela@8.0 "
 DEPENDENCIES_FILE="/usr/share/vx-docker-internal/odoo90/9.0-full_requirements.txt"
-GEOIP2_URLS="http://geolite.maxmind.com/download/geoip/database/GeoLite2-City.tar.gz \
-             https://geolite.maxmind.com/download/geoip/database/GeoLite2-Country.tar.gz \
-             https://geolite.maxmind.com/download/geoip/database/GeoLite2-ASN.tar.gz"
+GEOIP2_URLS="https://s3.vauxoo.com/GeoLite2-City_20191224.tar.gz \
+             https://s3.vauxoo.com/GeoLite2-Country_20191224.tar.gz \
+             https://s3.vauxoo.com/GeoLite2-ASN_20191224.tar.gz"
 DPKG_DEPENDS="nodejs \
               phantomjs \
               antiword \
@@ -59,7 +57,6 @@ PIP_OPTS="--upgrade \
           --no-cache-dir"
 PIP_DEPENDS_EXTRA="requirements-parser==0.1.0 \
                    mercurial==3.2.2 \
-                   setuptools==33.1.1 \
                    git+https://github.com/vauxoo/pylint-odoo@master#egg=pylint-odoo \
                    git+https://github.com/vauxoo/panama-dv@master#egg=ruc \
                    hg+https://bitbucket.org/birkenfeld/sphinx-contrib@default#egg=sphinxcontrib-youtube&subdirectory=youtube"
@@ -78,7 +75,8 @@ apt-get install ${DPKG_DEPENDS} ${PIP_DPKG_BUILD_DEPENDS}
 npm install ${NPM_OPTS} ${NPM_DEPENDS}
 
 # Update pip 
-pip install --upgrade pip
+pip install --upgrade pip==19.0.1 setuptools==44.0.0
+pip install --no-cache-dir egenix-mx-base
 
 # Let's recursively find our pip dependencies
 collect_pip_dependencies "${ODOO_DEPENDENCIES}" "${PIP_DEPENDS_EXTRA}" "${DEPENDENCIES_FILE}"
