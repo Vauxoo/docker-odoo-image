@@ -289,7 +289,7 @@ git_clone_copy "${VIM_WAKATIME_REPO}" "master" "." "${HOME}/.vim/bundle/vim-waka
 
 cat >> ~/.vimrc << EOF
 colorscheme heliotrope
-set colorcolumn=120
+set colorcolumn=119
 set spelllang=en,es
 EOF
 
