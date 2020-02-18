@@ -245,7 +245,7 @@ EOF
 # Upgrade & configure vim
 apt install vim --only-upgrade
 # Get vim version
-VIM_VERSION=$(dpkg -s vim | grep Version | sed -n 's/.*\([0-9]\+.[0-9]\+\)\..*/\1/p' | sed -r 's/\.//g')
+VIM_VERSION=$(dpkg -s vim | grep Version | sed -n 's/.*\([0-9]\+\.[0-9]\+\)\..*/\1/p' | sed -r 's/\.//g')
 
 wget -q -O /usr/share/vim/vim${VIM_VERSION}/spell/es.utf-8.spl http://ftp.vim.org/pub/vim/runtime/spell/es.utf-8.spl
 git_clone_execute "${SPF13_REPO}" "3.0" "bootstrap.sh"
