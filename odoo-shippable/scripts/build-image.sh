@@ -94,6 +94,7 @@ cp /tmp/ssh_pylib/libssl.so.1.1 /usr/lib/x86_64-linux-gnu/
 cp /tmp/ssh_pylib/_ssl.cpython-37m-x86_64-linux-gnu.so /usr/local/lib/python3.7/lib-dynload/
 install_py37
 python3.7 -c "import _ssl"
+python3.7 -c "import _sqlite3"
 
 # Upgrade pip for python3
 curl "https://bootstrap.pypa.io/get-pip.py" -o "/tmp/get-pip.py"
