@@ -49,7 +49,7 @@ oauth==1.0.1
 paramiko==1.10.1
 passlib==1.6.2
 pep8==1.5.7
-psutil==1.2.1
+psutil==5.6.6
 psycogreen==1.0
 psycopg2==2.4.5
 pudb==2014.1
