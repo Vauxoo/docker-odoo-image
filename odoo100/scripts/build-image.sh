@@ -82,7 +82,7 @@ collect_pip_dependencies "${ODOO_DEPENDENCIES}" "${PIP_DEPENDS_EXTRA}" "${DEPEND
 clean_requirements ${DEPENDENCIES_FILE}
 
 # Install python dependencies
-pip install ${PIP_OPTS} -r ${DEPENDENCIES_FILE}
+pip install ${PIP_OPTS} -r ${DEPENDENCIES_FILE} --no-use-pep517
 
 python --version
 
