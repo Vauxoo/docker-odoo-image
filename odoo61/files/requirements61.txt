@@ -10,7 +10,7 @@ OERPLib==0.8.0
 Pillow==2.3.0
 PyGithub==1.25.1
 PyWebDAV==0.9.8
-PyYAML==3.10
+PyYAML==5.1
 Pygments==1.6
 Routes==2.0
 SOAPpy==0.12.22
