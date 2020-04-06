@@ -71,7 +71,7 @@ python-ldap==2.4.10
 python-openid==2.2.5
 python-stdnum==0.9
 pytz==2014.7
-pyxdg==0.25
+pyxdg==0.26
 qrcode==5.0.1
 qrencode==1.01
 recaptcha-client==1.0.6
