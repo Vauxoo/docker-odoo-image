@@ -59,8 +59,9 @@ DPKG_DEPENDS="postgresql-9.3 postgresql-contrib-9.3 \
 PIP_OPTS="--upgrade \
           --no-cache-dir"
 PIP_DEPENDS_EXTRA="watchdog==0.9.0;python_version<='3.3' watchdog;python_version>'3.3' coveralls diff-highlight \
+                   pgcli<3.0;python_version<='3.5' pgcli;python_version>'3.5' \
                    pg-activity virtualenv nodeenv setuptools==33.1.1 \
-                   html2text==2016.9.19 ofxparse==0.15 pgcli pre-commit"
+                   html2text==2016.9.19 ofxparse==0.15 pre-commit"
 PIP_DPKG_BUILD_DEPENDS=""
 
 ODOO_DEPENDENCIES_PY2="git+https://github.com/vauxoo/odoo@10.0 \
@@ -99,7 +100,7 @@ python3.7 -c "import _ssl"
 curl "https://bootstrap.pypa.io/get-pip.py" -o "/tmp/get-pip.py"
 for version in '3.2' '3.3' '3.4' '3.5' '3.6' '3.7'
 do
-    echo "Install pip for python$version"
+    echo "Installing pip for python$version"
     # If there is a custom version then overwrite the generic one.
     (curl -f "https://bootstrap.pypa.io/$version/get-pip.py" -o "/tmp/get-pip${version}.py" || true)
     cp -n /tmp/get-pip.py /tmp/get-pip${version}.py
@@ -126,7 +127,7 @@ sed -i 's/graceful-fs/fs-extra/g;s/fs.rename/fs.move/g' $(npm root -g)/npm/lib/u
 # Install python dependencies
 #pip install ${PIP_OPTS} ${PIP_DEPENDS_EXTRA}
 
-echo "Install all pip dependencies for python2.7"
+echo "Installing all pip dependencies for python2.7"
 echo "" > ${DEPENDENCIES_FILE}
 collect_pip_dependencies "${ODOO_DEPENDENCIES_PY2}" "${PIP_DEPENDS_EXTRA}" "${DEPENDENCIES_FILE}"
 clean_requirements ${DEPENDENCIES_FILE}
@@ -136,7 +137,7 @@ python2.7 -m pip install ${PIP_OPTS} -r ${DEPENDENCIES_FILE}
 for version in '3.3' '3.4' '3.5' '3.6' '3.7'
 do
     echo "" > ${DEPENDENCIES_FILE}
-    echo "Install all pip dependencies for python${version}"
+    echo "Installing all pip dependencies for python${version}"
     collect_pip_dependencies "${ODOO_DEPENDENCIES_PY3}" "${PIP_DEPENDS_EXTRA}" "${DEPENDENCIES_FILE}"
     clean_requirements ${DEPENDENCIES_FILE}
     python"$version" -m pip install ${PIP_OPTS} -r ${DEPENDENCIES_FILE}
@@ -197,7 +198,7 @@ do
     pip install --force-reinstall --upgrade coverage --src .
 
     # Execute travis_install_nightly
-    echo "Install the linit pip requirements using python${version}"
+    echo "Installing the linit pip requirements using python${version}"
     LINT_CHECK=1 TESTS=0 ${REPO_REQUIREMENTS}/linit_hook/travis/travis_install_nightly
     pip install --no-binary pycparser -r ${REPO_REQUIREMENTS}/linit_hook/requirements.txt
 
