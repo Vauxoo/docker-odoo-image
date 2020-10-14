@@ -162,7 +162,7 @@ if [ ${IS_TRAVIS} != "true" ]; then
     git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" remote add oca "${ODOO_OCA_REPO}"
 
     # Download the cached branches to avoid the download by each build
-    for version in '8.0' '9.0' '10.0' '11.0' '12.0' 'master'; do
+    for version in '8.0' '9.0' '10.0' '11.0' '12.0' '13.0' '14.0' 'master'; do
         git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" fetch vauxoo ${version} --depth=10
         git --git-dir="${REPO_REQUIREMENTS}/odoo/.git" fetch odoo ${version} --depth=10
     done
@@ -302,7 +302,7 @@ let g:syntastic_aggregate_errors = 1
 let g:syntastic_python_checkers = ['pylint', 'flake8']
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_python_pylint_args =
-    \ '--rcfile=/.repo_requirements/linit_hook/travis/cfg/travis_run_pylint_vim.cfg --valid_odoo_versions=12.0'
+    \ '--rcfile=/.repo_requirements/linit_hook/travis/cfg/travis_run_pylint_vim.cfg --valid_odoo_versions=14.0'
 let g:syntastic_python_flake8_args =
     \ '--config=/.repo_requirements/linit_hook/travis/cfg/travis_run_flake8.cfg'
 let g:syntastic_javascript_checkers = ['eslint']
