@@ -37,4 +37,4 @@ numexpr==2.6.1
 SOAPpy==0.12.22
 unicodecsv
 xmltodict==0.10.2
-cryptography==2.2.2
+cryptography==3.2
