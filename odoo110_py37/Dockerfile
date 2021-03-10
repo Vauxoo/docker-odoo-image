@@ -43,7 +43,7 @@ RUN git clone https://github.com/pyenv/pyenv.git /usr/share/pyenv && \
     pyenv install $PYENV_VERSION && \
     pyenv shell $PYENV_VERSION && \
     pyenv rehash && \
-    echo "export PYENV_ROOT=/pyenv\nexport PATH=\$PYENV_ROOT/shims:\$PYENV_ROOT/bin:\$PATH" | tee -a /etc/bash.bashrc && \
+    echo "export PYENV_ROOT=$PYENV_ROOT\nexport PATH=\$PYENV_ROOT/shims:\$PYENV_ROOT/bin:\$PATH" | tee -a /etc/bash.bashrc && \
     wget -O /tmp/req11.txt https://raw.githubusercontent.com/odoo/odoo/11.0/requirements.txt && \
     pip --no-cache-dir install -U pip && \
     pip --no-cache-dir install -Ur /tmp/req11.txt && \
