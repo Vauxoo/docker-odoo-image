@@ -100,8 +100,8 @@ function collect_pip_dependencies(){
 function wkhtmltox_install(){
     URL="${1}"
     DIR="$( mktemp -d )"
-    wget -qO- "${URL}" | tar -xJ -C "${DIR}/"
-    mv "${DIR}/wkhtmltox/bin/wkhtmltopdf" "/usr/local/bin/wkhtmltopdf"
+    wget -qO "${DIR}/wkhtmltox.deb" "${URL}"
+    dpkg -i "${DIR}/wkhtmltox.deb"
     rm -rf "${DIR}"
 }
 
