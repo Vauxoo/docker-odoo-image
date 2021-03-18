@@ -101,7 +101,7 @@ function wkhtmltox_install(){
     URL="${1}"
     DIR="$( mktemp -d )"
     wget -qO "${DIR}/wkhtmltox.deb" "${URL}"
-    dpkg -i "${DIR}/wkhtmltox.deb"
+    dpkg -i "${DIR}/wkhtmltox.deb";apt -f install;dpkg -i "${DIR}/wkhtmltox.deb"
     rm -rf "${DIR}"
 }
 
