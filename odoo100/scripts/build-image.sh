@@ -12,11 +12,8 @@ set -e
 ARCH="$( dpkg --print-architecture )"
 NODE_UPSTREAM_REPO="deb http://deb.nodesource.com/node_5.x trusty main"
 NODE_UPSTREAM_KEY="https://deb.nodesource.com/gpgkey/nodesource.gpg.key"
-WKHTMLTOX_URL="https://downloads.wkhtmltopdf.org/0.12/0.12.4/wkhtmltox-0.12.4_linux-generic-${ARCH}.tar.xz"
-ODOO_DEPENDENCIES="git+https://github.com/vauxoo/odoo@10.0 \
-                   git+https://github.com/vauxoo/server-tools@10.0 \
-                   git+https://github.com/vauxoo/addons-vauxoo@10.0 \
-                   git+https://github.com/vauxoo/pylint-odoo@master"
+WKHTMLTOX_URL="https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.${DISTRIB_CODENAME}_${ARCH}.deb"
+ODOO_DEPENDENCIES=""
 DEPENDENCIES_FILE="/usr/share/vx-docker-internal/odoo100/10.0-full_requirements.txt"
 GEOIP2_URLS="https://s3.vauxoo.com/GeoLite2-City_20191224.tar.gz \
              https://s3.vauxoo.com/GeoLite2-Country_20191224.tar.gz \
@@ -59,8 +56,7 @@ PIP_OPTS="--upgrade \
 PIP_DEPENDS_EXTRA="requirements-parser==0.1.0 \
                    setuptools==33.1.1 \
                    git+https://github.com/vauxoo/pylint-odoo@master#egg=pylint-odoo \
-                   git+https://github.com/vauxoo/panama-dv@master#egg=ruc \
-                   hg+https://bitbucket.org/birkenfeld/sphinx-contrib@default#egg=sphinxcontrib-youtube&subdirectory=youtube"
+                   git+https://github.com/vauxoo/panama-dv@master#egg=ruc"
 
 PIP_DPKG_BUILD_DEPENDS=""
 

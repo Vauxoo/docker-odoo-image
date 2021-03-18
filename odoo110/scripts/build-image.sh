@@ -12,12 +12,9 @@ set -e
 ARCH="$( dpkg --print-architecture )"
 NODE_UPSTREAM_REPO="deb http://deb.nodesource.com/node_5.x trusty main"
 NODE_UPSTREAM_KEY="https://deb.nodesource.com/gpgkey/nodesource.gpg.key"
-WKHTMLTOX_URL="https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.4/wkhtmltox-0.12.4_linux-generic-${ARCH}.tar.xz"
+WKHTMLTOX_URL="https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.${DISTRIB_CODENAME}_${ARCH}.deb"
 RUBY_VERSION="2.5.3"
-ODOO_DEPENDENCIES="git+https://github.com/vauxoo/odoo@11.0 \
-                   git+https://github.com/vauxoo/server-tools@11.0 \
-                   git+https://github.com/vauxoo/addons-vauxoo@11.0 \
-                   git+https://github.com/vauxoo/pylint-odoo@master"
+ODOO_DEPENDENCIES=""
 DEPENDENCIES_FILE="/usr/share/vx-docker-internal/odoo110/11.0-full_requirements.txt"
 GEOIP2_URLS="https://s3.vauxoo.com/GeoLite2-City_20191224.tar.gz \
              https://s3.vauxoo.com/GeoLite2-Country_20191224.tar.gz \
