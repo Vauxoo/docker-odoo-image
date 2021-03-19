@@ -47,8 +47,8 @@ DPKG_DEPENDS="nodejs \
               cloc"
 DPKG_UNNECESSARY=""
 NPM_OPTS="-g"
-NPM_DEPENDS="less \
-             less-plugin-clean-css \
+NPM_DEPENDS="less@3.11.3 \
+             less-plugin-clean-css@1.5.1 \
              jshint"
 PIP_OPTS="--upgrade \
           --no-cache-dir"

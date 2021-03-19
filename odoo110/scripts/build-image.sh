@@ -62,8 +62,8 @@ DPKG_DEPENDS="nodejs \
 
 DPKG_UNNECESSARY=""
 NPM_OPTS="-g"
-NPM_DEPENDS="less \
-             less-plugin-clean-css \
+NPM_DEPENDS="less@3.12.2 \
+             less-plugin-clean-css@1.5.1 \
              jshint"
 PIP_OPTS="--upgrade \
           --no-cache-dir"
