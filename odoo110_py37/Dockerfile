@@ -3,8 +3,6 @@ FROM vauxoo/odoo-140-image
 ENV PYENV_ROOT=/usr/share/pyenv \
     PYENV_VERSION=3.7.10 \
     PATH=/usr/share/pyenv/shims:/usr/bin:$PATH
-COPY files/odoo_cron_service.conf /etc/supervisor/conf.d/
-
 RUN git clone https://github.com/pyenv/pyenv.git /usr/share/pyenv && \
     cd /usr/share/pyenv && src/configure && make -C src && \
     ln -sf /usr/share/pyenv/bin/pyenv /usr/bin/pyenv && \
