@@ -75,3 +75,5 @@ RUN git clone https://github.com/pyenv/pyenv.git /usr/share/pyenv && \
     && find /var/tmp -type f -print0 | xargs -0r rm -rf \
     && find /var/log -type f -print0 | xargs -0r rm -rf \
     && find /var/lib/apt/lists -type f -print0 | xargs -0r rm -rf
+
+COPY odoo_cron_service.conf /etc/supervisor/conf.d/
