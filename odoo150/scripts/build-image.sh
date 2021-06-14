@@ -102,6 +102,11 @@ gem install rake
 # Install ruby dependencies
 gem install ${RUBY_DEPENDS}
 
+# Install mc (MinioClient)
+wget https://dl.min.io/client/mc/release/linux-amd64/mc
+chmod +x ./mc
+mv ./mc /usr/bin
+
 # Remove build depends for pip
 apt-get purge ${PIP_DPKG_BUILD_DEPENDS} ${DPKG_UNNECESSARY}
 apt-get autoremove
