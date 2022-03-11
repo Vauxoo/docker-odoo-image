@@ -7,7 +7,7 @@ M2Crypto==0.21.1
 Mako==1.0.0
 MarkupSafe==0.18
 OERPLib==0.8.0
-Pillow==2.3.0
+Pillow==9.0.1
 PyGithub==1.25.1
 PyWebDAV==0.9.8
 PyYAML==3.10
