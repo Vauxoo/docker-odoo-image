@@ -83,7 +83,7 @@ roman==2.0.0
 simplejson==3.6.4
 six==1.5.2
 ssh-import-id==3.21
-suds==0.4
+suds==1.0.0
 uTidylib==0.2
 unittest2==0.5.1
 urllib3==1.7.1
