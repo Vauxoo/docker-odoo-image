@@ -4,7 +4,7 @@ FormEncode==1.2.6
 Genshi==0.7
 Jinja2==2.7.2
 M2Crypto==0.21.1
-Mako==1.0.0
+Mako==1.2.2
 MarkupSafe==0.18
 OERPLib==0.8.0
 Pillow==2.3.0
