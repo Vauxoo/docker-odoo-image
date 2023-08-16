@@ -1,3 +1,9 @@
+# ARCHIVED PROJECT MIGRATED TO [OUR GITLAB](https://git.vauxoo.com/vauxoo/docker-odoo-image)
+
+
+
+
+
 docker-base-image
 =================
 
