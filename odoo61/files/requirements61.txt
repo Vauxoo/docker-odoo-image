@@ -76,7 +76,7 @@ qrcode==5.0.1
 qrencode==1.01
 recaptcha-client==1.0.6
 relatorio==0.6.1
-reportlab==2.4
+reportlab==3.5.55
 repoze.lru==0.6
 requests==2.2.1
 roman==2.0.0
