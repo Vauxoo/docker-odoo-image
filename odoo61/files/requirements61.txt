@@ -67,7 +67,7 @@ pyotp==1.4.1
 pyparsing==2.0.1
 pyserial==2.6
 python-dateutil==1.5
-python-ldap==2.4.10
+python-ldap==3.4.0
 python-openid==2.2.5
 python-stdnum==0.9
 pytz==2014.7
