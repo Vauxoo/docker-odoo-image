@@ -11,7 +11,7 @@ Pillow==2.3.0
 PyGithub==1.25.1
 PyWebDAV==0.9.8
 PyYAML==3.10
-Pygments==1.6
+Pygments==2.7.4
 Routes==2.0
 SOAPpy==0.12.22
 SecretStorage==2.0.0
