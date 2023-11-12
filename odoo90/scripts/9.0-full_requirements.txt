@@ -24,7 +24,7 @@ sphinx-patchqueue==0.4.0
 pandas
 pyopenssl==16.2.0
 cfdilib==0.4.0
-suds==0.4
+suds==1.0.0
 git+https://github.com/dlitz/pycrypto.git@master#egg=pycrypto==2.7a1
 xmltodict==0.10.2
 validate_email
